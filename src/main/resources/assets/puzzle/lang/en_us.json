@@ -1,0 +1,9 @@
+{
+	"puzzle.screen.title":"Puzzle Settings",
+	"puzzle.page.graphics":"Graphics Settings",
+	"puzzle.page.textures":"Texture Settings",
+	"puzzle.page.performance":"Performance Settings",
+	"puzzle.page.misc":"Miscellaneous Settings",
+	"puzzle.option.ctm":"Connected Textures",
+	"puzzle.option.inside_ctm":"Connect Inside Textures"
+}

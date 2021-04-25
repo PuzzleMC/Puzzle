@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "puzzle",
+  "version": "${version}",
+
+  "name": "Puzzle",
+  "description": "Unites optifine replacement mods in a clean & vanilla-style gui",
+  "authors": [
+    "Motschen",
+    "TeamMidnightDust"
+  ],
+  "contact": {
+    "homepage": "https://www.midnightdust.eu/",
+    "sources": "https://github.com/TeamMidnightDust/Puzzle",
+    "issues": "https://github.com/TeamMidnightDust/Puzzle/issues"
+  },
+
+  "license": "MIT",
+  "icon": "assets/puzzle/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "eu.midnightdust.puzzle.PuzzleClient"
+    ],
+    "modmenu": [
+      "eu.midnightdust.puzzle.config.ModMenuIntegration"
+    ]
+  },
+
+  "mixins": [
+    "puzzle.mixins.json"
+  ],
+
+  "depends": {
+    "fabric": "*"
+  }
+}
