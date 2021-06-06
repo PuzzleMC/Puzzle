@@ -4,14 +4,13 @@ import eu.midnightdust.puzzle.screen.page.GraphicsPage;
 import eu.midnightdust.puzzle.screen.page.MiscPage;
 import eu.midnightdust.puzzle.screen.page.PerformancePage;
 import eu.midnightdust.puzzle.screen.page.TexturesPage;
-import net.coderbot.iris.gui.ShaderPackScreen;
+import net.coderbot.iris.gui.screen.ShaderPackScreen;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ScreenTexts;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.TranslatableText;
-import org.apache.logging.log4j.LogManager;
 
 import java.util.Objects;
 
@@ -31,33 +30,19 @@ public class PuzzleOptionsScreen extends Screen {
         PerformancePage performancePage = new PerformancePage(this);
         TexturesPage texturesPage = new TexturesPage(this);
 
-        this.addButton(new ButtonWidget(this.width / 2 - 155, this.height / 6 + 48 - 6, 150, 20, graphicsPage.getTitle().copy().append("..."), (button) -> {
-            Objects.requireNonNull(client).openScreen(graphicsPage);
-        }));
-        this.addButton(new ButtonWidget(this.width / 2 + 5, this.height / 6 + 48 - 6, 150, 20, texturesPage.getTitle().copy().append("..."), (button) -> {
-            Objects.requireNonNull(client).openScreen(texturesPage);
-        }));
-        this.addButton(new ButtonWidget(this.width / 2 - 155, this.height / 6 + 72 - 6, 150, 20, performancePage.getTitle().copy().append("..."), (button) -> {
-            Objects.requireNonNull(client).openScreen(performancePage);
-        }));
-        this.addButton(new ButtonWidget(this.width / 2 + 5, this.height / 6 + 72 - 6, 150, 20, miscPage.getTitle().copy().append("..."), (button) -> {
-            Objects.requireNonNull(client).openScreen(miscPage);
-        }));
+        this.addButton(new ButtonWidget(this.width / 2 - 155, this.height / 6 + 48 - 6, 150, 20, graphicsPage.getTitle().copy().append("..."), (button) -> Objects.requireNonNull(client).openScreen(graphicsPage)));
+        this.addButton(new ButtonWidget(this.width / 2 + 5, this.height / 6 + 48 - 6, 150, 20, texturesPage.getTitle().copy().append("..."), (button) -> Objects.requireNonNull(client).openScreen(texturesPage)));
+        this.addButton(new ButtonWidget(this.width / 2 - 155, this.height / 6 + 72 - 6, 150, 20, performancePage.getTitle().copy().append("..."), (button) -> Objects.requireNonNull(client).openScreen(performancePage)));
+        this.addButton(new ButtonWidget(this.width / 2 + 5, this.height / 6 + 72 - 6, 150, 20, miscPage.getTitle().copy().append("..."), (button) -> Objects.requireNonNull(client).openScreen(miscPage)));
         if (FabricLoader.getInstance().isModLoaded("iris")) {
             try {
                 ShaderPackScreen shaderPackPage = new ShaderPackScreen(this);
-                this.addButton(new ButtonWidget(this.width / 2 - 155, this.height / 6 + 96 - 6, 150, 20, shaderPackPage.getTitle().copy().append("..."), (button) -> {
-                    Objects.requireNonNull(client).openScreen(shaderPackPage);
-                }));
+                this.addButton(new ButtonWidget(this.width / 2 - 155, this.height / 6 + 96 - 6, 150, 20, shaderPackPage.getTitle().copy().append("..."), (button) -> Objects.requireNonNull(client).openScreen(shaderPackPage)));
             }
-            catch (NoClassDefFoundError e) {
-                LogManager.getLogger("Puzzle").info("The shaderpack selection screen is not present, not adding it.");
+            catch (Exception | Error ignored) {
             }
         }
-
-        this.addButton(new ButtonWidget(this.width / 2 - 100, this.height / 6 + 168, 200, 20, ScreenTexts.DONE, (button) -> {
-            Objects.requireNonNull(client).openScreen(parent);
-        }));
+        this.addButton(new ButtonWidget(this.width / 2 - 100, this.height / 6 + 168, 200, 20, ScreenTexts.DONE, (button) -> Objects.requireNonNull(client).openScreen(parent)));
     }
 
     @Override
