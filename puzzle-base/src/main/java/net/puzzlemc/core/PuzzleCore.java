@@ -12,7 +12,7 @@ public class PuzzleCore implements ClientModInitializer {
     public final static String website = "https://github.com/TeamMidnightDust/Puzzle";
     public static String updateURL = website + "download";
 
-    public final static String UPDATE_URL = "https://raw.githubusercontent.com/TeamMidnightDust/Puzzle/main/puzzle_versions.json";
+    public final static String UPDATE_URL = "https://raw.githubusercontent.com/TeamMidnightDust/Puzzle/1.17/puzzle_versions.json";
 
     @Override
     public void onInitializeClient() {
