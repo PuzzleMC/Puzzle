@@ -1,0 +1,33 @@
+archivesBaseName = "puzzle-gui"
+
+repositories {
+	maven { url "https://maven.terraformersmc.com/releases" }
+	maven {
+		name = 'AperLambda'
+		url = 'https://aperlambda.github.io/maven'
+	}
+	mavenCentral()
+	flatDir {
+		dirs 'local_maven'
+	}
+}
+
+dependencies {
+	api project(":puzzle-base")
+	api project(":puzzle-splashscreen")
+
+	api ("com.terraformersmc:modmenu:${project.mod_menu_version}")
+	modImplementation ("eu.midnightdust:cullleaves:${project.cull_leaves_version}")
+	modImplementation ("dev.lambdaurora:lambdynamiclights:${project.ldl_version}")
+	modImplementation ("dev.lambdaurora:lambdabettergrass:${project.lbg_version}")
+ 	modImplementation ("com.github.IrisShaders:Iris:${project.iris_version}")
+
+	//modImplementation "dev.lambdaurora:spruceui:${project.spruceui_version}" // Needed for Lambda's mods
+	modImplementation("org.aperlambda:lambdajcommon:1.8.1") {
+		exclude group: 'com.google.code.gson'
+		exclude group: 'com.google.guava'
+	}
+// 	modImplementation ("com.github.PepperCode1:ConnectedTexturesMod-Fabric:${project.ctmf_version}") {
+//         exclude module: "modmenu"
+// 	}
+} 

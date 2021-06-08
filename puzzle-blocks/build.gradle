@@ -1,0 +1,4 @@
+archivesBaseName = "puzzle-blocks"
+dependencies {
+    api project(":puzzle-base")
+}

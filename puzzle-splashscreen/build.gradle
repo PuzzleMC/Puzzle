@@ -1,0 +1,5 @@
+archivesBaseName = "puzzle-splashscreen"
+
+dependencies {
+    api project(":puzzle-base")
+}

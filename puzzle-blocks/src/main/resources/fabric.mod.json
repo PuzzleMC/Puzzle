@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "id": "puzzle",
+  "id": "puzzle-blocks",
   "version": "${version}",
 
-  "name": "Puzzle",
-  "description": "Fancy and performance-improving features.",
+  "name": "Puzzle Blocks",
+  "description": "Lets resourcepacks change render layers of blocks",
   "authors": [
-    "PuzzleMC",
-    "Motschen"
+    "Motschen",
+    "TeamMidnightDust"
   ],
   "contact": {
     "homepage": "https://www.midnightdust.eu/",
@@ -19,6 +19,16 @@
   "icon": "assets/puzzle/icon.png",
 
   "environment": "client",
+  "entrypoints": {
+    "client": [
+      "net.puzzlemc.blocks.PuzzleBlocks"
+    ]
+  },
+  "custom": {
+    "modmenu": {
+      "parent": "puzzle"
+    }
+  },
 
   "depends": {
     "fabric": "*"

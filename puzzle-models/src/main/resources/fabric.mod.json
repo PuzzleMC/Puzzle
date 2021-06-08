@@ -1,24 +1,33 @@
 {
   "schemaVersion": 1,
-  "id": "puzzle",
+  "id": "puzzle-models",
   "version": "${version}",
 
-  "name": "Puzzle",
-  "description": "Fancy and performance-improving features.",
+  "name": "Puzzle Models",
+  "description": "Provides more freedom for item and block models!",
   "authors": [
-    "PuzzleMC",
-    "Motschen"
+    "Motschen",
+    "TeamMidnightDust"
   ],
   "contact": {
     "homepage": "https://www.midnightdust.eu/",
     "sources": "https://github.com/TeamMidnightDust/Puzzle",
     "issues": "https://github.com/TeamMidnightDust/Puzzle/issues"
   },
+  "custom": {
+    "modmenu": {
+      "parent": "puzzle"
+    }
+  },
 
   "license": "MIT",
   "icon": "assets/puzzle/icon.png",
 
   "environment": "client",
+  "accessWidener" : "puzzle-models.accesswidener",
+  "mixins": [
+    "puzzle-models.mixins.json"
+  ],
 
   "depends": {
     "fabric": "*"

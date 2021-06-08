@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "net.puzzlemc.splashscreen.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "MixinSplashScreen"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

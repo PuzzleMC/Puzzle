@@ -1,6 +1,5 @@
 pluginManagement {
     repositories {
-        jcenter()
         maven {
             name = 'Fabric'
             url = 'https://maven.fabricmc.net/'
@@ -8,3 +7,10 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+include 'puzzle-base'
+
+include 'puzzle-splashscreen'
+include 'puzzle-models'
+include 'puzzle-blocks'
+//include 'puzzle-randomentities'
+include 'puzzle-gui'

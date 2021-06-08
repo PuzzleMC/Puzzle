@@ -1,106 +1,137 @@
+// Based on https://github.com/OnyxStudios/Cardinal-Components-API/blob/1.17/build.gradle
 plugins {
-	id 'fabric-loom' version '0.7-SNAPSHOT'
-	id 'maven-publish'
+    id "fabric-loom" version "0.8-SNAPSHOT" apply false
+    id "com.matthewprenger.cursegradle" version "1.4.0"
+    id "maven-publish"
+    id "java-library"
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+group = "net.puzzlemc"
+archivesBaseName = "puzzle"
 
-archivesBaseName = project.archives_base_name
-version = project.mod_version
-group = project.maven_group
+subprojects {
+    apply plugin: 'fabric-loom'
+    apply plugin: 'com.matthewprenger.cursegradle'
+    apply plugin: 'maven-publish'
+    apply plugin: 'java-library'
 
-minecraft {
+    archivesBaseName = project.name
+    group = "${rootProject.group}.${rootProject.archivesBaseName}"
+
+    //apply from: "https://raw.githubusercontent.com/OnyxStudios/Gradle-Scripts/master/scripts/fabric/basic_project.gradle"
 }
+
+allprojects {
+    apply plugin: "fabric-loom"
+    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_16
+    version = System.getenv("TRAVIS_TAG") ?: rootProject.mod_version
+
+    configurations {
+        dev
+    }
+
+    repositories {
+        maven { url 'https://jitpack.io' }
+
+    }
+
+    dependencies {
+        minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
+        mappings "net.fabricmc:yarn:${rootProject.yarn_mappings}:v2"
+        modApi "net.fabricmc:fabric-loader:${rootProject.loader_version}"
+        modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_version}"
+    }
+
+    processResources {
+        inputs.property "version", project.version
+
+        filesMatching("fabric.mod.json") {
+            expand "version": project.version
+        }
+    }
+
+    // ensure that the encoding is set to UTF-8, no matter what the system default is
+    // this fixes some edge cases with special characters not displaying correctly
+    // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
+    tasks.withType(JavaCompile).configureEach {
+        it.options.encoding = "UTF-8"
+        it.options.release = 16
+    }
+
+    java {
+        // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+        // if it is present.
+        // If you remove this line, sources will not be generated.
+        withSourcesJar()
+    }
+
+    jar {
+    }
+
+     afterEvaluate {
+         artifacts {
+             dev file: file("${project.buildDir}/libs/$archivesBaseName-${version}-dev.jar"), type: "jar", builtBy: sourcesJar
+         }
+     }
+}
+
+subprojects {
+    version = rootProject.version
+}
+
+sourceSets {
+    testmod {
+        compileClasspath += main.compileClasspath
+        runtimeClasspath += main.runtimeClasspath
+    }
+    test {
+        compileClasspath += main.compileClasspath
+        runtimeClasspath += main.runtimeClasspath
+    }
+}
+
+subprojects.each { remapJar.dependsOn("${it.path}:remapJar") }
 
 repositories {
-	maven { url "https://maven.shedaniel.me/" }
-	maven { url "https://jitpack.io" }
-	maven { url "https://maven.terraformersmc.com/releases" }
-	maven { url "https://aperlambda.github.io/maven" }
+    maven {
+        name = "JitPack"
+        url = "https://jitpack.io"
+    }
+    maven {
+        name = "TerraformersMC"
+        url = "https://maven.terraformersmc.com/releases"
+    }
+
 }
 
 dependencies {
-	//to change the versions see the gradle.properties file
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:0.34.8+1.17"
+    modImplementation ("com.terraformersmc:modmenu:${project.mod_menu_version}") {
+        exclude group: "net.fabricmc.fabric-api"
+    }
 
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	
-	modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
-	modImplementation ("com.github.TeamMidnightDust:CullLeaves:${project.cull_leaves_version}"){
-		exclude module: "modmenu"
-	}
-	modImplementation ("com.github.LambdAurora:LambDynamicLights:${project.ldl_version}") {
-        exclude module: "modmenu"
-        exclude module: "sodium-fabric"
-	}
-	modImplementation ("com.github.LambdAurora:LambdaBetterGrass:${project.lbg_version}") {
-        exclude module: "modmenu"
-	}
-	modImplementation ("com.github.IrisShaders:Iris:${project.iris_version}") {
-        exclude module: "modmenu"
-	}
-	modImplementation ("com.github.PepperCode1:ConnectedTexturesMod-Fabric:${project.ctmf_version}") {
-        exclude module: "modmenu"
-	}
-	modImplementation ("com.github.LambdAurora:LambdaControls:${project.lc_version}") {
-        exclude module: "modmenu"
-	}
+    subprojects.each {
+        api project(path: ":${it.name}", configuration: "dev")
+        include project(":${it.name}")
+    }
 }
 
-processResources {
-	inputs.property "version", project.version
-
-	filesMatching("fabric.mod.json") {
-		expand "version": project.version
-	}
-}
-
-tasks.withType(JavaCompile).configureEach {
-	// ensure that the encoding is set to UTF-8, no matter what the system default is
-	// this fixes some edge cases with special characters not displaying correctly
-	// see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-	// If Javadoc is generated, this must be specified in that task too.
-	it.options.encoding = "UTF-8"
-
-	// Minecraft 1.17 (21w19a) upwards uses Java 16.
-	//it.options.release = 8
-}
-
-java {
-	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-	// if it is present.
-	// If you remove this line, sources will not be generated.
-	withSourcesJar()
-}
-
-jar {
-	from("LICENSE") {
-		rename { "${it}_${project.archivesBaseName}"}
-	}
-}
-
-// configure the maven publication
 publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			// add all the jars that should be included when publishing to maven
-			artifact(remapJar) {
-				builtBy remapJar
-			}
-			artifact(sourcesJar) {
-				builtBy remapSourcesJar
-			}
-		}
-	}
-
-	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-	repositories {
-		// Add repositories to publish to here.
-		// Notice: This block does NOT have the same function as the block in the top level.
-		// The repositories here will be used for publishing your artifact, not for
-		// retrieving dependencies.
-	}
+    publications {
+        mavenJava(MavenPublication) {
+            artifact(file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")) {
+                builtBy(remapJar)
+            }
+            pom.withXml {
+                def depsNode = asNode().appendNode("dependencies")
+                subprojects.each {
+                    def depNode = depsNode.appendNode("dependency")
+                    depNode.appendNode("groupId", it.group)
+                    depNode.appendNode("artifactId", it.name)
+                    depNode.appendNode("version", it.version)
+                    depNode.appendNode("scope", "compile")
+                }
+            }
+        }
+    }
 }

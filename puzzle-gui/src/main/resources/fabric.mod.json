@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "id": "puzzle-gui",
+  "version": "${version}",
+
+  "name": "Puzzle GUI",
+  "description": "Unites optifine replacement mods in a clean & vanilla-style gui",
+  "authors": [
+    "Motschen",
+    "TeamMidnightDust"
+  ],
+  "contact": {
+    "homepage": "https://www.midnightdust.eu/",
+    "sources": "https://github.com/TeamMidnightDust/Puzzle",
+    "issues": "https://github.com/TeamMidnightDust/Puzzle/issues"
+  },
+
+  "license": "MIT",
+  "icon": "assets/puzzle/icon.png",
+
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "net.puzzlemc.gui.PuzzleClient"
+    ],
+    "modmenu": [
+      "net.puzzlemc.gui.config.ModMenuIntegration"
+    ]
+  },
+  "custom": {
+    "modmenu": {
+      "parent": "puzzle"
+    }
+  },
+
+  "mixins": [
+    "puzzle-gui.mixins.json"
+  ],
+
+  "depends": {
+    "fabric": "*"
+  }
+}

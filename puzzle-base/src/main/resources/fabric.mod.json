@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "id": "puzzle",
+  "id": "puzzle-base",
   "version": "${version}",
 
   "name": "Puzzle",
-  "description": "Fancy and performance-improving features.",
+  "description": "Unites optifine replacement mods in a clean & vanilla-style gui",
   "authors": [
-    "PuzzleMC",
-    "Motschen"
+    "Motschen",
+    "TeamMidnightDust"
   ],
   "contact": {
     "homepage": "https://www.midnightdust.eu/",
@@ -19,6 +19,20 @@
   "icon": "assets/puzzle/icon.png",
 
   "environment": "client",
+  "entrypoints": {
+    "client": [
+      "net.puzzlemc.core.PuzzleCore"
+    ]
+  },
+  "custom": {
+    "modmenu": {
+      "parent": "puzzle-core"
+    }
+  },
+
+  "mixins": [
+    "puzzle-base.mixins.json"
+  ],
 
   "depends": {
     "fabric": "*"

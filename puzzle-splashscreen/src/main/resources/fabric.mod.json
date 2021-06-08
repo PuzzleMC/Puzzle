@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "puzzle-splashscreen",
+  "version": "${version}",
+
+  "name": "Puzzle Splash Screen",
+  "description": "Allows resourcepacks to define a custom splash screen",
+  "authors": [
+    "Motschen",
+    "TeamMidnightDust"
+  ],
+  "contact": {
+    "homepage": "https://www.midnightdust.eu/",
+    "sources": "https://github.com/TeamMidnightDust/Puzzle",
+    "issues": "https://github.com/TeamMidnightDust/Puzzle/issues"
+  },
+
+  "license": "MIT",
+  "icon": "assets/puzzle/icon.png",
+
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "net.puzzlemc.splashscreen.PuzzleSplashScreen"
+    ]
+  },
+  "custom": {
+    "modmenu": {
+      "parent": "puzzle"
+    }
+  },
+
+  "mixins": [
+    "puzzle-splashscreen.mixins.json"
+  ],
+
+  "depends": {
+    "fabric": "*"
+  }
+}

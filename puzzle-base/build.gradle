@@ -1,0 +1,3 @@
+archivesBaseName = "puzzle-base"
+dependencies {
+}

@@ -1,0 +1,9 @@
+archivesBaseName = "puzzle-models"
+
+minecraft {
+    accessWidener =  file("src/main/resources/puzzle-models.accesswidener")
+}
+
+dependencies {
+    api project(":puzzle-base")
+}

@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "net.puzzlemc.models.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "MixinModelElementDeserializer"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
