@@ -101,7 +101,24 @@ repositories {
         name = "TerraformersMC"
         url = "https://maven.terraformersmc.com/releases"
     }
-
+    maven {
+        name = 'AperLambda'
+        url = 'https://aperlambda.github.io/maven'
+    }
+    mavenCentral()
+    maven {
+        name 'Gegy'
+        url 'https://maven.gegy.dev'
+    }
+    maven {
+        url = "https://api.modrinth.com/maven"
+    }
+    maven {
+        url "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
 }
 
 dependencies {
@@ -109,6 +126,20 @@ dependencies {
     modImplementation ("com.terraformersmc:modmenu:${project.mod_menu_version}") {
         exclude group: "net.fabricmc.fabric-api"
     }
+    modImplementation ("maven.modrinth:cull-leaves:${project.cull_leaves_version}")
+    modImplementation ("maven.modrinth:lambdynamiclights:${project.ldl_version}")
+    modImplementation ("maven.modrinth:lambdabettergrass:${project.lbg_version}")
+    modImplementation ("maven.modrinth:iris:${project.iris_version}")
+    modImplementation ("maven.modrinth:cit-resewn:${project.cit_resewn_version}")
+    modImplementation ("maven.modrinth:continuity:${project.continuity_version}")
+    modImplementation "curse.maven:custom-entity-models-cem-477078:3440846"
+
+    modImplementation("org.aperlambda:lambdajcommon:1.8.1") {
+        exclude group: 'com.google.code.gson'
+        exclude group: 'com.google.guava'
+    }
+    modImplementation "dev.lambdaurora:spruceui:${project.spruceui_version}"
+    modImplementation "maven.modrinth:midnightlib:${project.midnightlib_version}"
 
     subprojects.each {
         api project(path: ":${it.name}", configuration: "dev")

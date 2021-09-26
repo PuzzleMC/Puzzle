@@ -12,7 +12,7 @@ import java.util.Map;
 @Environment(EnvType.CLIENT)
 public class ModMenuIntegration implements ModMenuApi {
 
-    // Used to set the config screen for all modules //
+     //Used to set the config screen for all modules //
 //    @Override
 //    public Map<String, ConfigScreenFactory<?>> getProvidedConfigScreenFactories() {
 //        Map<String, ConfigScreenFactory<?>> map = ImmutableMap.of();

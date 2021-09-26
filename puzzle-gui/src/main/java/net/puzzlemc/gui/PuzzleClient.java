@@ -5,6 +5,9 @@ import dev.lambdaurora.lambdabettergrass.LambdaBetterGrass;
 import dev.lambdaurora.lambdynlights.DynamicLightsConfig;
 import dev.lambdaurora.lambdynlights.LambDynLights;
 import eu.midnightdust.cullleaves.config.CullLeavesConfig;
+import me.pepperbell.continuity.client.config.ContinuityConfig;
+import net.dorianpb.cem.internal.config.CemConfig;
+import net.dorianpb.cem.internal.config.CemOptions;
 import net.puzzlemc.core.config.PuzzleConfig;
 import net.puzzlemc.gui.screen.widget.PuzzleWidget;
 import net.fabricmc.api.ClientModInitializer;
@@ -14,6 +17,8 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.puzzlemc.splashscreen.PuzzleSplashScreen;
+import shcm.shsupercm.fabric.citresewn.CITResewn;
+import shcm.shsupercm.fabric.citresewn.config.CITResewnConfig;
 //import team.chisel.ctm.client.CTMClient;
 //import team.chisel.ctm.client.config.ConfigManager;
 
@@ -85,19 +90,20 @@ public class PuzzleClient implements ClientModInitializer {
             PuzzleApi.addToGraphicsOptions(new PuzzleWidget(new TranslatableText("").append("DynLights: ").append(new TranslatableText("block.minecraft.tnt")), (button) -> button.setMessage(ldlConfig.getTntLightingMode().getTranslatedText()), (button) -> ldlConfig.setTntLightingMode(ldlConfig.getTntLightingMode().next())));
             PuzzleApi.addToGraphicsOptions(new PuzzleWidget(new TranslatableText("").append("DynLights: ").append(new TranslatableText("lambdynlights.option.water_sensitive")), (button) -> button.setMessage(ldlConfig.hasWaterSensitiveCheck() ? YES : NO), (button) -> ldlConfig.setWaterSensitiveCheck(!ldlConfig.hasWaterSensitiveCheck())));
         }
-//        if (FabricLoader.getInstance().isModLoaded("ctm")) {
-//            PuzzleApi.addToTextureOptions(new PuzzleWidget(Text.of("ConnectedTexturesMod for Fabric")));
-//            ConfigManager ctmfConfigManager = CTMClient.getConfigManager();
-//            ConfigManager.Config ctmfConfig = CTMClient.getConfigManager().getConfig();
-//            PuzzleApi.addToTextureOptions(new PuzzleWidget(new TranslatableText("puzzle.option.ctm"), (button) -> button.setMessage(ctmfConfig.disableCTM ? NO : YES), (button) -> {
-//                ctmfConfig.disableCTM = !ctmfConfig.disableCTM;
-//                ctmfConfigManager.onConfigChange();
-//            }));
-//            PuzzleApi.addToTextureOptions(new PuzzleWidget(new TranslatableText("puzzle.option.inside_ctm"), (button) -> button.setMessage(ctmfConfig.connectInsideCTM ? YES : NO), (button) -> {
-//                ctmfConfig.connectInsideCTM = !ctmfConfig.connectInsideCTM;
-//                ctmfConfigManager.onConfigChange();
-//            }));
-//        }
+        if (FabricLoader.getInstance().isModLoaded("continuity")) {
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Continuity")));
+            ContinuityConfig contConfig = ContinuityConfig.INSTANCE;
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("options.continuity.disable_ctm"), (button) -> button.setMessage(contConfig.disableCTM.get() ? YES : NO), (button) -> {
+                contConfig.disableCTM.set(!contConfig.disableCTM.get());
+                contConfig.onChange();
+                contConfig.save();
+            }));
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("options.continuity.use_manual_culling"), (button) -> button.setMessage(contConfig.useManualCulling.get() ? YES : NO), (button) -> {
+                contConfig.useManualCulling.set(!contConfig.useManualCulling.get());
+                contConfig.onChange();
+                contConfig.save();
+            }));
+        }
 
         if (FabricLoader.getInstance().isModLoaded("lambdabettergrass")) {
             LBGConfig lbgConfig = LambdaBetterGrass.get().config;
@@ -105,5 +111,65 @@ public class PuzzleClient implements ClientModInitializer {
             PuzzleApi.addToGraphicsOptions(new PuzzleWidget(new TranslatableText("lambdabettergrass.option.mode"), (button) -> button.setMessage(lbgConfig.getMode().getTranslatedText()), (button) -> lbgConfig.setMode(lbgConfig.getMode().next())));
             PuzzleApi.addToGraphicsOptions(new PuzzleWidget(new TranslatableText("lambdabettergrass.option.better_snow"), (button) -> button.setMessage(lbgConfig.hasBetterLayer() ? YES : NO), (button) -> lbgConfig.setBetterLayer(!lbgConfig.hasBetterLayer())));
         }
+
+    }
+    public static boolean citInitialized = false;
+    public static void initCITResewn() { // CITResewn is initialized after Puzzle, so we can't access it in our ClientModInitializer
+        if (!citInitialized && FabricLoader.getInstance().isModLoaded("citresewn") && CITResewn.INSTANCE != null && CITResewnConfig.INSTANCE() != null) {
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("CIT Resewn")));
+            CITResewnConfig citConfig = CITResewnConfig.INSTANCE();
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("config.citresewn.enabled.title"), (button) -> button.setMessage(citConfig.enabled ? YES : NO), (button) -> {
+                citConfig.enabled = !citConfig.enabled;
+                citConfig.write();
+                MinecraftClient.getInstance().reloadResources();
+            }));
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("config.citresewn.mute_errors.title"), (button) -> button.setMessage(citConfig.mute_errors ? YES : NO), (button) -> {
+                citConfig.mute_errors = !citConfig.mute_errors;
+                citConfig.write();
+            }));
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("config.citresewn.mute_warns.title"), (button) -> button.setMessage(citConfig.mute_warns ? YES : NO), (button) -> {
+                citConfig.mute_warns = !citConfig.mute_warns;
+                citConfig.write();
+            }));
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("config.citresewn.broken_paths.title"), (button) -> button.setMessage(citConfig.broken_paths ? YES : NO), (button) -> {
+                citConfig.broken_paths = !citConfig.broken_paths;
+                citConfig.write();
+            }));
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(0, 100,new TranslatableText("config.citresewn.cache_ms.title"), (slider) -> slider.setInt(citConfig.cache_ms),
+                    (button) -> button.setMessage(message(citConfig)),
+                    (slider) -> {
+                try {
+                    citConfig.cache_ms = slider.getInt();
+                }
+                catch (NumberFormatException ignored) {}
+                citConfig.write();
+            }));
+            citInitialized = true;
+        }
+    }
+    public static Text message(CITResewnConfig config) {
+        int ticks = config.cache_ms;
+            if (ticks <= 1) {
+                return (new TranslatableText("config.citresewn.cache_ms.ticks." + ticks)).formatted(Formatting.AQUA);
+            } else {
+                Formatting color = Formatting.DARK_RED;
+                if (ticks <= 40) {
+                    color = Formatting.RED;
+                }
+
+                if (ticks <= 20) {
+                    color = Formatting.GOLD;
+                }
+
+                if (ticks <= 10) {
+                    color = Formatting.DARK_GREEN;
+                }
+
+                if (ticks <= 5) {
+                    color = Formatting.GREEN;
+                }
+
+                return (new TranslatableText("config.citresewn.cache_ms.ticks.any", ticks)).formatted(color);
+            }
     }
 }

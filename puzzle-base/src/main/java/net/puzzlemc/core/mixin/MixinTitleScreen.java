@@ -58,14 +58,14 @@ public class MixinTitleScreen extends Screen {
         if (open) {
             Util.getOperatingSystem().open(PuzzleCore.updateURL);
         }
-        Objects.requireNonNull(this.client).openScreen(this);
+        Objects.requireNonNull(this.client).setScreen(this);
     }
 
     @Inject(at = @At("HEAD"), method = "mouseClicked",cancellable = true)
     private void puzzle$mouseClicked(double mouseX, double mouseY, int button, CallbackInfoReturnable<Boolean> cir) {
         if (mouseX > 2 && mouseX < (double)(2 + this.puzzleTextWidth) && mouseY > (double)(this.height - 20) && mouseY < (double)this.height-10) {
             if (Objects.requireNonNull(this.client).options.chatLinksPrompt) {
-                this.client.openScreen(new ConfirmChatLinkScreen(this::confirmLink, PuzzleCore.updateURL, true));
+                this.client.setScreen(new ConfirmChatLinkScreen(this::confirmLink, PuzzleCore.updateURL, true));
             } else {
                 Util.getOperatingSystem().open(PuzzleCore.updateURL);
             }

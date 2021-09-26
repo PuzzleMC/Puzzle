@@ -1,8 +1,6 @@
 package net.puzzlemc.core.config;
 
-import eu.midnightdust.lib.config.MidnightConfig;
-
-public class PuzzleConfig extends MidnightConfig {
+public class PuzzleConfig extends MidnightConfigLite {
     @Entry public static boolean debugMessages = false;
 
     @Entry public static boolean checkUpdates = true;

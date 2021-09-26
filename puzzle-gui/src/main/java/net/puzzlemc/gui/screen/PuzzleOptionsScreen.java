@@ -1,6 +1,8 @@
 package net.puzzlemc.gui.screen;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.puzzlemc.gui.PuzzleApi;
+import net.puzzlemc.gui.PuzzleClient;
 import net.puzzlemc.gui.screen.page.GraphicsPage;
 import net.puzzlemc.gui.screen.page.MiscPage;
 import net.puzzlemc.gui.screen.page.PerformancePage;
@@ -24,19 +26,20 @@ public class PuzzleOptionsScreen extends Screen {
     @Override
     protected void init() {
         super.init();
+        PuzzleClient.initCITResewn();
         GraphicsPage graphicsPage = new GraphicsPage(this);
         MiscPage miscPage = new MiscPage(this);
         PerformancePage performancePage = new PerformancePage(this);
         ResourcesPage resourcesPage = new ResourcesPage(this);
 
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - 155, this.height / 6 + 48 - 6, 150, 20, graphicsPage.getTitle().copy().append("..."), (button) -> Objects.requireNonNull(client).openScreen(graphicsPage)));
-        this.addDrawableChild(new ButtonWidget(this.width / 2 + 5, this.height / 6 + 48 - 6, 150, 20, resourcesPage.getTitle().copy().append("..."), (button) -> Objects.requireNonNull(client).openScreen(resourcesPage)));
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - 155, this.height / 6 + 72 - 6, 150, 20, performancePage.getTitle().copy().append("..."), (button) -> Objects.requireNonNull(client).openScreen(performancePage)));
-        this.addDrawableChild(new ButtonWidget(this.width / 2 + 5, this.height / 6 + 72 - 6, 150, 20, miscPage.getTitle().copy().append("..."), (button) -> Objects.requireNonNull(client).openScreen(miscPage)));
+        this.addDrawableChild(new ButtonWidget(this.width / 2 - 155, this.height / 6 + 48 - 6, 150, 20, graphicsPage.getTitle().copy().append("..."), (button) -> Objects.requireNonNull(client).setScreen(graphicsPage)));
+        this.addDrawableChild(new ButtonWidget(this.width / 2 + 5, this.height / 6 + 48 - 6, 150, 20, resourcesPage.getTitle().copy().append("..."), (button) -> Objects.requireNonNull(client).setScreen(resourcesPage)));
+        this.addDrawableChild(new ButtonWidget(this.width / 2 - 155, this.height / 6 + 72 - 6, 150, 20, performancePage.getTitle().copy().append("..."), (button) -> Objects.requireNonNull(client).setScreen(performancePage)));
+        this.addDrawableChild(new ButtonWidget(this.width / 2 + 5, this.height / 6 + 72 - 6, 150, 20, miscPage.getTitle().copy().append("..."), (button) -> Objects.requireNonNull(client).setScreen(miscPage)));
         if (FabricLoader.getInstance().isModLoaded("iris")) {
             this.addDrawableChild(IrisButton.getButton(this.width / 2 - 155, this.height / 6 + 96 - 6, 150, 20, this, client));
         }
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height / 6 + 168, 200, 20, ScreenTexts.DONE, (button) -> Objects.requireNonNull(client).openScreen(parent)));
+        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height / 6 + 168, 200, 20, ScreenTexts.DONE, (button) -> Objects.requireNonNull(client).setScreen(parent)));
     }
 
     @Override

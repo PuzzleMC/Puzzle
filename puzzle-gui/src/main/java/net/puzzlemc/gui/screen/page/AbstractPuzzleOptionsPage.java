@@ -30,12 +30,13 @@ public abstract class AbstractPuzzleOptionsPage extends Screen {
 
         super.init();
 
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height - 28, 200, 20, ScreenTexts.DONE, (button) -> Objects.requireNonNull(client).openScreen(parent)));
+        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height - 28, 200, 20, ScreenTexts.DONE, (button) -> Objects.requireNonNull(client).setScreen(parent)));
     }
 
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         this.renderBackground(matrices);
+        if (client != null && client.world != null) this.list.setRenderBackground(false);
         this.list.render(matrices, mouseX, mouseY, delta);
 
         drawCenteredText(matrices, textRenderer, title, width/2, 15, 0xFFFFFF);

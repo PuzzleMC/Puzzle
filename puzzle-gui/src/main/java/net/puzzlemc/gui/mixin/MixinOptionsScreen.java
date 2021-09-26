@@ -23,7 +23,7 @@ public class MixinOptionsScreen extends Screen {
     @Inject(at = @At("TAIL"),method = "init")
     public void init(CallbackInfo ci) {
         PuzzleOptionsScreen puzzleScreen = new PuzzleOptionsScreen(this);
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - 155, this.height / 6 + 144 - 6, 150, 20, new TranslatableText("puzzle.screen.title").append("..."), (button) -> Objects.requireNonNull(this.client).openScreen(puzzleScreen)));
+        this.addDrawableChild(new ButtonWidget(this.width / 2 - 155, this.height / 6 + 144 - 6, 150, 20, new TranslatableText("puzzle.screen.title").append("..."), (button) -> Objects.requireNonNull(this.client).setScreen(puzzleScreen)));
     }
 
 }

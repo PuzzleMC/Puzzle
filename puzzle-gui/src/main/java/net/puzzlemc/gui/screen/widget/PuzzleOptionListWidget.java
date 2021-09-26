@@ -37,9 +37,9 @@ public class PuzzleOptionListWidget extends ElementListWidget<PuzzleOptionListWi
             } else if (button.buttonType == ButtonType.BUTTON) {
                 this.addButton(new PuzzleButtonWidget(this.width / 2 - 155 + 160, 0, 150, 20, button.buttonTextAction, button.onPress), button.descriptionText);
             } else if (button.buttonType == ButtonType.SLIDER) {
-                this.addButton(new PuzzleSliderWidget(button.min, button.max, this.width / 2 - 155 + 160, 0, 150, 20, ((TranslatableText) button.buttonText), 1), button.descriptionText);
+                this.addButton(new PuzzleSliderWidget(button.min, button.max, this.width / 2 - 155 + 160, 0, 150, 20, button.setSliderValue, button.buttonTextAction, button.changeSliderValue), button.descriptionText);
             } else if (button.buttonType == ButtonType.TEXT_FIELD) {
-                this.addButton(new PuzzleTextFieldWidget(textRenderer, this.width / 2 - 155 + 160, 0, 150, 20, null, button.buttonText), button.descriptionText);
+                this.addButton(new PuzzleTextFieldWidget(textRenderer, this.width / 2 - 155 + 160, 0, 150, 20, button.setTextValue, button.changeTextValue), button.descriptionText);
             } else
                 LogManager.getLogger("Puzzle").warn("Button " + button + " is missing the buttonType variable. This shouldn't happen!");
         }
@@ -50,7 +50,7 @@ public class PuzzleOptionListWidget extends ElementListWidget<PuzzleOptionListWi
     }
 
     protected int getScrollbarPositionX() {
-        return super.getScrollbarPositionX() + 32;
+        return super.getScrollbarPositionX() + 60;
     }
 
     public Optional<ClickableWidget> getHoveredButton(double mouseX, double mouseY) {
@@ -92,8 +92,8 @@ public class PuzzleOptionListWidget extends ElementListWidget<PuzzleOptionListWi
         }
 
         @Override
-        public List<? extends Selectable> method_37025() {
-            return null;
+        public List<? extends Selectable> selectableChildren() {
+            return buttons;
         }
     }
 }

@@ -7,8 +7,18 @@ repositories {
 		url = 'https://aperlambda.github.io/maven'
 	}
 	mavenCentral()
-	flatDir {
-		dirs 'local_maven'
+	maven {
+		name 'Gegy'
+		url 'https://maven.gegy.dev'
+	}
+	maven {
+		url = "https://api.modrinth.com/maven"
+	}
+	maven {
+		url "https://www.cursemaven.com"
+		content {
+			includeGroup "curse.maven"
+		}
 	}
 }
 
@@ -16,18 +26,22 @@ dependencies {
 	api project(":puzzle-base")
 	api project(":puzzle-splashscreen")
 
-	api ("com.terraformersmc:modmenu:${project.mod_menu_version}")
-	modImplementation ("eu.midnightdust:cullleaves:${project.cull_leaves_version}")
-	modImplementation ("dev.lambdaurora:lambdynamiclights:${project.ldl_version}")
-	modImplementation ("dev.lambdaurora:lambdabettergrass:${project.lbg_version}")
- 	modImplementation ("com.github.IrisShaders:Iris:${project.iris_version}")
+	modImplementation "dev.lambdaurora:spruceui:${project.spruceui_version}"
+	modImplementation "maven.modrinth:midnightlib:${project.midnightlib_version}"
 
-	//modImplementation "dev.lambdaurora:spruceui:${project.spruceui_version}" // Needed for Lambda's mods
+	api ("com.terraformersmc:modmenu:${project.mod_menu_version}")
+	modImplementation ("maven.modrinth:cull-leaves:${project.cull_leaves_version}")
+	modImplementation ("maven.modrinth:lambdynamiclights:${project.ldl_version}")
+	modImplementation ("maven.modrinth:lambdabettergrass:${project.lbg_version}")
+ 	modImplementation ("maven.modrinth:iris:${project.iris_version}")
+	modImplementation ("maven.modrinth:cit-resewn:${project.cit_resewn_version}")
+	modImplementation "curse.maven:custom-entity-models-cem-477078:3440846"
+
 	modImplementation("org.aperlambda:lambdajcommon:1.8.1") {
 		exclude group: 'com.google.code.gson'
 		exclude group: 'com.google.guava'
 	}
-// 	modImplementation ("com.github.PepperCode1:ConnectedTexturesMod-Fabric:${project.ctmf_version}") {
-//         exclude module: "modmenu"
-// 	}
+ 	modImplementation ("maven.modrinth:continuity:${project.continuity_version}") {
+         exclude module: "modmenu"
+ 	}
 } 
