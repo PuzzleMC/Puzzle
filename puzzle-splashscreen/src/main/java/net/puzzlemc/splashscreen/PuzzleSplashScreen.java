@@ -1,9 +1,9 @@
 package net.puzzlemc.splashscreen;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.puzzlemc.core.config.PuzzleConfig;
 import net.puzzlemc.core.util.ColorUtil;
-import net.puzzlemc.splashscreen.util.ConfigTexture;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -22,6 +22,7 @@ import org.apache.logging.log4j.LogManager;
 
 import java.awt.*;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -90,9 +91,13 @@ public class PuzzleSplashScreen implements ClientModInitializer {
                     }
                     for (Identifier id : manager.findResources("textures", path -> path.contains("mojangstudios.png"))) {
                         try (InputStream stream = manager.getResource(id).getInputStream()) {
-                            //LogManager.getLogger().info("Logo copied to cache!");
                             Files.copy(stream, LOGO_TEXTURE, StandardCopyOption.REPLACE_EXISTING);
-                            client.getTextureManager().registerTexture(LOGO, new ConfigTexture(LOGO));
+                            DefaultResourcePack defaultResourcePack = client.getResourcePackProvider().getPack();
+                            InputStream defaultLogo = defaultResourcePack.open(ResourceType.CLIENT_RESOURCES, LOGO);
+                            InputStream input = new FileInputStream(String.valueOf(PuzzleSplashScreen.LOGO_TEXTURE));
+                            if (input != defaultLogo)
+                            client.getTextureManager().registerTexture(LOGO, new NativeImageBackedTexture(NativeImage.read(input)));
+                            else Files.delete(LOGO_TEXTURE);
                         } catch (Exception e) {
                             LogManager.getLogger("Puzzle").error("Error occurred while loading custom minecraft logo " + id.toString(), e);
                         }

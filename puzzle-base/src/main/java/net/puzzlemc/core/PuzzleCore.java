@@ -6,7 +6,7 @@ import net.fabricmc.api.ClientModInitializer;
 
 public class PuzzleCore implements ClientModInitializer {
 
-    public final static String version = "Puzzle A1";
+    public final static String version = "Puzzle R1";
     public final static String name = "Puzzle";
     public final static String id = "puzzle";
     public final static String website = "https://github.com/PuzzleMC/Puzzle";

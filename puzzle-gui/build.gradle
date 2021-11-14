@@ -29,7 +29,7 @@ dependencies {
 	modImplementation "dev.lambdaurora:spruceui:${project.spruceui_version}"
 	modImplementation "maven.modrinth:midnightlib:${project.midnightlib_version}"
 
-	api ("com.terraformersmc:modmenu:${project.mod_menu_version}")
+	modImplementation ("com.terraformersmc:modmenu:${project.mod_menu_version}")
 	modImplementation ("maven.modrinth:cull-leaves:${project.cull_leaves_version}")
 	modImplementation ("maven.modrinth:lambdynamiclights:${project.ldl_version}")
 	modImplementation ("maven.modrinth:lambdabettergrass:${project.lbg_version}")

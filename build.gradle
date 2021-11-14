@@ -132,6 +132,7 @@ dependencies {
     modImplementation ("maven.modrinth:iris:${project.iris_version}")
     modImplementation ("maven.modrinth:cit-resewn:${project.cit_resewn_version}")
     modImplementation ("maven.modrinth:continuity:${project.continuity_version}")
+    modImplementation ("maven.modrinth:animatica:${project.animatica_version}")
     modImplementation "curse.maven:custom-entity-models-cem-477078:3440846"
 
     modImplementation("org.aperlambda:lambdajcommon:1.8.1") {
@@ -140,6 +141,7 @@ dependencies {
     }
     modImplementation "dev.lambdaurora:spruceui:${project.spruceui_version}"
     modImplementation "maven.modrinth:midnightlib:${project.midnightlib_version}"
+    include "maven.modrinth:midnightlib:${project.midnightlib_version}"
 
     subprojects.each {
         api project(path: ":${it.name}", configuration: "dev")
@@ -154,9 +156,7 @@ publishing {
                 builtBy(remapJar)
             }
             pom.withXml {
-                def depsNode = asNode().appendNode("dependencies")
                 subprojects.each {
-                    def depNode = depsNode.appendNode("dependency")
                     depNode.appendNode("groupId", it.group)
                     depNode.appendNode("artifactId", it.name)
                     depNode.appendNode("version", it.version)

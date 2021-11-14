@@ -13,7 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-// MidnightConfigLite v0.1.0
+// MidnightConfigLite v0.2.0
 // Just writing and parsing of config files
 
 /** Based on https://github.com/Minenash/TinyConfig
@@ -21,13 +21,8 @@ import java.util.*;
 
 public class MidnightConfigLite {
 
-    private static final List<EntryInfo> entries = new ArrayList<>();
-
     protected static class EntryInfo {
-        Field field;
         Object defaultValue;
-        Object value;
-        String tempValue;
     }
 
     public static final Map<String,Class<?>> configClass = new HashMap<>();
@@ -48,15 +43,6 @@ public class MidnightConfigLite {
         }
         try { gson.fromJson(Files.newBufferedReader(path), config); }
         catch (Exception e) { write(modid); }
-
-        for (EntryInfo info : entries) {
-            if (info.field.isAnnotationPresent(Entry.class))
-                try {
-                    info.value = info.field.get(null);
-                    info.tempValue = info.value.toString();
-                } catch (IllegalAccessException ignored) {
-                }
-        }
     }
 
     public static void write(String modid) {

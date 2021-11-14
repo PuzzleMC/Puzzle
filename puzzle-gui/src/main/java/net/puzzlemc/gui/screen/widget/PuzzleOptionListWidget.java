@@ -1,6 +1,5 @@
 package net.puzzlemc.gui.screen.widget;
 
-import com.google.common.collect.ImmutableMap;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -10,8 +9,8 @@ import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import org.apache.logging.log4j.LogManager;
 
 import java.util.*;
@@ -33,7 +32,7 @@ public class PuzzleOptionListWidget extends ElementListWidget<PuzzleOptionListWi
     public void addAll(List<PuzzleWidget> buttons) {
         for (PuzzleWidget button : buttons) {
             if (button.buttonType == ButtonType.TEXT) {
-                this.addButton(new DummyButtonWidget(), button.descriptionText);
+                this.addButton(null, button.descriptionText);
             } else if (button.buttonType == ButtonType.BUTTON) {
                 this.addButton(new PuzzleButtonWidget(this.width / 2 - 155 + 160, 0, 150, 20, button.buttonTextAction, button.onPress), button.descriptionText);
             } else if (button.buttonType == ButtonType.SLIDER) {
@@ -53,38 +52,30 @@ public class PuzzleOptionListWidget extends ElementListWidget<PuzzleOptionListWi
         return super.getScrollbarPositionX() + 60;
     }
 
-    public Optional<ClickableWidget> getHoveredButton(double mouseX, double mouseY) {
-        for (ButtonEntry buttonEntry : this.children()) {
-            for (ClickableWidget widget : buttonEntry.buttons) {
-                if (widget.isMouseOver(mouseX, mouseY)) {
-                    return Optional.of(widget);
-                }
-            }
-        }
-        return Optional.empty();
-    }
-
     public static class ButtonEntry extends ElementListWidget.Entry<ButtonEntry> {
         private static final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-        private final List<ClickableWidget> buttons;
-        private final Map<ClickableWidget, Text> buttonsWithText;
+        private List<ClickableWidget> buttons = new ArrayList<>();
+        private final ClickableWidget button;
+        private final Text text;
 
-        private ButtonEntry(ImmutableMap<ClickableWidget, Text> buttons) {
-            this.buttons = buttons.keySet().asList();
-            this.buttonsWithText = buttons;
+        private ButtonEntry(ClickableWidget button, Text text) {
+            if (button != null)
+            this.buttons.add(button);
+            this.button = button;
+            this.text = text;
         }
 
         public static ButtonEntry create(ClickableWidget button, Text text) {
-            return new ButtonEntry(ImmutableMap.of(button, text));
+            return new ButtonEntry(button, text);
         }
 
         public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            this.buttonsWithText.forEach((button, text) -> {
+            if (button != null) {
                 button.y = y;
                 button.render(matrices, mouseX, mouseY, tickDelta);
-                if (button instanceof DummyButtonWidget) drawCenteredText(matrices,textRenderer, text,x + 200,y+5,0xFFFFFF);
-                else drawTextWithShadow(matrices,textRenderer, text,x+15,y+5,0xFFFFFF);
-            });
+            }
+            if (button == null) drawCenteredText(matrices,textRenderer, new LiteralText("－－－－－－ ").append(text).append(" －－－－－－"),x + 200,y+5,0xFFFFFF);
+            else drawTextWithShadow(matrices,textRenderer, text,x+15,y+5,0xFFFFFF);
         }
 
         public List<? extends Element> children() {
