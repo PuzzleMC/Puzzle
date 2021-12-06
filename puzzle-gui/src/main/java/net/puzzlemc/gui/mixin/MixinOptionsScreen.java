@@ -25,8 +25,6 @@ public class MixinOptionsScreen extends Screen {
 
     @Inject(at = @At("HEAD"), method = "init")
     private void midnightlib$init(CallbackInfo ci) {
-            this.addDrawableChild(new TexturedOverlayButtonWidget(this.width / 2 - 178, this.height / 6 - 12, 20, 20, 0, 0, 20, PUZZLE_ICON_TEXTURE, 32, 64, (buttonWidget) -> {
-                (Objects.requireNonNull(this.client)).setScreen(new PuzzleOptionsScreen(this));
-            }, new TranslatableText("midnightlib.overview.title")));
+            this.addDrawableChild(new TexturedOverlayButtonWidget(this.width / 2 - 178, this.height / 6 - 12, 20, 20, 0, 0, 20, PUZZLE_ICON_TEXTURE, 32, 64, (buttonWidget) -> (Objects.requireNonNull(this.client)).setScreen(new PuzzleOptionsScreen(this)), new TranslatableText("midnightlib.overview.title")));
     }
 }

@@ -1,6 +1,5 @@
 package net.puzzlemc.gui.config;
 
-import com.google.common.collect.ImmutableMap;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import net.puzzlemc.gui.screen.PuzzleOptionsScreen;
