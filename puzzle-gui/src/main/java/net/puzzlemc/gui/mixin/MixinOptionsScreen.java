@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Objects;
 
 @Mixin(OptionsScreen.class)
-public class MixinOptionsScreen extends Screen {
+public abstract class MixinOptionsScreen extends Screen {
     private static final Identifier PUZZLE_ICON_TEXTURE = new Identifier(PuzzleClient.id, "textures/gui/puzzle_button.png");
 
     protected MixinOptionsScreen(Text title) {

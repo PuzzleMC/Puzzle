@@ -9,9 +9,5 @@
 	"puzzle.option.inside_ctm":"Connect Inside Textures",
 	"puzzle.midnightconfig.title":"Title",
 	"puzzle.midnightconfig.showPuzzleInfo":"Show Puzzle Info",
-	"puzzle.midnightconfig.showPuzzleInfo.tooltip":"Show Puzzle Info",
-	"test.midnightconfig.title":"I am a title",
-	"test.midnightconfig.text":"I am a comment *u*",
-	"test.midnightconfig.showInfo":"Show Info",
-	"test.midnightconfig.showInfo.tooltip":"Show more information"
+	"puzzle.midnightconfig.showPuzzleInfo.tooltip":"Show Puzzle Info"
 }

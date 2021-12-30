@@ -2,6 +2,7 @@ package net.puzzlemc.splashscreen;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.texture.NativeImageBackedTexture;
+import net.minecraft.util.math.ColorHelper;
 import net.puzzlemc.core.config.PuzzleConfig;
 import net.puzzlemc.core.util.ColorUtil;
 import net.fabricmc.api.EnvType;
@@ -10,7 +11,6 @@ import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.hud.BackgroundHelper;
 import net.minecraft.client.resource.metadata.TextureResourceMetadata;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.ResourceTexture;
@@ -72,15 +72,15 @@ public class PuzzleSplashScreen implements ClientModInitializer {
 
                             if (properties.get("screen.loading") != null) {
                                 Color backgroundColorRGB = ColorUtil.hex2Rgb(properties.get("screen.loading").toString());
-                                PuzzleConfig.backgroundColor = BackgroundHelper.ColorMixer.getArgb(backgroundColorRGB.getAlpha(), backgroundColorRGB.getRed(), backgroundColorRGB.getGreen(), backgroundColorRGB.getGreen());
+                                PuzzleConfig.backgroundColor = ColorHelper.Argb.getArgb(backgroundColorRGB.getAlpha(), backgroundColorRGB.getRed(), backgroundColorRGB.getGreen(), backgroundColorRGB.getGreen());
                             }
                             if (properties.get("screen.loading.bar") != null) {
                                 Color progressFrameColorRGB = ColorUtil.hex2Rgb(properties.get("screen.loading.bar").toString());
-                                PuzzleConfig.progressFrameColor = BackgroundHelper.ColorMixer.getArgb(progressFrameColorRGB.getAlpha(), progressFrameColorRGB.getRed(), progressFrameColorRGB.getGreen(), progressFrameColorRGB.getGreen());
+                                PuzzleConfig.progressFrameColor = ColorHelper.Argb.getArgb(progressFrameColorRGB.getAlpha(), progressFrameColorRGB.getRed(), progressFrameColorRGB.getGreen(), progressFrameColorRGB.getGreen());
                             }
                             if (properties.get("screen.loading.progress") != null) {
                                 Color progressBarColorRGB = ColorUtil.hex2Rgb(properties.get("screen.loading.progress").toString());
-                                PuzzleConfig.progressBarColor = BackgroundHelper.ColorMixer.getArgb(progressBarColorRGB.getAlpha(), progressBarColorRGB.getRed(), progressBarColorRGB.getGreen(), progressBarColorRGB.getGreen());
+                                PuzzleConfig.progressBarColor = ColorHelper.Argb.getArgb(progressBarColorRGB.getAlpha(), progressBarColorRGB.getRed(), progressBarColorRGB.getGreen(), progressBarColorRGB.getGreen());
                             }
                             if (properties.get("screen.loading") != null) {
                                 PuzzleConfig.write("puzzle");

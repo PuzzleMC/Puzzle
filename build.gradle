@@ -1,6 +1,6 @@
 // Based on https://github.com/OnyxStudios/Cardinal-Components-API/blob/1.17/build.gradle
 plugins {
-    id "fabric-loom" version "0.8-SNAPSHOT" apply false
+    id "fabric-loom" version "0.10-SNAPSHOT" apply false
     id "com.matthewprenger.cursegradle" version "1.4.0"
     id "maven-publish"
     id "java-library"
@@ -17,13 +17,11 @@ subprojects {
 
     archivesBaseName = project.name
     group = "${rootProject.group}.${rootProject.archivesBaseName}"
-
-    //apply from: "https://raw.githubusercontent.com/OnyxStudios/Gradle-Scripts/master/scripts/fabric/basic_project.gradle"
 }
 
 allprojects {
     apply plugin: "fabric-loom"
-    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_16
+    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
     version = System.getenv("TRAVIS_TAG") ?: rootProject.mod_version
 
     configurations {
@@ -55,7 +53,7 @@ allprojects {
     // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
     tasks.withType(JavaCompile).configureEach {
         it.options.encoding = "UTF-8"
-        it.options.release = 16
+        it.options.release = 17
     }
 
     java {
@@ -119,10 +117,17 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+    maven {
+        name = 'JitPack'
+        url 'https://jitpack.io'
+    }
+    maven {
+        url "https://maven.shedaniel.me/"
+    }
 }
 
 dependencies {
-    modImplementation "net.fabricmc.fabric-api:fabric-api:0.34.8+1.17"
+    modImplementation ("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
     modImplementation ("com.terraformersmc:modmenu:${project.mod_menu_version}") {
         exclude group: "net.fabricmc.fabric-api"
     }
@@ -133,7 +138,8 @@ dependencies {
     modImplementation ("maven.modrinth:cit-resewn:${project.cit_resewn_version}")
     modImplementation ("maven.modrinth:continuity:${project.continuity_version}")
     modImplementation ("maven.modrinth:animatica:${project.animatica_version}")
-    modImplementation "curse.maven:custom-entity-models-cem-477078:3440846"
+    modImplementation ("curse.maven:custom-entity-models-cem-477078:${project.cem_version}")
+    modImplementation "com.gitlab.Lortseam:completeconfig:${project.complete_config_version}"
 
     modImplementation("org.aperlambda:lambdajcommon:1.8.1") {
         exclude group: 'com.google.code.gson'

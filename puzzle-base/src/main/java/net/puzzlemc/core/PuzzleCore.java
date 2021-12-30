@@ -6,13 +6,13 @@ import net.fabricmc.api.ClientModInitializer;
 
 public class PuzzleCore implements ClientModInitializer {
 
-    public final static String version = "Puzzle R1";
+    public final static String version = "Puzzle B0";
     public final static String name = "Puzzle";
     public final static String id = "puzzle";
     public final static String website = "https://github.com/PuzzleMC/Puzzle";
     public static String updateURL = website; //+"download";
 
-    public final static String UPDATE_URL = "https://raw.githubusercontent.com/PuzzleMC/Puzzle/1.17/puzzle_versions.json";
+    public final static String UPDATE_URL = "https://raw.githubusercontent.com/PuzzleMC/Puzzle-Versions/main/puzzle_versions.json";
 
     @Override
     public void onInitializeClient() {

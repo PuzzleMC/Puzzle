@@ -3,8 +3,8 @@
   "id": "puzzle-base",
   "version": "${version}",
 
-  "name": "Puzzle",
-  "description": "Unites optifine replacement mods in a clean & vanilla-style gui",
+  "name": "Puzzle Base",
+  "description": "Shared code between all Puzzle modules",
   "authors": [
     "PuzzleMC",
     "Motschen"

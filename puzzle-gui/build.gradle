@@ -20,6 +20,13 @@ repositories {
 			includeGroup "curse.maven"
 		}
 	}
+	maven {
+		name = 'JitPack'
+		url 'https://jitpack.io'
+	}
+	maven {
+		url "https://maven.shedaniel.me/"
+	}
 }
 
 dependencies {
@@ -35,7 +42,8 @@ dependencies {
 	modImplementation ("maven.modrinth:lambdabettergrass:${project.lbg_version}")
  	modImplementation ("maven.modrinth:iris:${project.iris_version}")
 	modImplementation ("maven.modrinth:cit-resewn:${project.cit_resewn_version}")
-	modImplementation "curse.maven:custom-entity-models-cem-477078:3440846"
+	modImplementation ("curse.maven:custom-entity-models-cem-477078:${project.cem_version}")
+	modImplementation "com.gitlab.Lortseam:completeconfig:${project.complete_config_version}"
 
 	modImplementation("org.aperlambda:lambdajcommon:1.8.1") {
 		exclude group: 'com.google.code.gson'

@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Objects;
 
 @Mixin(TitleScreen.class)
-public class MixinTitleScreen extends Screen {
+public abstract class MixinTitleScreen extends Screen {
 
     @Shadow @Final private boolean doBackgroundFade;
     @Shadow private long backgroundFadeStart;

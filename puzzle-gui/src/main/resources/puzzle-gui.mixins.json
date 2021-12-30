@@ -1,9 +1,10 @@
 {
   "required": true,
   "package": "net.puzzlemc.gui.mixin",
-  "compatibilityLevel": "JAVA_8",
+  "compatibilityLevel": "JAVA_17",
   "client": [
-    "MixinOptionsScreen"
+    "MixinOptionsScreen",
+    "CemConfigAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

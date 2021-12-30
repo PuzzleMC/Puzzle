@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.List;
 
 @Mixin(DebugHud.class)
-public class MixinDebugHud extends DrawableHelper {
+public abstract class MixinDebugHud extends DrawableHelper {
     @Inject(at = @At("RETURN"), method = "getRightText", cancellable = true)
     private void puzzle$getRightText(CallbackInfoReturnable<List<String>> cir) {
         if (PuzzleConfig.showPuzzleInfo) {
