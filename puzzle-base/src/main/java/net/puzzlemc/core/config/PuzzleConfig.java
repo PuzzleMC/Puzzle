@@ -6,6 +6,7 @@ public class PuzzleConfig extends MidnightConfigLite {
     @Entry public static boolean checkUpdates = true;
     @Entry public static boolean showPuzzleInfo = true;
     @Entry public static boolean resourcepackSplashScreen = true;
+    @Entry public static boolean disableSplashScreenBlend = false;
     @Entry public static boolean emissiveTextures = true;
     @Entry public static boolean customRenderLayers = true;
     @Entry public static boolean unlimitedRotations = true;

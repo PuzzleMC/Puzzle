@@ -1,7 +1,7 @@
 archivesBaseName = "puzzle-models"
 
-minecraft {
-    accessWidener =  file("src/main/resources/puzzle-models.accesswidener")
+loom {
+    accessWidenerPath =  file("src/main/resources/puzzle-models.accesswidener")
 }
 
 dependencies {
