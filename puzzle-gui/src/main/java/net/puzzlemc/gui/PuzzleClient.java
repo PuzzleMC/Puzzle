@@ -53,10 +53,14 @@ public class PuzzleClient implements ClientModInitializer {
                 PuzzleSplashScreen.resetColors();
                 MinecraftClient.getInstance().getTextureManager().registerTexture(PuzzleSplashScreen.LOGO, new PuzzleSplashScreen.LogoTexture());
             }));
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Disable splash screen logo blending "), (button) -> button.setMessage(PuzzleConfig.disableSplashScreenBlend ? YES : NO), (button) -> {
+                PuzzleConfig.disableSplashScreenBlend = !PuzzleConfig.disableSplashScreenBlend;
+                PuzzleConfig.write(id);
+            }));
         }
-        if (FabricLoader.getInstance().isModLoaded("puzzle-randomentities")) {
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Random Entity Textures"), (button) -> button.setMessage(PuzzleConfig.randomEntityTextures ? YES : NO), (button) -> {
-                PuzzleConfig.randomEntityTextures = !PuzzleConfig.randomEntityTextures;
+        if (FabricLoader.getInstance().isModLoaded("puzzle-emissives")) {
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Emissive Textures"), (button) -> button.setMessage(PuzzleConfig.emissiveTextures ? YES : NO), (button) -> {
+                PuzzleConfig.emissiveTextures = !PuzzleConfig.emissiveTextures;
                 PuzzleConfig.write(id);
             }));
         }

@@ -1,0 +1,5 @@
+archivesBaseName = "puzzle-emissives"
+
+dependencies {
+    api project(":puzzle-base")
+}

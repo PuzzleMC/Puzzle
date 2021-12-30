@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "puzzle-emissives",
+  "version": "${version}",
+
+  "name": "Puzzle Emissive Textures",
+  "description": "Displays emissive textures on blocks and entities",
+  "authors": [
+    "PuzzleMC",
+    "Motschen"
+  ],
+  "contact": {
+    "homepage": "https://www.midnightdust.eu/",
+    "sources": "https://github.com/TeamMidnightDust/Puzzle",
+    "issues": "https://github.com/TeamMidnightDust/Puzzle/issues"
+  },
+
+  "license": "MIT",
+  "icon": "assets/puzzle/icon.png",
+
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "net.puzzlemc.emissives.PuzzleEmissiveTextures"
+    ]
+  },
+  "custom": {
+    "modmenu": {
+      "parent": "puzzle"
+    }
+  },
+
+  "mixins": [
+    "puzzle-emissives.mixins.json"
+  ],
+
+  "depends": {
+    "fabric": "*"
+  }
+}

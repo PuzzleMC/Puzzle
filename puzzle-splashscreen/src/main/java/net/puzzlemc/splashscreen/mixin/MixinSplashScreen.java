@@ -1,6 +1,7 @@
 package net.puzzlemc.splashscreen.mixin;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Overlay;
 import net.minecraft.client.gui.screen.SplashOverlay;
@@ -68,6 +69,10 @@ public abstract class MixinSplashScreen extends Overlay {
             GlStateManager._clearColor(p, q, r, 1.0F);
             GlStateManager._clear(16384, MinecraftClient.IS_SYSTEM_MAC);
         }
+    }
+    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;enableBlend()V", shift = At.Shift.AFTER))
+    private void disableBlend(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        if (PuzzleConfig.disableSplashScreenBlend) RenderSystem.disableBlend();
     }
 
     @ModifyArg(method = "renderProgressBar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/SplashOverlay;fill(Lnet/minecraft/client/util/math/MatrixStack;IIIII)V"), index = 5)
