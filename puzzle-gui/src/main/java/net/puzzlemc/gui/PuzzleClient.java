@@ -6,13 +6,9 @@ import dev.lambdaurora.lambdynlights.DynamicLightsConfig;
 import dev.lambdaurora.lambdynlights.LambDynLights;
 import eu.midnightdust.cullleaves.config.CullLeavesConfig;
 import me.pepperbell.continuity.client.config.ContinuityConfig;
-import net.coderbot.iris.Iris;
-import net.coderbot.iris.config.IrisConfig;
-import net.coderbot.iris.gui.screen.ShaderPackScreen;
 import net.dorianpb.cem.internal.config.CemConfig;
 import net.dorianpb.cem.internal.config.CemConfigFairy;
 import net.dorianpb.cem.internal.config.CemOptions;
-import net.minecraft.client.gui.screen.ScreenTexts;
 import net.puzzlemc.core.config.PuzzleConfig;
 import net.puzzlemc.gui.mixin.CemConfigAccessor;
 import net.puzzlemc.gui.screen.widget.PuzzleWidget;
@@ -25,8 +21,6 @@ import net.minecraft.util.Formatting;
 import net.puzzlemc.splashscreen.PuzzleSplashScreen;
 import shcm.shsupercm.fabric.citresewn.CITResewn;
 import shcm.shsupercm.fabric.citresewn.config.CITResewnConfig;
-
-import java.io.IOException;
 
 public class PuzzleClient implements ClientModInitializer {
 
@@ -90,29 +84,7 @@ public class PuzzleClient implements ClientModInitializer {
             }));
         }
         if (FabricLoader.getInstance().isModLoaded("iris")) {
-            PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.of("Iris")));
-            PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.of("Enable Shaders"), (button) -> button.setMessage(Iris.getIrisConfig().areShadersEnabled() ? YES : NO), (button) -> {
-                IrisConfig irisConfig = Iris.getIrisConfig();
-                irisConfig.setShadersEnabled(!irisConfig.areShadersEnabled());
-                try {
-                    Iris.getIrisConfig().save();
-                } catch (IOException var6) {
-                    Iris.logger.error("Error saving configuration file!");
-                    Iris.logger.catching(var6);
-                }
-
-                try {
-                    Iris.reload();
-                } catch (IOException var5) {
-                    Iris.logger.error("Error reloading shader pack while applying changes!");
-                    Iris.logger.catching(var5);
-                }
-            }));
-            PuzzleApi.addToGraphicsOptions(new PuzzleWidget(new TranslatableText("options.iris.shaderPackSelection.title"), (button) -> button.setMessage(Text.of("OPEN")), (button) -> {
-                MinecraftClient client = MinecraftClient.getInstance();
-                ShaderPackScreen shaderPackPage = new ShaderPackScreen(client.currentScreen);
-                client.setScreen(shaderPackPage);
-            }));
+            IrisCompat.init();
         }
 
         if (FabricLoader.getInstance().isModLoaded("continuity")) {

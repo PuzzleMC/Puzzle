@@ -31,7 +31,9 @@ public abstract class MixinLivingEntityRenderer<T extends LivingEntity, M extend
         if (PuzzleConfig.emissiveTextures && PuzzleEmissiveTextures.emissiveTextures.containsKey(this.getTexture(entity))) {
             VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getBeaconBeam(PuzzleEmissiveTextures.emissiveTextures.get(this.getTexture(entity)),true));
 
+            matrices.scale(1.015f,1.015f,1.015f);
             this.getModel().render(matrices, vertexConsumer, 15728640, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
+            matrices.scale(1f,1f,1f);
         }
     }
 }

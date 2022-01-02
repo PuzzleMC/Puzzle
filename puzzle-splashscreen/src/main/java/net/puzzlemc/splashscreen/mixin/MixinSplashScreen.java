@@ -70,7 +70,7 @@ public abstract class MixinSplashScreen extends Overlay {
             GlStateManager._clear(16384, MinecraftClient.IS_SYSTEM_MAC);
         }
     }
-    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;enableBlend()V", shift = At.Shift.AFTER))
+    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;enableBlend()V", shift = At.Shift.AFTER), remap = false)
     private void disableBlend(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (PuzzleConfig.disableSplashScreenBlend) RenderSystem.disableBlend();
     }
