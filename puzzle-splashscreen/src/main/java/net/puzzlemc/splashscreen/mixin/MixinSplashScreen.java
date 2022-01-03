@@ -55,7 +55,7 @@ public abstract class MixinSplashScreen extends Overlay {
     private void modifyBackgroundColor2(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) { // Set the Background Color to our configured value //
         long l = Util.getMeasuringTimeMs();
         float g = this.reloadStartTime > -1L ? (float)(l - this.reloadStartTime) / 500.0F : -1.0F;
-        int m = MathHelper.ceil(MathHelper.clamp((double)g, 0.15D, 1.0D) * 255.0D);
+        int m = MathHelper.ceil(MathHelper.clamp(g, 0.15D, 1.0D) * 255.0D);
         if (PuzzleConfig.resourcepackSplashScreen && PuzzleConfig.backgroundColor != 15675965)
             fill(matrices, 0, 0, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight(), withAlpha(PuzzleConfig.backgroundColor, m));
     }

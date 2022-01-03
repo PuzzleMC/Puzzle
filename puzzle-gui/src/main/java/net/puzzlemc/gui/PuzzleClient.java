@@ -31,45 +31,45 @@ public class PuzzleClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         PuzzleApi.addToMiscOptions(new PuzzleWidget(Text.of("Puzzle")));
-        PuzzleApi.addToMiscOptions(new PuzzleWidget(Text.of("Check for Updates"), (button) -> button.setMessage(PuzzleConfig.checkUpdates ? YES : NO), (button) -> {
+        PuzzleApi.addToMiscOptions(new PuzzleWidget(new TranslatableText("puzzle.option.check_for_updates"), (button) -> button.setMessage(PuzzleConfig.checkUpdates ? YES : NO), (button) -> {
             PuzzleConfig.checkUpdates = !PuzzleConfig.checkUpdates;
             PuzzleConfig.write(id);
         }));
-        PuzzleApi.addToMiscOptions(new PuzzleWidget(Text.of("Show Puzzle version info"), (button) -> button.setMessage(PuzzleConfig.showPuzzleInfo ? YES : NO), (button) -> {
+        PuzzleApi.addToMiscOptions(new PuzzleWidget(new TranslatableText("puzzle.option.show_version_info"), (button) -> button.setMessage(PuzzleConfig.showPuzzleInfo ? YES : NO), (button) -> {
             PuzzleConfig.showPuzzleInfo = !PuzzleConfig.showPuzzleInfo;
             PuzzleConfig.write(id);
         }));
         PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Puzzle")));
         if (FabricLoader.getInstance().isModLoaded("puzzle-splashscreen")) {
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Use resourcepack splash screen "), (button) -> button.setMessage(PuzzleConfig.resourcepackSplashScreen ? YES : NO), (button) -> {
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("puzzle.option.resourcepack_splash_screen"), (button) -> button.setMessage(PuzzleConfig.resourcepackSplashScreen ? YES : NO), (button) -> {
                 PuzzleConfig.resourcepackSplashScreen = !PuzzleConfig.resourcepackSplashScreen;
                 PuzzleConfig.write(id);
                 PuzzleSplashScreen.resetColors();
                 MinecraftClient.getInstance().getTextureManager().registerTexture(PuzzleSplashScreen.LOGO, new PuzzleSplashScreen.LogoTexture());
             }));
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Disable splash screen logo blending "), (button) -> button.setMessage(PuzzleConfig.disableSplashScreenBlend ? YES : NO), (button) -> {
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("puzzle.option.disable_splash_screen_blend"), (button) -> button.setMessage(PuzzleConfig.disableSplashScreenBlend ? YES : NO), (button) -> {
                 PuzzleConfig.disableSplashScreenBlend = !PuzzleConfig.disableSplashScreenBlend;
                 PuzzleConfig.write(id);
             }));
         }
         if (FabricLoader.getInstance().isModLoaded("puzzle-emissives")) {
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Emissive Textures"), (button) -> button.setMessage(PuzzleConfig.emissiveTextures ? YES : NO), (button) -> {
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("puzzle.option.emissive_textures"), (button) -> button.setMessage(PuzzleConfig.emissiveTextures ? YES : NO), (button) -> {
                 PuzzleConfig.emissiveTextures = !PuzzleConfig.emissiveTextures;
                 PuzzleConfig.write(id);
             }));
         }
         if (FabricLoader.getInstance().isModLoaded("puzzle-models")) {
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Unlimited Model Rotations"), (button) -> button.setMessage(PuzzleConfig.unlimitedRotations ? YES : NO), (button) -> {
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("puzzle.option.unlimited_model_rotations"), (button) -> button.setMessage(PuzzleConfig.unlimitedRotations ? YES : NO), (button) -> {
                 PuzzleConfig.unlimitedRotations = !PuzzleConfig.unlimitedRotations;
                 PuzzleConfig.write(id);
             }));
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Bigger Custom Models"), (button) -> button.setMessage(PuzzleConfig.biggerModels ? YES : NO), (button) -> {
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("puzzle.option.bigger_custom_models"), (button) -> button.setMessage(PuzzleConfig.biggerModels ? YES : NO), (button) -> {
                 PuzzleConfig.biggerModels = !PuzzleConfig.biggerModels;
                 PuzzleConfig.write(id);
             }));
         }
         if (FabricLoader.getInstance().isModLoaded("puzzle-blocks")) {
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Render Layer Overwrites"), (button) -> button.setMessage(PuzzleConfig.customRenderLayers ? YES : NO), (button) -> {
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("puzzle.option.render_layer_overrides"), (button) -> button.setMessage(PuzzleConfig.customRenderLayers ? YES : NO), (button) -> {
                 PuzzleConfig.customRenderLayers = !PuzzleConfig.customRenderLayers;
                 PuzzleConfig.write(id);
             }));

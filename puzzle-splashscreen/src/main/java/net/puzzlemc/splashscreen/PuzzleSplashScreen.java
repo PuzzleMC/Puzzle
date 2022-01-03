@@ -45,7 +45,7 @@ public class PuzzleSplashScreen implements ClientModInitializer {
     }
 
     public void onInitializeClient() {
-        if (!CONFIG_PATH.exists()) { // Run when config directory is nonexistant //
+        if (!CONFIG_PATH.exists()) { // Run when config directory is nonexistent //
             if (CONFIG_PATH.mkdir()) { // Create our custom config directory //
                 try {
                     Files.setAttribute(CONFIG_PATH.toPath(), "dos:hidden", true);

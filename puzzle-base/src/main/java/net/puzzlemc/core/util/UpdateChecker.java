@@ -29,7 +29,7 @@ public class UpdateChecker {
 
     public static void init() {
         CompletableFuture.supplyAsync(() -> {
-            try (Reader reader = new InputStreamReader(new URL(PuzzleCore.UPDATE_URL).openStream())) {
+            try (Reader reader = new InputStreamReader(new URL(PuzzleCore.UPDATE_CHECKER_URL).openStream())) {
                 return GSON.<Map<String, String>>fromJson(reader, UPDATE_TYPE_TOKEN);
             } catch (MalformedURLException error) {
                 logger.log(Level.ERROR, "Unable to check for updates because of connection problems: " + error.getMessage());
@@ -48,7 +48,7 @@ public class UpdateChecker {
                     logger.log(Level.INFO, "Please update immediately!");
                 }
             } else {
-                logger.log(Level.WARN, "A problem with the database occured, could not check for updates.");
+                logger.log(Level.WARN, "A problem with the database occurred, could not check for updates.");
             }
         }, MinecraftClient.getInstance());
     }
