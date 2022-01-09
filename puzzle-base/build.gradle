@@ -1,3 +1,9 @@
 archivesBaseName = "puzzle-base"
+repositories {
+    maven {
+        url = "https://api.modrinth.com/maven"
+    }
+}
 dependencies {
+    modImplementation "maven.modrinth:midnightlib:${project.midnightlib_version}"
 }

@@ -11,8 +11,12 @@ import java.util.Map;
 
 @Environment(EnvType.CLIENT)
 public class ModMenuIntegration implements ModMenuApi {
+    @Override
+    public ConfigScreenFactory<?> getModConfigScreenFactory() {
+        return PuzzleOptionsScreen::new;
+    }
 
-     //Used to set the config screen for all modules //
+    //Used to set the config screen for all modules //
     @Override
     public Map<String, ConfigScreenFactory<?>> getProvidedConfigScreenFactories() {
         Map<String, ConfigScreenFactory<?>> map = new HashMap<>();
@@ -21,7 +25,7 @@ public class ModMenuIntegration implements ModMenuApi {
         map.put("puzzle-blocks",PuzzleOptionsScreen::new);
         map.put("puzzle-base",PuzzleOptionsScreen::new);
         map.put("puzzle-models",PuzzleOptionsScreen::new);
-        map.put("puzzle-randomentities",PuzzleOptionsScreen::new);
+        map.put("puzzle-emissives",PuzzleOptionsScreen::new);
         map.put("puzzle-splashscreen",PuzzleOptionsScreen::new);
         return map;
     }

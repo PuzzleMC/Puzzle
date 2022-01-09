@@ -43,7 +43,6 @@ public class UpdateChecker {
                 latestVersion = versionMap.get(minecraftVersion);
                 if (!latestVersion.equals(PuzzleCore.version)) {
                     isUpToDate = false;
-                    PuzzleCore.updateURL = PuzzleCore.website + "download/" + latestVersion.replace(PuzzleCore.name + " ","");
                     logger.log(Level.INFO, "There is a newer version of "+ PuzzleCore.name +" available: " + latestVersion);
                     logger.log(Level.INFO, "Please update immediately!");
                 }

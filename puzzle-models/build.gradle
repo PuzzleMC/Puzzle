@@ -3,7 +3,12 @@ archivesBaseName = "puzzle-models"
 loom {
     accessWidenerPath =  file("src/main/resources/puzzle-models.accesswidener")
 }
-
+repositories {
+    maven {
+        url = "https://api.modrinth.com/maven"
+    }
+}
 dependencies {
     api project(":puzzle-base")
+    modImplementation "maven.modrinth:midnightlib:${project.midnightlib_version}"
 }

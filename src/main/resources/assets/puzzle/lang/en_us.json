@@ -13,7 +13,5 @@
 	"puzzle.option.unlimited_model_rotations":"Unlimited Model Rotations",
 	"puzzle.option.bigger_custom_models":"Bigger Custom Models",
 	"puzzle.option.render_layer_overrides":"Render Layer Overrides",
-	"puzzle.midnightconfig.title":"Title",
-	"puzzle.midnightconfig.showPuzzleInfo":"Show Puzzle Info",
-	"puzzle.midnightconfig.showPuzzleInfo.tooltip":"Show Puzzle Info"
+	"puzzle.midnightconfig.title":"Puzzle Advanced Configuration"
 }

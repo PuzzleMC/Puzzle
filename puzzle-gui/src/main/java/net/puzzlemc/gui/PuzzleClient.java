@@ -30,6 +30,7 @@ public class PuzzleClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        MinecraftClient client = MinecraftClient.getInstance();
         PuzzleApi.addToMiscOptions(new PuzzleWidget(Text.of("Puzzle")));
         PuzzleApi.addToMiscOptions(new PuzzleWidget(new TranslatableText("puzzle.option.check_for_updates"), (button) -> button.setMessage(PuzzleConfig.checkUpdates ? YES : NO), (button) -> {
             PuzzleConfig.checkUpdates = !PuzzleConfig.checkUpdates;
@@ -39,8 +40,11 @@ public class PuzzleClient implements ClientModInitializer {
             PuzzleConfig.showPuzzleInfo = !PuzzleConfig.showPuzzleInfo;
             PuzzleConfig.write(id);
         }));
+        PuzzleApi.addToMiscOptions(new PuzzleWidget(new TranslatableText("puzzle.midnightconfig.title"), (button) -> button.setMessage(Text.of("OPEN")), (button) -> {
+            client.setScreen(PuzzleConfig.getScreen(client.currentScreen, "puzzle"));
+        }));
         PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Puzzle")));
-        if (FabricLoader.getInstance().isModLoaded("puzzle-splashscreen")) {
+        if (FabricLoader.getInstance().isModLoaded("puzzle-splashscreen") && !PuzzleConfig.disabledIntegrations.contains("puzzle-splashscreen")) {
             PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("puzzle.option.resourcepack_splash_screen"), (button) -> button.setMessage(PuzzleConfig.resourcepackSplashScreen ? YES : NO), (button) -> {
                 PuzzleConfig.resourcepackSplashScreen = !PuzzleConfig.resourcepackSplashScreen;
                 PuzzleConfig.write(id);
@@ -52,13 +56,13 @@ public class PuzzleClient implements ClientModInitializer {
                 PuzzleConfig.write(id);
             }));
         }
-        if (FabricLoader.getInstance().isModLoaded("puzzle-emissives")) {
+        if (FabricLoader.getInstance().isModLoaded("puzzle-emissives") && !PuzzleConfig.disabledIntegrations.contains("puzzle-emissives")) {
             PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("puzzle.option.emissive_textures"), (button) -> button.setMessage(PuzzleConfig.emissiveTextures ? YES : NO), (button) -> {
                 PuzzleConfig.emissiveTextures = !PuzzleConfig.emissiveTextures;
                 PuzzleConfig.write(id);
             }));
         }
-        if (FabricLoader.getInstance().isModLoaded("puzzle-models")) {
+        if (FabricLoader.getInstance().isModLoaded("puzzle-models") && !PuzzleConfig.disabledIntegrations.contains("puzzle-models")) {
             PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("puzzle.option.unlimited_model_rotations"), (button) -> button.setMessage(PuzzleConfig.unlimitedRotations ? YES : NO), (button) -> {
                 PuzzleConfig.unlimitedRotations = !PuzzleConfig.unlimitedRotations;
                 PuzzleConfig.write(id);
@@ -68,14 +72,7 @@ public class PuzzleClient implements ClientModInitializer {
                 PuzzleConfig.write(id);
             }));
         }
-        if (FabricLoader.getInstance().isModLoaded("puzzle-blocks")) {
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("puzzle.option.render_layer_overrides"), (button) -> button.setMessage(PuzzleConfig.customRenderLayers ? YES : NO), (button) -> {
-                PuzzleConfig.customRenderLayers = !PuzzleConfig.customRenderLayers;
-                PuzzleConfig.write(id);
-            }));
-        }
-
-        if (FabricLoader.getInstance().isModLoaded("cullleaves")) {
+        if (FabricLoader.getInstance().isModLoaded("cullleaves") && !PuzzleConfig.disabledIntegrations.contains("cullleaves")) {
             PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.of("CullLeaves")));
             PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.of("Cull Leaves"), (button) -> button.setMessage(CullLeavesConfig.enabled ? YES : NO), (button) -> {
                 CullLeavesConfig.enabled = !CullLeavesConfig.enabled;
@@ -83,11 +80,11 @@ public class PuzzleClient implements ClientModInitializer {
                 MinecraftClient.getInstance().worldRenderer.reload();
             }));
         }
-        if (FabricLoader.getInstance().isModLoaded("iris")) {
+        if (FabricLoader.getInstance().isModLoaded("iris") && !PuzzleConfig.disabledIntegrations.contains("iris")) {
             IrisCompat.init();
         }
 
-        if (FabricLoader.getInstance().isModLoaded("continuity")) {
+        if (FabricLoader.getInstance().isModLoaded("continuity") && !PuzzleConfig.disabledIntegrations.contains("continuity")) {
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Continuity")));
             ContinuityConfig contConfig = ContinuityConfig.INSTANCE;
             PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("options.continuity.disable_ctm"), (button) -> button.setMessage(contConfig.disableCTM.get() ? YES : NO), (button) -> {
@@ -104,7 +101,7 @@ public class PuzzleClient implements ClientModInitializer {
     }
     public static boolean lateInitDone = false;
     public static void lateInit() { // Some mods are initialized after Puzzle, so we can't access them in our ClientModInitializer
-        if (FabricLoader.getInstance().isModLoaded("lambdynlights")) {
+        if (FabricLoader.getInstance().isModLoaded("lambdynlights") && !PuzzleConfig.disabledIntegrations.contains("lambdynlights")) {
             DynamicLightsConfig ldlConfig = LambDynLights.get().config;
 
             PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.of("LambDynamicLights")));
@@ -115,7 +112,7 @@ public class PuzzleClient implements ClientModInitializer {
             PuzzleApi.addToGraphicsOptions(new PuzzleWidget(new TranslatableText("").append("DynLights: ").append(new TranslatableText("block.minecraft.tnt")), (button) -> button.setMessage(ldlConfig.getTntLightingMode().getTranslatedText()), (button) -> ldlConfig.setTntLightingMode(ldlConfig.getTntLightingMode().next())));
             PuzzleApi.addToGraphicsOptions(new PuzzleWidget(new TranslatableText("").append("DynLights: ").append(new TranslatableText("lambdynlights.option.light_sources.water_sensitive_check")), (button) -> button.setMessage(ldlConfig.getWaterSensitiveCheck().get() ? YES : NO), (button) -> ldlConfig.getWaterSensitiveCheck().set(!ldlConfig.getWaterSensitiveCheck().get())));
         }
-        if (FabricLoader.getInstance().isModLoaded("citresewn") && CITResewn.INSTANCE != null && CITResewnConfig.INSTANCE() != null) {
+        if (FabricLoader.getInstance().isModLoaded("citresewn") && !PuzzleConfig.disabledIntegrations.contains("citresewn") && CITResewn.INSTANCE != null && CITResewnConfig.INSTANCE() != null) {
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("CIT Resewn")));
             CITResewnConfig citConfig = CITResewnConfig.INSTANCE();
             PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("config.citresewn.enabled.title"), (button) -> button.setMessage(citConfig.enabled ? YES : NO), (button) -> {
@@ -145,13 +142,13 @@ public class PuzzleClient implements ClientModInitializer {
                 citConfig.write();
             }));
         }
-        if (FabricLoader.getInstance().isModLoaded("lambdabettergrass")) {
+        if (FabricLoader.getInstance().isModLoaded("lambdabettergrass") && !PuzzleConfig.disabledIntegrations.contains("lambdabettergrass")) {
             LBGConfig lbgConfig = LambdaBetterGrass.get().config;
             PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.of("LambdaBetterGrass")));
             PuzzleApi.addToGraphicsOptions(new PuzzleWidget(new TranslatableText("lambdabettergrass.option.mode"), (button) -> button.setMessage(lbgConfig.getMode().getTranslatedText()), (button) -> lbgConfig.setMode(lbgConfig.getMode().next())));
             PuzzleApi.addToGraphicsOptions(new PuzzleWidget(new TranslatableText("lambdabettergrass.option.better_snow"), (button) -> button.setMessage(lbgConfig.hasBetterLayer() ? YES : NO), (button) -> lbgConfig.setBetterLayer(!lbgConfig.hasBetterLayer())));
         }
-        if (FabricLoader.getInstance().isModLoaded("cem") && FabricLoader.getInstance().isModLoaded("completeconfig")) {
+        if (FabricLoader.getInstance().isModLoaded("cem") && FabricLoader.getInstance().isModLoaded("completeconfig") && !PuzzleConfig.disabledIntegrations.contains("cem")) {
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Custom Entity Models")));
             CemConfig cemConfig = (CemConfig) CemConfigFairy.getConfig();
             CemOptions cemOptions = CemConfigFairy.getConfig();

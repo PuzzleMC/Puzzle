@@ -11,7 +11,7 @@ public class PuzzleCore implements ClientModInitializer {
     public final static String name = "Puzzle";
     public final static String id = "puzzle";
     public final static String website = "https://github.com/PuzzleMC/Puzzle";
-    public static String updateURL = "https://modrinth.com/mod/puzzle";
+    public final static String updateURL = "https://modrinth.com/mod/puzzle";
 
     public final static String UPDATE_CHECKER_URL = "https://raw.githubusercontent.com/PuzzleMC/Puzzle-Versions/main/puzzle_versions.json";
 

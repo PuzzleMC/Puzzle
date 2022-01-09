@@ -1,5 +1,6 @@
 package net.puzzlemc.core.mixin;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.puzzlemc.core.PuzzleCore;
 import net.puzzlemc.core.config.PuzzleConfig;
 import net.puzzlemc.core.util.UpdateChecker;
@@ -26,12 +27,14 @@ public abstract class MixinTitleScreen extends Screen {
     @Shadow private long backgroundFadeStart;
     private Text puzzleText;
     private int puzzleTextWidth;
+    private int yOffset = 20;
 
     protected MixinTitleScreen(Text title) {
         super(title);
     }
     @Inject(at = @At("TAIL"), method = "init")
     private void puzzle$init(CallbackInfo ci) {
+        if (FabricLoader.getInstance().isModLoaded("dashloader")) yOffset = yOffset + 10;
         if (UpdateChecker.isUpToDate) {
             puzzleText = Text.of(PuzzleCore.version);
         }
@@ -47,9 +50,9 @@ public abstract class MixinTitleScreen extends Screen {
             float f = this.doBackgroundFade ? (float) (Util.getMeasuringTimeMs() - this.backgroundFadeStart) / 1000.0F : 1.0F;
             float g = this.doBackgroundFade ? MathHelper.clamp(f - 1.0F, 0.0F, 1.0F) : 1.0F;
             int l = MathHelper.ceil(g * 255.0F) << 24;
-            textRenderer.drawWithShadow(matrices, puzzleText,2,this.height - 20, 16777215 | l);
-            if (mouseX > 2 && mouseX < 2 + this.puzzleTextWidth && mouseY > this.height - 20 && mouseY < this.height - 10) {
-                fill(matrices, 2, this.height - 11, 2 + this.puzzleTextWidth, this.height-10, 16777215 | l);
+            textRenderer.drawWithShadow(matrices, puzzleText,2,this.height - yOffset, 16777215 | l);
+            if (mouseX > 2 && mouseX < 2 + this.puzzleTextWidth && mouseY > this.height - yOffset && mouseY < this.height - yOffset + 10) {
+                fill(matrices, 2, this.height - yOffset + 9, 2 + this.puzzleTextWidth, this.height - yOffset + 10, 16777215 | l);
             }
         }
     }
@@ -63,7 +66,7 @@ public abstract class MixinTitleScreen extends Screen {
 
     @Inject(at = @At("HEAD"), method = "mouseClicked",cancellable = true)
     private void puzzle$mouseClicked(double mouseX, double mouseY, int button, CallbackInfoReturnable<Boolean> cir) {
-        if (mouseX > 2 && mouseX < (double)(2 + this.puzzleTextWidth) && mouseY > (double)(this.height - 20) && mouseY < (double)this.height-10) {
+        if (mouseX > 2 && mouseX < (double)(2 + this.puzzleTextWidth) && mouseY > (double)(this.height - yOffset) && mouseY < (double)this.height - yOffset + 10) {
             if (Objects.requireNonNull(this.client).options.chatLinksPrompt) {
                 this.client.setScreen(new ConfirmChatLinkScreen(this::confirmLink, PuzzleCore.updateURL, true));
             } else {
