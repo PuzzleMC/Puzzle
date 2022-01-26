@@ -1,0 +1,17 @@
+{
+	"puzzle.text.update_available":"Ein Update ist verfügbar!",
+	"puzzle.screen.title":"Puzzle Einstellungen",
+	"puzzle.page.graphics":"Grafik Einstellungen",
+	"puzzle.page.resources":"Resourcen Einstellungen",
+	"puzzle.page.performance":"Performance Einstellungen",
+	"puzzle.page.misc":"Sonstige Einstellungen",
+	"puzzle.option.check_for_updates":"Auf Updates überprüfen",
+	"puzzle.option.show_version_info":"Zeige Puzzles Versions Informationen",
+	"puzzle.option.resourcepack_splash_screen":"Nutzte den Resourcepack-splash-Screen",
+	"puzzle.option.disable_splash_screen_blend":"Deaktiviere das Überblenden des Splash-Screen-Logos",
+	"puzzle.option.emissive_textures":"Emissive Texturen",
+	"puzzle.option.unlimited_model_rotations":"Unbegrenzte Modellrotationen",
+	"puzzle.option.bigger_custom_models":"Größere benutzerdefinierte Modelle",
+	"puzzle.option.render_layer_overrides":"Render Layer Overrides",
+	"puzzle.midnightconfig.title":"Erweiterte Puzzle Einstellungen"
+}
