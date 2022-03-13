@@ -21,6 +21,10 @@ import net.minecraft.util.Formatting;
 import net.puzzlemc.splashscreen.PuzzleSplashScreen;
 import shcm.shsupercm.fabric.citresewn.CITResewn;
 import shcm.shsupercm.fabric.citresewn.config.CITResewnConfig;
+import traben.entity_texture_features.client.ETF_CLIENT;
+import traben.entity_texture_features.client.ETF_METHODS;
+import traben.entity_texture_features.config.ETFConfig;
+import traben.entity_texture_features.config.ETFConfigScreen;
 
 public class PuzzleClient implements ClientModInitializer {
 
@@ -53,12 +57,6 @@ public class PuzzleClient implements ClientModInitializer {
             }));
             PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("puzzle.option.disable_splash_screen_blend"), (button) -> button.setMessage(PuzzleConfig.disableSplashScreenBlend ? YES : NO), (button) -> {
                 PuzzleConfig.disableSplashScreenBlend = !PuzzleConfig.disableSplashScreenBlend;
-                PuzzleConfig.write(id);
-            }));
-        }
-        if (FabricLoader.getInstance().isModLoaded("puzzle-emissives") && !PuzzleConfig.disabledIntegrations.contains("puzzle-emissives")) {
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("puzzle.option.emissive_textures"), (button) -> button.setMessage(PuzzleConfig.emissiveTextures ? YES : NO), (button) -> {
-                PuzzleConfig.emissiveTextures = !PuzzleConfig.emissiveTextures;
                 PuzzleConfig.write(id);
             }));
         }
@@ -96,6 +94,36 @@ public class PuzzleClient implements ClientModInitializer {
                 contConfig.useManualCulling.set(!contConfig.useManualCulling.get());
                 contConfig.onChange();
                 contConfig.save();
+            }));
+        }
+        if (FabricLoader.getInstance().isModLoaded("entity_texture_features") && !PuzzleConfig.disabledIntegrations.contains("entity_texture_features")) {
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Entity Texture Features")));
+            ETFConfig etfConfig = ETF_CLIENT.ETFConfigData;
+            ETFConfigScreen etfConfigScreen = new ETFConfigScreen();
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Enable Optifine Random mobs"), (button) -> button.setMessage(etfConfig.enableCustomTextures ? YES : NO), (button) -> {
+                etfConfig.enableCustomTextures = !etfConfig.enableCustomTextures;
+                etfConfigScreen.saveConfig();
+                etfConfigScreen.resetVisuals();
+            }));
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Enable Optifine Emissive entity textures"), (button) -> button.setMessage(etfConfig.enableEmissiveTextures ? YES : NO), (button) -> {
+                etfConfig.enableEmissiveTextures = !etfConfig.enableEmissiveTextures;
+                etfConfigScreen.saveConfig();
+                etfConfigScreen.resetVisuals();
+            }));
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Emissive texture Z-Fighting / Shader patch"), (button) -> button.setMessage(etfConfig.doShadersEmissiveFix ? YES : NO), (button) -> {
+                etfConfig.doShadersEmissiveFix = !etfConfig.doShadersEmissiveFix;
+                etfConfigScreen.saveConfig();
+                etfConfigScreen.resetVisuals();
+            }));
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Enable Blinking Mobs"), (button) -> button.setMessage(etfConfig.enableBlinking ? YES : NO), (button) -> {
+                etfConfig.enableBlinking = !etfConfig.enableBlinking;
+                etfConfigScreen.saveConfig();
+                etfConfigScreen.resetVisuals();
+            }));
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Enable Player Skin Features"), (button) -> button.setMessage(etfConfig.skinFeaturesEnabled ? YES : NO), (button) -> {
+                etfConfig.skinFeaturesEnabled = !etfConfig.skinFeaturesEnabled;
+                etfConfigScreen.saveConfig();
+                etfConfigScreen.resetVisuals();
             }));
         }
     }

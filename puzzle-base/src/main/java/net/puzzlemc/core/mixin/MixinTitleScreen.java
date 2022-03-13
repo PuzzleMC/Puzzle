@@ -27,13 +27,14 @@ public abstract class MixinTitleScreen extends Screen {
     @Shadow private long backgroundFadeStart;
     private Text puzzleText;
     private int puzzleTextWidth;
-    private int yOffset = 20;
+    private int yOffset;
 
     protected MixinTitleScreen(Text title) {
         super(title);
     }
     @Inject(at = @At("TAIL"), method = "init")
     private void puzzle$init(CallbackInfo ci) {
+        yOffset = 20;
         if (FabricLoader.getInstance().isModLoaded("dashloader")) yOffset = yOffset + 10;
         if (UpdateChecker.isUpToDate) {
             puzzleText = Text.of(PuzzleCore.version);

@@ -138,6 +138,7 @@ dependencies {
     modImplementation ("maven.modrinth:cit-resewn:${project.cit_resewn_version}")
     modImplementation ("maven.modrinth:continuity:${project.continuity_version}")
     modImplementation ("maven.modrinth:animatica:${project.animatica_version}")
+    modImplementation ("maven.modrinth:entitytexturefeatures:${project.entitytexturefeatures_version}")
     modImplementation ("curse.maven:custom-entity-models-cem-477078:${project.cem_version}")
     modImplementation "com.gitlab.Lortseam:completeconfig:${project.complete_config_version}"
 

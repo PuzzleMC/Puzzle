@@ -20,13 +20,12 @@ public class ModMenuIntegration implements ModMenuApi {
     @Override
     public Map<String, ConfigScreenFactory<?>> getProvidedConfigScreenFactories() {
         Map<String, ConfigScreenFactory<?>> map = new HashMap<>();
-        map.put("puzzle",PuzzleOptionsScreen::new);
         map.put("puzzle-gui",PuzzleOptionsScreen::new);
         map.put("puzzle-blocks",PuzzleOptionsScreen::new);
         map.put("puzzle-base",PuzzleOptionsScreen::new);
         map.put("puzzle-models",PuzzleOptionsScreen::new);
-        map.put("puzzle-emissives",PuzzleOptionsScreen::new);
         map.put("puzzle-splashscreen",PuzzleOptionsScreen::new);
+        map.put("puzzle",PuzzleOptionsScreen::new);
         return map;
     }
 }

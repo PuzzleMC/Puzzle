@@ -2,6 +2,7 @@ package net.puzzlemc.splashscreen;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.texture.NativeImageBackedTexture;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.ColorHelper;
 import net.puzzlemc.core.config.PuzzleConfig;
 import net.puzzlemc.core.util.ColorUtil;
@@ -47,9 +48,11 @@ public class PuzzleSplashScreen implements ClientModInitializer {
     public void onInitializeClient() {
         if (!CONFIG_PATH.exists()) { // Run when config directory is nonexistent //
             if (CONFIG_PATH.mkdir()) { // Create our custom config directory //
-                try {
-                    Files.setAttribute(CONFIG_PATH.toPath(), "dos:hidden", true);
-                } catch (IOException ignored) {
+                if (Util.getOperatingSystem().equals(Util.OperatingSystem.WINDOWS)) {
+                    try {
+                        Files.setAttribute(CONFIG_PATH.toPath(), "dos:hidden", true);
+                    } catch (IOException ignored) {
+                    }
                 }
             }
         }
