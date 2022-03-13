@@ -1,0 +1,17 @@
+{
+	"puzzle.text.update_available":"Доступно обновление!",
+	"puzzle.screen.title":"Настройки Puzzle",
+	"puzzle.page.graphics":"Настройки графики",
+	"puzzle.page.resources":"Настройки ресурсов",
+	"puzzle.page.performance":"Производительность",
+	"puzzle.page.misc":"Прочие настройки",
+	"puzzle.option.check_for_updates":"Проверять обновления",
+	"puzzle.option.show_version_info":"Показывать информацию о версии",
+	"puzzle.option.resourcepack_splash_screen":"Пользовательский экран загрузки",
+	"puzzle.option.disable_splash_screen_blend":"Отключить смешивание логотипа",
+	"puzzle.option.emissive_textures":"Светящиеся текстуры",
+	"puzzle.option.unlimited_model_rotations":"Неограниченные повороты моделей",
+	"puzzle.option.bigger_custom_models":"Увеличенный размер моделей",
+	"puzzle.option.render_layer_overrides":"Переопределение слоёв рендеринга",
+	"puzzle.midnightconfig.title":"Расширенные настройки Puzzle"
+}
