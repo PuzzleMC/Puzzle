@@ -140,9 +140,9 @@ public class PuzzleClient implements ClientModInitializer {
             PuzzleApi.addToGraphicsOptions(new PuzzleWidget(new TranslatableText("").append("DynLights: ").append(new TranslatableText("block.minecraft.tnt")), (button) -> button.setMessage(ldlConfig.getTntLightingMode().getTranslatedText()), (button) -> ldlConfig.setTntLightingMode(ldlConfig.getTntLightingMode().next())));
             PuzzleApi.addToGraphicsOptions(new PuzzleWidget(new TranslatableText("").append("DynLights: ").append(new TranslatableText("lambdynlights.option.light_sources.water_sensitive_check")), (button) -> button.setMessage(ldlConfig.getWaterSensitiveCheck().get() ? YES : NO), (button) -> ldlConfig.getWaterSensitiveCheck().set(!ldlConfig.getWaterSensitiveCheck().get())));
         }
-        if (FabricLoader.getInstance().isModLoaded("citresewn") && !PuzzleConfig.disabledIntegrations.contains("citresewn") && CITResewn.INSTANCE != null && CITResewnConfig.INSTANCE() != null) {
+        if (FabricLoader.getInstance().isModLoaded("citresewn") && !PuzzleConfig.disabledIntegrations.contains("citresewn") && CITResewnConfig.INSTANCE != null) {
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("CIT Resewn")));
-            CITResewnConfig citConfig = CITResewnConfig.INSTANCE();
+            CITResewnConfig citConfig = CITResewnConfig.INSTANCE;
             PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("config.citresewn.enabled.title"), (button) -> button.setMessage(citConfig.enabled ? YES : NO), (button) -> {
                 citConfig.enabled = !citConfig.enabled;
                 citConfig.write();
