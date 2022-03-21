@@ -1,0 +1,18 @@
+{
+	"puzzle.text.update_available":"Μια καινούρια έκδοση είναι διαθέσιμη!",
+	"puzzle.screen.title":"Ρυθμίσεις του Puzzle",
+	"puzzle.page.graphics":"Ρυθμίσεις Γραφικών",
+	"puzzle.page.resources":"Ρυθμίσεις Πόρων",
+	"puzzle.page.performance":"Ρυθμίσεις Απόδοσης",
+	"puzzle.page.misc":"Διάφορες Ρυθμίσεις",
+	"puzzle.option.check_for_updates":"Έλεγχος για αναβαθμίσεις",
+	"puzzle.option.show_version_info":"Εμφάνηση έκδοσης του Puzzle",
+	"puzzle.option.resourcepack_splash_screen":"Οθόνη φόρτωσης πακέτου πόρων",
+	"puzzle.option.disable_splash_screen_blend":"Μη ανάμηξη λογότυπου οθ. φόρτωσης",
+	"puzzle.option.emissive_textures":"Λαμπρά Είδη",
+	"puzzle.option.unlimited_model_rotations":"Απεριόριστες Περιστροφές Μοντέλων",
+	"puzzle.option.bigger_custom_models":"Μεγαλύτερα Ειδικά Μοντέλα",
+	"puzzle.option.render_layer_overrides":"Εμφάνηση Παρακάμψεων Στρώσεων",
+	"puzzle.midnightconfig.title":"Εξειδηκευμένες Ρυθμίσεις του Puzzle"
+}
+
