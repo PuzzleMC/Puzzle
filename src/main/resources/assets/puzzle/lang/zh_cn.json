@@ -1,0 +1,17 @@
+{
+	"puzzle.text.update_available":"更新可用!",
+	"puzzle.screen.title":"Puzzle 设置",
+	"puzzle.page.graphics":"图像设置",
+	"puzzle.page.resources":"资源设置",
+	"puzzle.page.performance":"性能设置",
+	"puzzle.page.misc":"杂项设置",
+	"puzzle.option.check_for_updates":"检查更新",
+	"puzzle.option.show_version_info":"显示 Puzzle 版本信息",
+	"puzzle.option.resourcepack_splash_screen":"使用资源包提供的闪烁标语",
+	"puzzle.option.disable_splash_screen_blend":"禁用闪烁标语闪烁",
+	"puzzle.option.emissive_textures":"发光纹理",
+	"puzzle.option.unlimited_model_rotations":"无限制模型旋转",
+	"puzzle.option.bigger_custom_models":"更大的自定义模型",
+	"puzzle.option.render_layer_overrides":"渲染层覆盖",
+	"puzzle.midnightconfig.title":"Puzzle 高级设置"
+}
