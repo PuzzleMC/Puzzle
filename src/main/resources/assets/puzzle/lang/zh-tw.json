@@ -1,0 +1,17 @@
+{
+	"puzzle.text.update_available":"有新版本可供升級！",
+	"puzzle.screen.title":"拼圖設置",
+	"puzzle.page.graphics":"顯示設置",
+	"puzzle.page.resources":"資源設置",
+	"puzzle.page.performance":"性能設置",
+	"puzzle.page.misc":"其他設置",
+	"puzzle.option.check_for_updates":"檢查更新",
+	"puzzle.option.show_version_info":"顯示拼圖版本信息",
+	"puzzle.option.resourcepack_splash_screen":"使用資源包的加載界面",
+	"puzzle.option.disable_splash_screen_blend":"禁止加載界面徽標渲染",
+	"puzzle.option.emissive_textures":"發光貼圖",
+	"puzzle.option.unlimited_model_rotations":"無限模型旋轉",
+	"puzzle.option.bigger_custom_models":"更大的自定義模型",
+	"puzzle.option.render_layer_overrides":"覆蓋渲染層",
+	"puzzle.midnightconfig.title":"拼圖高級設置"
+}
