@@ -21,8 +21,8 @@ import net.minecraft.util.Formatting;
 import net.puzzlemc.splashscreen.PuzzleSplashScreen;
 import shcm.shsupercm.fabric.citresewn.CITResewn;
 import shcm.shsupercm.fabric.citresewn.config.CITResewnConfig;
-import traben.entity_texture_features.client.ETF_CLIENT;
-import traben.entity_texture_features.client.ETF_METHODS;
+import traben.entity_texture_features.client.ETFClient;
+import traben.entity_texture_features.client.utils.ETFUtils;
 import traben.entity_texture_features.config.ETFConfig;
 import traben.entity_texture_features.config.ETFConfigScreen;
 
@@ -98,7 +98,7 @@ public class PuzzleClient implements ClientModInitializer {
         }
         if (FabricLoader.getInstance().isModLoaded("entity_texture_features") && !PuzzleConfig.disabledIntegrations.contains("entity_texture_features")) {
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Entity Texture Features")));
-            ETFConfig etfConfig = ETF_CLIENT.ETFConfigData;
+            ETFConfig etfConfig = ETFClient.ETFConfigData;
             ETFConfigScreen etfConfigScreen = new ETFConfigScreen();
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Enable Optifine Random mobs"), (button) -> button.setMessage(etfConfig.enableCustomTextures ? YES : NO), (button) -> {
                 etfConfig.enableCustomTextures = !etfConfig.enableCustomTextures;
@@ -110,8 +110,13 @@ public class PuzzleClient implements ClientModInitializer {
                 etfConfigScreen.saveConfig();
                 etfConfigScreen.resetVisuals();
             }));
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Emissive texture Z-Fighting / Shader patch"), (button) -> button.setMessage(etfConfig.doShadersEmissiveFix ? YES : NO), (button) -> {
-                etfConfig.doShadersEmissiveFix = !etfConfig.doShadersEmissiveFix;
+            // shader fix no longer required as an option from V3.0 onwards as a solution has been found
+            // I figure this is a good use of the menu slot,
+            // it is the most significant feature for emissives added at the same time the shader fix was removed,
+            // it can impact shader compatability and each option has distinct visual differences.
+            // see https://github.com/Traben-0/Entity_Texture_Features/blob/master/readMeAssets/EMISSIVE_GUIDE.md
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Emissive Entity Textures: Rendering Mode"), (button) -> button.setMessage(etfConfig.fullBrightEmissives ? Text.of("Brighter") : Text.of("Default")), (button) -> {
+                etfConfig.fullBrightEmissives  = !etfConfig.fullBrightEmissives ;
                 etfConfigScreen.saveConfig();
                 etfConfigScreen.resetVisuals();
             }));
