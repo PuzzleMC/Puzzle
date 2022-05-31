@@ -41,6 +41,7 @@
     "fabric": "*"
   },
   "breaks": {
-    "citresewn": "<=1.0.0+1.18.2"
+    "citresewn": "<=1.0.0+1.18.2",
+    "entity_texture_features": "<=3.0.0"
   }
 }
