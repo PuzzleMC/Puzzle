@@ -34,11 +34,11 @@ public class PuzzleOptionListWidget extends ElementListWidget<PuzzleOptionListWi
             if (button.buttonType == ButtonType.TEXT) {
                 this.addButton(null, button.descriptionText);
             } else if (button.buttonType == ButtonType.BUTTON) {
-                this.addButton(new PuzzleButtonWidget(this.width / 2 - 155 + 160, 0, 150, 20, button.buttonTextAction, button.onPress), button.descriptionText);
+                this.addButton(new PuzzleButtonWidget(this.width / 2 + 25, 0, 150, 20, button.buttonTextAction, button.onPress), button.descriptionText);
             } else if (button.buttonType == ButtonType.SLIDER) {
-                this.addButton(new PuzzleSliderWidget(button.min, button.max, this.width / 2 - 155 + 160, 0, 150, 20, button.setSliderValue, button.buttonTextAction, button.changeSliderValue), button.descriptionText);
+                this.addButton(new PuzzleSliderWidget(button.min, button.max, this.width / 2 + 25, 0, 150, 20, button.setSliderValue, button.buttonTextAction, button.changeSliderValue), button.descriptionText);
             } else if (button.buttonType == ButtonType.TEXT_FIELD) {
-                this.addButton(new PuzzleTextFieldWidget(textRenderer, this.width / 2 - 155 + 160, 0, 150, 20, button.setTextValue, button.changeTextValue), button.descriptionText);
+                this.addButton(new PuzzleTextFieldWidget(textRenderer, this.width / 2 + 25, 0, 150, 20, button.setTextValue, button.changeTextValue), button.descriptionText);
             } else
                 LogManager.getLogger("Puzzle").warn("Button " + button + " is missing the buttonType variable. This shouldn't happen!");
         }

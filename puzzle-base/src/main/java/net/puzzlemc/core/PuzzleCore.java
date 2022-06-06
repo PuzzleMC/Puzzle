@@ -7,7 +7,7 @@ import net.fabricmc.api.ClientModInitializer;
 
 public class PuzzleCore implements ClientModInitializer {
 
-    public final static String version = "Puzzle "+ FabricLoader.getInstance().getModContainer("puzzle").get().getMetadata().getVersion();
+    public final static String version = "Puzzle "+ (FabricLoader.getInstance().getModContainer("puzzle").isPresent() ? FabricLoader.getInstance().getModContainer("puzzle").get().getMetadata().getVersion() : "Test");
     public final static String name = "Puzzle";
     public final static String id = "puzzle";
     public final static String website = "https://github.com/PuzzleMC/Puzzle";

@@ -1,6 +1,5 @@
 package net.puzzlemc.splashscreen.mixin;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Overlay;
@@ -16,26 +15,21 @@ import net.puzzlemc.splashscreen.PuzzleSplashScreen;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.function.IntSupplier;
 
 @Mixin(value = SplashOverlay.class, priority = 2000)
 public abstract class MixinSplashScreen extends Overlay {
     @Shadow @Final static Identifier LOGO;
     @Shadow private long reloadCompleteTime;
 
-    @Shadow @Final private MinecraftClient client;
-
-    @Shadow private long reloadStartTime;
-
     @Inject(method = "init(Lnet/minecraft/client/MinecraftClient;)V", at = @At("TAIL"))
-    private static void init(MinecraftClient client, CallbackInfo ci) { // Load our custom textures at game start //
+    private static void puzzle$initSplashscreen(MinecraftClient client, CallbackInfo ci) { // Load our custom textures at game start //
         if (PuzzleConfig.resourcepackSplashScreen && PuzzleSplashScreen.LOGO_TEXTURE.toFile().exists()) {
             try {
                 InputStream input = new FileInputStream(String.valueOf(PuzzleSplashScreen.LOGO_TEXTURE));
@@ -43,48 +37,42 @@ public abstract class MixinSplashScreen extends Overlay {
             } catch (IOException ignored) {}
         }
     }
-    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/SplashOverlay;fill(Lnet/minecraft/client/util/math/MatrixStack;IIIII)V", shift = At.Shift.AFTER, ordinal = 0))
-    private void modifyBackgroundColor(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) { // Set the Background Color to our configured value //
+    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Ljava/util/function/IntSupplier;getAsInt()I"))
+    private int puzzle$modifyBackground(IntSupplier instance) { // Set the Progress Bar Frame Color to our configured value //
+        return PuzzleConfig.backgroundColor | 255 << 24;
+    }
+    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;blendFunc(II)V", shift = At.Shift.AFTER), remap = false)
+    private void puzzle$betterBlend(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        if (PuzzleConfig.betterSplashScreenBlend) RenderSystem.defaultBlendFunc();
+    }
+    @Inject(method = "renderProgressBar", at = @At("HEAD"))
+    private void puzzle$addProgressBarBackground(MatrixStack matrices, int minX, int minY, int maxX, int maxY, float opacity, CallbackInfo ci) {
+        RenderSystem.disableBlend();
+        if (!PuzzleConfig.resourcepackSplashScreen || PuzzleConfig.progressBarBackgroundColor == 15675965) return;
         long l = Util.getMeasuringTimeMs();
         float f = this.reloadCompleteTime > -1L ? (float)(l - this.reloadCompleteTime) / 1000.0F : -1.0F;
         int m = MathHelper.ceil((1.0F - MathHelper.clamp(f - 1.0F, 0.0F, 1.0F)) * 255.0F);
-        if (PuzzleConfig.resourcepackSplashScreen && PuzzleConfig.backgroundColor != 15675965)
-        fill(matrices, 0, 0, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight(), withAlpha(PuzzleConfig.backgroundColor, m));
+        fill(matrices, minX, minY, maxX, maxY, withAlpha(PuzzleConfig.progressBarBackgroundColor, m));
     }
-    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/SplashOverlay;fill(Lnet/minecraft/client/util/math/MatrixStack;IIIII)V", shift = At.Shift.AFTER, ordinal = 1))
-    private void modifyBackgroundColor2(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) { // Set the Background Color to our configured value //
+    @Inject(method = "renderProgressBar", at = @At("TAIL"))
+    private void puzzle$fixProgressBarEnd(MatrixStack matrices, int minX, int minY, int maxX, int maxY, float opacity, CallbackInfo ci) { // For some reason the end of the progressbar is colored wrong
+        if (!PuzzleConfig.resourcepackSplashScreen || PuzzleConfig.progressFrameColor == 16777215) return;
         long l = Util.getMeasuringTimeMs();
-        float g = this.reloadStartTime > -1L ? (float)(l - this.reloadStartTime) / 500.0F : -1.0F;
-        int m = MathHelper.ceil(MathHelper.clamp(g, 0.15D, 1.0D) * 255.0D);
-        if (PuzzleConfig.resourcepackSplashScreen && PuzzleConfig.backgroundColor != 15675965)
-            fill(matrices, 0, 0, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight(), withAlpha(PuzzleConfig.backgroundColor, m));
-    }
-    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/GlStateManager;_clear(IZ)V", shift = At.Shift.AFTER))
-    private void modifyBackgroundColor3(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) { // Set the Background Color to our configured value //
-        if (PuzzleConfig.resourcepackSplashScreen && PuzzleConfig.backgroundColor != 15675965) {
-            int m = PuzzleConfig.backgroundColor;
-            float p = (float) (m >> 16 & 255) / 255.0F;
-            float q = (float) (m >> 8 & 255) / 255.0F;
-            float r = (float) (m & 255) / 255.0F;
-            GlStateManager._clearColor(p, q, r, 1.0F);
-            GlStateManager._clear(16384, MinecraftClient.IS_SYSTEM_MAC);
-        }
-    }
-    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;enableBlend()V", shift = At.Shift.AFTER), remap = false)
-    private void disableBlend(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if (PuzzleConfig.disableSplashScreenBlend) RenderSystem.disableBlend();
+        float f = this.reloadCompleteTime > -1L ? (float)(l - this.reloadCompleteTime) / 1000.0F : -1.0F;
+        int m = MathHelper.ceil((1.0F - MathHelper.clamp(f - 1.0F, 0.0F, 1.0F)) * 255.0F);
+        fill(matrices, maxX-1, minY, maxX, maxY, withAlpha(PuzzleConfig.progressFrameColor, m));
     }
 
     @ModifyArg(method = "renderProgressBar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/SplashOverlay;fill(Lnet/minecraft/client/util/math/MatrixStack;IIIII)V"), index = 5)
-    private int modifyProgressFrame(int color) { // Set the Progress Bar Frame Color to our configured value //
+    private int puzzle$modifyProgressFrame(int color) { // Set the Progress Bar Frame Color to our configured value //
         return PuzzleConfig.progressFrameColor | 255 << 24;
     }
     @ModifyArg(method = "renderProgressBar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/SplashOverlay;fill(Lnet/minecraft/client/util/math/MatrixStack;IIIII)V", ordinal = 4), index = 5)
-    private int modifyProgressColor(int color) { // Set the Progress Bar Color to our configured value //
+    private int puzzle$modifyProgressColor(int color) { // Set the Progress Bar Color to our configured value //
         return PuzzleConfig.progressBarColor | 255 << 24;
     }
     private static int withAlpha(int color, int alpha) {
-        return color & 16777215 | alpha << 24;
+        return color & 0xFFFFFF | alpha << 24;
     }
 
 }

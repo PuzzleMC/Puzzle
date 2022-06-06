@@ -6,6 +6,7 @@ import dev.lambdaurora.lambdynlights.DynamicLightsConfig;
 import dev.lambdaurora.lambdynlights.LambDynLights;
 import eu.midnightdust.cullleaves.config.CullLeavesConfig;
 import me.pepperbell.continuity.client.config.ContinuityConfig;
+import me.pepperbell.continuity.client.config.Option;
 import net.dorianpb.cem.internal.config.CemConfig;
 import net.dorianpb.cem.internal.config.CemConfigFairy;
 import net.dorianpb.cem.internal.config.CemOptions;
@@ -19,10 +20,8 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.puzzlemc.splashscreen.PuzzleSplashScreen;
-import shcm.shsupercm.fabric.citresewn.CITResewn;
 import shcm.shsupercm.fabric.citresewn.config.CITResewnConfig;
 import traben.entity_texture_features.client.ETFClient;
-import traben.entity_texture_features.client.utils.ETFUtils;
 import traben.entity_texture_features.config.ETFConfig;
 import traben.entity_texture_features.config.ETFConfigScreen;
 
@@ -55,8 +54,8 @@ public class PuzzleClient implements ClientModInitializer {
                 PuzzleSplashScreen.resetColors();
                 MinecraftClient.getInstance().getTextureManager().registerTexture(PuzzleSplashScreen.LOGO, new PuzzleSplashScreen.LogoTexture());
             }));
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("puzzle.option.disable_splash_screen_blend"), (button) -> button.setMessage(PuzzleConfig.disableSplashScreenBlend ? YES : NO), (button) -> {
-                PuzzleConfig.disableSplashScreenBlend = !PuzzleConfig.disableSplashScreenBlend;
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("puzzle.option.better_splash_screen_blend"), (button) -> button.setMessage(PuzzleConfig.betterSplashScreenBlend ? YES : NO), (button) -> {
+                PuzzleConfig.betterSplashScreenBlend = !PuzzleConfig.betterSplashScreenBlend;
                 PuzzleConfig.write(id);
             }));
         }
@@ -82,55 +81,8 @@ public class PuzzleClient implements ClientModInitializer {
             IrisCompat.init();
         }
 
-        if (FabricLoader.getInstance().isModLoaded("continuity") && !PuzzleConfig.disabledIntegrations.contains("continuity")) {
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Continuity")));
-            ContinuityConfig contConfig = ContinuityConfig.INSTANCE;
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("options.continuity.disable_ctm"), (button) -> button.setMessage(contConfig.disableCTM.get() ? YES : NO), (button) -> {
-                contConfig.disableCTM.set(!contConfig.disableCTM.get());
-                contConfig.onChange();
-                contConfig.save();
-            }));
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("options.continuity.use_manual_culling"), (button) -> button.setMessage(contConfig.useManualCulling.get() ? YES : NO), (button) -> {
-                contConfig.useManualCulling.set(!contConfig.useManualCulling.get());
-                contConfig.onChange();
-                contConfig.save();
-            }));
-        }
-        if (FabricLoader.getInstance().isModLoaded("entity_texture_features") && !PuzzleConfig.disabledIntegrations.contains("entity_texture_features")) {
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Entity Texture Features")));
-            ETFConfig etfConfig = ETFClient.ETFConfigData;
-            ETFConfigScreen etfConfigScreen = new ETFConfigScreen();
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Enable Optifine Random mobs"), (button) -> button.setMessage(etfConfig.enableCustomTextures ? YES : NO), (button) -> {
-                etfConfig.enableCustomTextures = !etfConfig.enableCustomTextures;
-                etfConfigScreen.saveConfig();
-                etfConfigScreen.resetVisuals();
-            }));
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Enable Optifine Emissive entity textures"), (button) -> button.setMessage(etfConfig.enableEmissiveTextures ? YES : NO), (button) -> {
-                etfConfig.enableEmissiveTextures = !etfConfig.enableEmissiveTextures;
-                etfConfigScreen.saveConfig();
-                etfConfigScreen.resetVisuals();
-            }));
-            // shader fix no longer required as an option from V3.0 onwards as a solution has been found
-            // I figure this is a good use of the menu slot,
-            // it is the most significant feature for emissives added at the same time the shader fix was removed,
-            // it can impact shader compatability and each option has distinct visual differences.
-            // see https://github.com/Traben-0/Entity_Texture_Features/blob/master/readMeAssets/EMISSIVE_GUIDE.md
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Emissive Entity Textures: Rendering Mode"), (button) -> button.setMessage(etfConfig.fullBrightEmissives ? Text.of("Brighter") : Text.of("Default")), (button) -> {
-                etfConfig.fullBrightEmissives  = !etfConfig.fullBrightEmissives ;
-                etfConfigScreen.saveConfig();
-                etfConfigScreen.resetVisuals();
-            }));
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Enable Blinking Mobs"), (button) -> button.setMessage(etfConfig.enableBlinking ? YES : NO), (button) -> {
-                etfConfig.enableBlinking = !etfConfig.enableBlinking;
-                etfConfigScreen.saveConfig();
-                etfConfigScreen.resetVisuals();
-            }));
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Enable Player Skin Features"), (button) -> button.setMessage(etfConfig.skinFeaturesEnabled ? YES : NO), (button) -> {
-                etfConfig.skinFeaturesEnabled = !etfConfig.skinFeaturesEnabled;
-                etfConfigScreen.saveConfig();
-                etfConfigScreen.resetVisuals();
-            }));
-        }
+
+
     }
     public static boolean lateInitDone = false;
     public static void lateInit() { // Some mods are initialized after Puzzle, so we can't access them in our ClientModInitializer
@@ -196,6 +148,51 @@ public class PuzzleClient implements ClientModInitializer {
             PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("config.cem.use_old_animations"), (button) -> button.setMessage(cemConfig.useOldAnimations() ? YES : NO), (button) -> {
                 ((CemConfigAccessor)cemOptions).setUseOldAnimations(!cemConfig.useOldAnimations());
                 cemConfig.save();
+            }));
+        }
+        if (FabricLoader.getInstance().isModLoaded("continuity") && !PuzzleConfig.disabledIntegrations.contains("continuity")) {
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Continuity")));
+            ContinuityConfig contConfig = ContinuityConfig.INSTANCE;
+            contConfig.getOptionMapView().forEach((s, option) -> {
+                if (s.equals("use_manual_culling")) return;
+                try {
+                    Option.BooleanOption booleanOption = ((Option.BooleanOption)option);
+                    PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("options.continuity."+s), (button) -> button.setMessage(booleanOption.get() ? YES : NO), (button) -> {
+                        booleanOption.set(!booleanOption.get());
+                        contConfig.onChange();
+                        contConfig.save();
+                    }));
+                } catch (Exception ignored) {}
+            });
+        }
+        if (FabricLoader.getInstance().isModLoaded("entity_texture_features") && !PuzzleConfig.disabledIntegrations.contains("entity_texture_features")) {
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("config.etf.title")));
+            ETFConfig etfConfig = ETFClient.ETFConfigData;
+            ETFConfigScreen etfConfigScreen = new ETFConfigScreen();
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("config.etf.enable_custom_textures.title"), (button) -> button.setMessage(etfConfig.enableCustomTextures ? YES : NO), (button) -> {
+                etfConfig.enableCustomTextures = !etfConfig.enableCustomTextures;
+                etfConfigScreen.saveConfig();
+                etfConfigScreen.resetVisuals();
+            }));
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("config.etf.enable_emissive_textures.title"), (button) -> button.setMessage(etfConfig.enableEmissiveTextures ? YES : NO), (button) -> {
+                etfConfig.enableEmissiveTextures = !etfConfig.enableEmissiveTextures;
+                etfConfigScreen.saveConfig();
+                etfConfigScreen.resetVisuals();
+            }));
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Emissive Texture Rendering Mode"), (button) -> button.setMessage(etfConfig.fullBrightEmissives ? Text.of("Brighter") : Text.of("Default")), (button) -> {
+                etfConfig.fullBrightEmissives  = !etfConfig.fullBrightEmissives ;
+                etfConfigScreen.saveConfig();
+                etfConfigScreen.resetVisuals();
+            }));
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("config.etf.blinking_mob_settings.title"), (button) -> button.setMessage(etfConfig.enableBlinking ? YES : NO), (button) -> {
+                etfConfig.enableBlinking = !etfConfig.enableBlinking;
+                etfConfigScreen.saveConfig();
+                etfConfigScreen.resetVisuals();
+            }));
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Enable Player Skin Features"), (button) -> button.setMessage(etfConfig.skinFeaturesEnabled ? YES : NO), (button) -> {
+                etfConfig.skinFeaturesEnabled = !etfConfig.skinFeaturesEnabled;
+                etfConfigScreen.saveConfig();
+                etfConfigScreen.resetVisuals();
             }));
         }
         lateInitDone = true;

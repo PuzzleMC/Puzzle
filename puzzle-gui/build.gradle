@@ -43,7 +43,7 @@ dependencies {
  	modImplementation ("maven.modrinth:iris:${project.iris_version}")
 	modImplementation ("maven.modrinth:cit-resewn:${project.cit_resewn_version}")
 	modImplementation ("maven.modrinth:entitytexturefeatures:${project.entitytexturefeatures_version}")
-	modImplementation ("curse.maven:custom-entity-models-cem-477078:${project.cem_version}")
+	modImplementation ("maven.modrinth:cem:${project.cem_version}")
 	modImplementation "com.gitlab.Lortseam:completeconfig:${project.complete_config_version}"
 
 	modImplementation("org.aperlambda:lambdajcommon:1.8.1") {
