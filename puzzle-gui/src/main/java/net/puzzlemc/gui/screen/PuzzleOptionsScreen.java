@@ -1,23 +1,22 @@
 package net.puzzlemc.gui.screen;
 
-import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.screen.ScreenTexts;
+import net.minecraft.text.Text;
 import net.puzzlemc.gui.PuzzleClient;
 import net.puzzlemc.gui.screen.page.GraphicsPage;
 import net.puzzlemc.gui.screen.page.MiscPage;
 import net.puzzlemc.gui.screen.page.PerformancePage;
 import net.puzzlemc.gui.screen.page.ResourcesPage;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ScreenTexts;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.TranslatableText;
 
 import java.util.Objects;
 
 public class PuzzleOptionsScreen extends Screen {
 
     public PuzzleOptionsScreen(Screen parent) {
-        super(new TranslatableText("puzzle.screen.title"));
+        super(Text.translatable("puzzle.screen.title"));
         this.parent = parent;
     }
     private final Screen parent;

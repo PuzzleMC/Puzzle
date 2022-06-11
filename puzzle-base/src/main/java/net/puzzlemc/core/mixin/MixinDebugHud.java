@@ -15,7 +15,7 @@ import java.util.List;
 
 @Mixin(DebugHud.class)
 public abstract class MixinDebugHud extends DrawableHelper {
-    @Inject(at = @At("RETURN"), method = "getRightText", cancellable = true)
+    @Inject(at = @At("RETURN"), method = "getRightText")
     private void puzzle$getRightText(CallbackInfoReturnable<List<String>> cir) {
         if (PuzzleConfig.showPuzzleInfo) {
             List<String> entries = cir.getReturnValue();

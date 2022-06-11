@@ -72,8 +72,8 @@ public class PuzzleSplashScreen implements ClientModInitializer {
                     PuzzleSplashScreen.resetColors();
                     client.getTextureManager().registerTexture(LOGO, new LogoTexture());
 
-                    for (Identifier id : manager.findResources("optifine", path -> path.contains("color.properties"))) {
-                        try (InputStream stream = manager.getResource(id).getInputStream()) {
+                    manager.findResources("optifine", path -> path.getPath().contains("color.properties")).forEach((id, resource) -> {
+                        try (InputStream stream = manager.getResource(id).get().getInputStream()) {
                             Properties properties = new Properties();
                             properties.load(stream);
 
@@ -95,9 +95,9 @@ public class PuzzleSplashScreen implements ClientModInitializer {
                         } catch (Exception e) {
                             LogManager.getLogger("Puzzle").error("Error occurred while loading color.properties " + id.toString(), e);
                         }
-                    }
-                    for (Identifier id : manager.findResources("textures", path -> path.contains("mojangstudios.png"))) {
-                        try (InputStream stream = manager.getResource(id).getInputStream()) {
+                    });
+                    manager.findResources("textures", path -> path.getPath().contains("mojangstudios.png")).forEach((id, resource) -> {
+                        try (InputStream stream = manager.getResource(id).get().getInputStream()) {
                             Files.copy(stream, LOGO_TEXTURE, StandardCopyOption.REPLACE_EXISTING);
                             DefaultResourcePack defaultResourcePack = client.getResourcePackProvider().getPack();
                             InputStream defaultLogo = defaultResourcePack.open(ResourceType.CLIENT_RESOURCES, LOGO);
@@ -108,7 +108,7 @@ public class PuzzleSplashScreen implements ClientModInitializer {
                         } catch (Exception e) {
                             LogManager.getLogger("Puzzle").error("Error occurred while loading custom minecraft logo " + id.toString(), e);
                         }
-                    }
+                    });
                 }
             }
         });

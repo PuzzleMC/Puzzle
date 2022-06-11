@@ -1,12 +1,12 @@
 package net.puzzlemc.gui.screen.page;
 
+import net.minecraft.screen.ScreenTexts;
+import net.minecraft.text.Text;
 import net.puzzlemc.gui.screen.widget.PuzzleOptionListWidget;
 import net.puzzlemc.gui.screen.widget.PuzzleWidget;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ScreenTexts;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.TranslatableText;
 
 import java.util.List;
 import java.util.Objects;
@@ -15,7 +15,7 @@ public abstract class AbstractPuzzleOptionsPage extends Screen {
     private PuzzleOptionListWidget list;
     private final List<PuzzleWidget> options;
 
-    public AbstractPuzzleOptionsPage(Screen parent, TranslatableText title, List<PuzzleWidget> options) {
+    public AbstractPuzzleOptionsPage(Screen parent, Text title, List<PuzzleWidget> options) {
         super(title);
         this.parent = parent;
         this.options = options;

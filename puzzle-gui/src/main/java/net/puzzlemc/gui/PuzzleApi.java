@@ -18,22 +18,18 @@ public class PuzzleApi {
 
     public static void addToGraphicsOptions(PuzzleWidget button) {
         GRAPHICS_OPTIONS.add(button);
-        if (PuzzleConfig.debugMessages) LOGGER.info(button.descriptionText.asString() + " -> Graphics Options");
+        if (PuzzleConfig.debugMessages) LOGGER.info(button.descriptionText.getContent().toString() + " -> Graphics Options");
     }
     public static void addToMiscOptions(PuzzleWidget button) {
         MISC_OPTIONS.add(button);
-        if (PuzzleConfig.debugMessages) LOGGER.info(button.descriptionText.asString() + " -> Misc Options");
+        if (PuzzleConfig.debugMessages) LOGGER.info(button.descriptionText.getContent().toString() + " -> Misc Options");
     }
     public static void addToPerformanceOptions(PuzzleWidget button) {
         PERFORMANCE_OPTIONS.add(button);
-        if (PuzzleConfig.debugMessages) LOGGER.info(button.descriptionText.asString() + "- > Performance Options");
+        if (PuzzleConfig.debugMessages) LOGGER.info(button.descriptionText.getContent().toString() + "- > Performance Options");
     }
     public static void addToResourceOptions(PuzzleWidget button) {
         RESOURCE_OPTIONS.add(button);
-        if (PuzzleConfig.debugMessages) LOGGER.info(button.descriptionText.asString() + " -> Resource Options");
-    }
-    @Deprecated public static void addToTextureOptions(PuzzleWidget button) {
-        RESOURCE_OPTIONS.add(button);
-        if (PuzzleConfig.debugMessages) LOGGER.info(button.descriptionText.asString() + " -> LEGACY Texture Options");
+        if (PuzzleConfig.debugMessages) LOGGER.info(button.descriptionText.getContent().toString() + " -> Resource Options");
     }
 }
