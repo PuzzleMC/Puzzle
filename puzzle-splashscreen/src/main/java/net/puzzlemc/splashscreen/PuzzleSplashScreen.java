@@ -43,6 +43,7 @@ public class PuzzleSplashScreen implements ClientModInitializer {
         PuzzleConfig.progressBarColor = 16777215;
         PuzzleConfig.progressBarBackgroundColor = 15675965;
         PuzzleConfig.progressFrameColor = 16777215;
+        PuzzleConfig.disableBlend = false;
         PuzzleConfig.write("puzzle");
     }
 
@@ -89,9 +90,11 @@ public class PuzzleSplashScreen implements ClientModInitializer {
                             if (properties.get("screen.loading.outline") != null) {
                                 PuzzleConfig.progressFrameColor = MidnightColorUtil.hex2Rgb(properties.get("screen.loading.outline").toString()).getRGB();
                             }
-                            if (properties.get("screen.loading") != null) {
-                                PuzzleConfig.write("puzzle");
+                            if (properties.get("screen.loading.blend") != null) {
+                                PuzzleConfig.disableBlend = properties.get("screen.loading.blend").toString().equals("off");
+                                PuzzleConfig.progressFrameColor = MidnightColorUtil.hex2Rgb(properties.get("screen.loading.outline").toString()).getRGB();
                             }
+                            PuzzleConfig.write("puzzle");
                         } catch (Exception e) {
                             LogManager.getLogger("Puzzle").error("Error occurred while loading color.properties " + id.toString(), e);
                         }

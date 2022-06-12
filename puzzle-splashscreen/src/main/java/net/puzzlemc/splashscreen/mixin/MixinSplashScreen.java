@@ -28,6 +28,11 @@ public abstract class MixinSplashScreen extends Overlay {
     @Shadow @Final static Identifier LOGO;
     @Shadow private long reloadCompleteTime;
 
+    @Shadow
+    private static int withAlpha(int color, int alpha) {
+        return 0;
+    }
+
     @Inject(method = "init(Lnet/minecraft/client/MinecraftClient;)V", at = @At("TAIL"))
     private static void puzzle$initSplashscreen(MinecraftClient client, CallbackInfo ci) { // Load our custom textures at game start //
         if (PuzzleConfig.resourcepackSplashScreen && PuzzleSplashScreen.LOGO_TEXTURE.toFile().exists()) {
@@ -39,11 +44,11 @@ public abstract class MixinSplashScreen extends Overlay {
     }
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Ljava/util/function/IntSupplier;getAsInt()I"))
     private int puzzle$modifyBackground(IntSupplier instance) { // Set the Progress Bar Frame Color to our configured value //
-        return PuzzleConfig.backgroundColor | 255 << 24;
+        return (!PuzzleConfig.resourcepackSplashScreen || PuzzleConfig.progressBarBackgroundColor == 15675965) ? instance.getAsInt() : PuzzleConfig.backgroundColor | 255 << 24;
     }
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;blendFunc(II)V", shift = At.Shift.AFTER), remap = false)
     private void puzzle$betterBlend(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if (PuzzleConfig.betterSplashScreenBlend) RenderSystem.defaultBlendFunc();
+        if (PuzzleConfig.disableBlend) RenderSystem.defaultBlendFunc();
     }
     @Inject(method = "renderProgressBar", at = @At("HEAD"))
     private void puzzle$addProgressBarBackground(MatrixStack matrices, int minX, int minY, int maxX, int maxY, float opacity, CallbackInfo ci) {
@@ -65,14 +70,10 @@ public abstract class MixinSplashScreen extends Overlay {
 
     @ModifyArg(method = "renderProgressBar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/SplashOverlay;fill(Lnet/minecraft/client/util/math/MatrixStack;IIIII)V"), index = 5)
     private int puzzle$modifyProgressFrame(int color) { // Set the Progress Bar Frame Color to our configured value //
-        return PuzzleConfig.progressFrameColor | 255 << 24;
+        return (!PuzzleConfig.resourcepackSplashScreen || PuzzleConfig.progressFrameColor == 16777215) ? color : PuzzleConfig.progressFrameColor | 255 << 24;
     }
     @ModifyArg(method = "renderProgressBar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/SplashOverlay;fill(Lnet/minecraft/client/util/math/MatrixStack;IIIII)V", ordinal = 4), index = 5)
     private int puzzle$modifyProgressColor(int color) { // Set the Progress Bar Color to our configured value //
-        return PuzzleConfig.progressBarColor | 255 << 24;
+        return (!PuzzleConfig.resourcepackSplashScreen || PuzzleConfig.progressBarColor == 16777215) ? color : PuzzleConfig.progressBarColor | 255 << 24;
     }
-    private static int withAlpha(int color, int alpha) {
-        return color & 0xFFFFFF | alpha << 24;
-    }
-
 }

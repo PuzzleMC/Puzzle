@@ -54,10 +54,6 @@ public class PuzzleClient implements ClientModInitializer {
                 PuzzleSplashScreen.resetColors();
                 MinecraftClient.getInstance().getTextureManager().registerTexture(PuzzleSplashScreen.LOGO, new PuzzleSplashScreen.LogoTexture());
             }));
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("puzzle.option.better_splash_screen_blend"), (button) -> button.setMessage(PuzzleConfig.betterSplashScreenBlend ? YES : NO), (button) -> {
-                PuzzleConfig.betterSplashScreenBlend = !PuzzleConfig.betterSplashScreenBlend;
-                PuzzleConfig.write(id);
-            }));
         }
         if (FabricLoader.getInstance().isModLoaded("puzzle-models") && !PuzzleConfig.disabledIntegrations.contains("puzzle-models")) {
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("puzzle.option.unlimited_model_rotations"), (button) -> button.setMessage(PuzzleConfig.unlimitedRotations ? YES : NO), (button) -> {
