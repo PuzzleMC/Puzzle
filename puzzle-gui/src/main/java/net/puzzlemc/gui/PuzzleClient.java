@@ -80,7 +80,6 @@ public class PuzzleClient implements ClientModInitializer {
         if (FabricLoader.getInstance().isModLoaded("iris") && !PuzzleConfig.disabledIntegrations.contains("iris")) {
             IrisCompat.init();
         }
-        AutoModMenu.hideFromModMenu("puzzle");
     }
     public static boolean lateInitDone = false;
     public static void lateInit() { // Some mods are initialized after Puzzle, so we can't access them in our ClientModInitializer
