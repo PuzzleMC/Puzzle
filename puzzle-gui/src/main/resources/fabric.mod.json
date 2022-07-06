@@ -38,7 +38,8 @@
   ],
 
   "depends": {
-    "fabric": "*"
+    "fabric": "*",
+    "midnightlib": "*"
   },
   "breaks": {
     "citresewn": "<=1.0.0+1.18.2",

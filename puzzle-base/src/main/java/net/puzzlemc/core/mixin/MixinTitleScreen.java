@@ -7,7 +7,6 @@ import net.puzzlemc.core.util.UpdateChecker;
 import net.minecraft.client.gui.screen.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Final;
@@ -40,7 +39,7 @@ public abstract class MixinTitleScreen extends Screen {
             puzzleText = Text.of(PuzzleCore.version);
         }
         else {
-            puzzleText = new TranslatableText("").append(Text.of(PuzzleCore.version + " | ")).append(new TranslatableText("puzzle.text.update_available"));
+            puzzleText = Text.translatable("").append(Text.of(PuzzleCore.version + " | ")).append(Text.translatable("puzzle.text.update_available"));
             this.puzzleTextWidth = this.textRenderer.getWidth(puzzleText);
         }
     }
@@ -68,7 +67,7 @@ public abstract class MixinTitleScreen extends Screen {
     @Inject(at = @At("HEAD"), method = "mouseClicked",cancellable = true)
     private void puzzle$mouseClicked(double mouseX, double mouseY, int button, CallbackInfoReturnable<Boolean> cir) {
         if (mouseX > 2 && mouseX < (double)(2 + this.puzzleTextWidth) && mouseY > (double)(this.height - yOffset) && mouseY < (double)this.height - yOffset + 10) {
-            if (Objects.requireNonNull(this.client).options.chatLinksPrompt) {
+            if (Objects.requireNonNull(this.client).options.getChatLinksPrompt().getValue()) {
                 this.client.setScreen(new ConfirmChatLinkScreen(this::confirmLink, PuzzleCore.updateURL, true));
             } else {
                 Util.getOperatingSystem().open(PuzzleCore.updateURL);
