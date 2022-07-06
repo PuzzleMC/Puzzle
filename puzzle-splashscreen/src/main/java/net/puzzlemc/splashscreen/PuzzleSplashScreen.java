@@ -34,9 +34,12 @@ import java.util.Properties;
 
 public class PuzzleSplashScreen implements ClientModInitializer {
     public static final Identifier LOGO = new Identifier("textures/gui/title/mojangstudios.png");
+    public static final Identifier BACKGROUND = new Identifier("optifine/splash_background.png");
     public static File CONFIG_PATH = new File(String.valueOf(FabricLoader.getInstance().getConfigDir().resolve(".puzzle_cache")));
     public static Path LOGO_TEXTURE = Paths.get(CONFIG_PATH + "/mojangstudios.png");
+    public static Path BACKGROUND_TEXTURE = Paths.get(CONFIG_PATH + "/splash_background.png");
     private static final MinecraftClient client = MinecraftClient.getInstance();
+    private static boolean keepBackground = true;
 
     public static void resetColors() {
         PuzzleConfig.backgroundColor = 15675965;
@@ -71,7 +74,8 @@ public class PuzzleSplashScreen implements ClientModInitializer {
             public void reload(ResourceManager manager) {
                 if (PuzzleConfig.resourcepackSplashScreen) {
                     PuzzleSplashScreen.resetColors();
-                    client.getTextureManager().registerTexture(LOGO, new LogoTexture());
+                    client.getTextureManager().registerTexture(LOGO, new LogoTexture(LOGO));
+                    client.getTextureManager().registerTexture(BACKGROUND, new LogoTexture(BACKGROUND));
 
                     manager.findResources("optifine", path -> path.getPath().contains("color.properties")).forEach((id, resource) -> {
                         try (InputStream stream = manager.getResource(id).get().getInputStream()) {
@@ -102,23 +106,35 @@ public class PuzzleSplashScreen implements ClientModInitializer {
                     manager.findResources("textures", path -> path.getPath().contains("mojangstudios.png")).forEach((id, resource) -> {
                         try (InputStream stream = manager.getResource(id).get().getInputStream()) {
                             Files.copy(stream, LOGO_TEXTURE, StandardCopyOption.REPLACE_EXISTING);
-                            DefaultResourcePack defaultResourcePack = client.getResourcePackProvider().getPack();
-                            InputStream defaultLogo = defaultResourcePack.open(ResourceType.CLIENT_RESOURCES, LOGO);
                             InputStream input = new FileInputStream(String.valueOf(PuzzleSplashScreen.LOGO_TEXTURE));
-                            if (input != defaultLogo)
                             client.getTextureManager().registerTexture(LOGO, new NativeImageBackedTexture(NativeImage.read(input)));
-                            else Files.delete(LOGO_TEXTURE);
                         } catch (Exception e) {
                             LogManager.getLogger("Puzzle").error("Error occurred while loading custom minecraft logo " + id.toString(), e);
                         }
                     });
+                    manager.findResources("puzzle", path -> path.getPath().contains("splash_background.png")).forEach((id, resource) -> {
+                        try (InputStream stream = manager.getResource(id).get().getInputStream()) {
+                            Files.copy(stream, BACKGROUND_TEXTURE, StandardCopyOption.REPLACE_EXISTING);
+                            InputStream input = new FileInputStream(String.valueOf(PuzzleSplashScreen.BACKGROUND_TEXTURE));
+                            client.getTextureManager().registerTexture(BACKGROUND, new NativeImageBackedTexture(NativeImage.read(input)));
+                            keepBackground = true;
+                        } catch (Exception e) {
+                            LogManager.getLogger("Puzzle").error("Error occurred while loading custom splash background " + id.toString(), e);
+                        }
+                    });
+                    if (!keepBackground) {
+                        try {
+                            Files.delete(BACKGROUND_TEXTURE);
+                        } catch (Exception ignored) {}
+                    }
+                    keepBackground = false;
                 }
             }
         });
     }
     @Environment(EnvType.CLIENT)
     public static class LogoTexture extends ResourceTexture {
-        public LogoTexture() { super(LOGO); }
+        public LogoTexture(Identifier logo) { super(logo); }
 
         protected TextureData loadTextureData(ResourceManager resourceManager) {
             MinecraftClient minecraftClient = MinecraftClient.getInstance();

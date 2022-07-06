@@ -52,7 +52,7 @@ public class PuzzleClient implements ClientModInitializer {
                 PuzzleConfig.resourcepackSplashScreen = !PuzzleConfig.resourcepackSplashScreen;
                 PuzzleConfig.write(id);
                 PuzzleSplashScreen.resetColors();
-                MinecraftClient.getInstance().getTextureManager().registerTexture(PuzzleSplashScreen.LOGO, new PuzzleSplashScreen.LogoTexture());
+                MinecraftClient.getInstance().getTextureManager().registerTexture(PuzzleSplashScreen.LOGO, new PuzzleSplashScreen.LogoTexture(PuzzleSplashScreen.LOGO));
             }));
         }
         if (FabricLoader.getInstance().isModLoaded("puzzle-models") && !PuzzleConfig.disabledIntegrations.contains("puzzle-models")) {
