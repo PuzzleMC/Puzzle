@@ -6,6 +6,7 @@ import net.irisshaders.iris.api.v0.IrisApiConfig;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.puzzlemc.gui.screen.widget.PuzzleWidget;
 
 public class IrisCompat {
@@ -16,7 +17,7 @@ public class IrisCompat {
                 IrisApiConfig irisConfig = IrisApi.getInstance().getConfig();
                 irisConfig.setShadersEnabledAndApply(!irisConfig.areShadersEnabled());
             }));
-            PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.translatable("options.iris.shaderPackSelection.title"), (button) -> button.setMessage(Text.of("OPEN")), (button) -> {
+            PuzzleApi.addToGraphicsOptions(new PuzzleWidget(new TranslatableText("options.iris.shaderPackSelection.title"), (button) -> button.setMessage(Text.of("OPEN")), (button) -> {
                 MinecraftClient client = MinecraftClient.getInstance();
                 client.setScreen((Screen) IrisApi.getInstance().openMainIrisScreenObj(client.currentScreen));
             }));

@@ -18,18 +18,18 @@ public class PuzzleApi {
 
     public static void addToGraphicsOptions(PuzzleWidget button) {
         GRAPHICS_OPTIONS.add(button);
-        if (PuzzleConfig.debugMessages) LOGGER.info(button.descriptionText.getContent().toString() + " -> Graphics Options");
+        if (PuzzleConfig.debugMessages) LOGGER.info(button.descriptionText.toString() + " -> Graphics Options");
     }
     public static void addToMiscOptions(PuzzleWidget button) {
         MISC_OPTIONS.add(button);
-        if (PuzzleConfig.debugMessages) LOGGER.info(button.descriptionText.getContent().toString() + " -> Misc Options");
+        if (PuzzleConfig.debugMessages) LOGGER.info(button.descriptionText.toString() + " -> Misc Options");
     }
     public static void addToPerformanceOptions(PuzzleWidget button) {
         PERFORMANCE_OPTIONS.add(button);
-        if (PuzzleConfig.debugMessages) LOGGER.info(button.descriptionText.getContent().toString() + "- > Performance Options");
+        if (PuzzleConfig.debugMessages) LOGGER.info(button.descriptionText.toString() + "- > Performance Options");
     }
     public static void addToResourceOptions(PuzzleWidget button) {
         RESOURCE_OPTIONS.add(button);
-        if (PuzzleConfig.debugMessages) LOGGER.info(button.descriptionText.getContent().toString() + " -> Resource Options");
+        if (PuzzleConfig.debugMessages) LOGGER.info(button.descriptionText.toString() + " -> Resource Options");
     }
 }

@@ -3,6 +3,7 @@ package net.puzzlemc.gui.mixin;
 import eu.midnightdust.core.config.MidnightLibConfig;
 import eu.midnightdust.lib.util.screen.TexturedOverlayButtonWidget;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.puzzlemc.core.config.PuzzleConfig;
 import net.puzzlemc.gui.PuzzleClient;
@@ -31,7 +32,7 @@ public abstract class MixinOptionsScreen extends Screen {
             int i = 0;
             if (FabricLoader.getInstance().isModLoaded("lod")) i = i + 358;
             if (MidnightLibConfig.config_screen_list.equals(MidnightLibConfig.ConfigButton.FALSE)) i = i - 25;
-            this.addDrawableChild(new TexturedOverlayButtonWidget(this.width / 2 - 178 + i, this.height / 6 - 12, 20, 20, 0, 0, 20, PUZZLE_ICON_TEXTURE, 32, 64, (buttonWidget) -> (Objects.requireNonNull(this.client)).setScreen(new PuzzleOptionsScreen(this)), Text.translatable("midnightlib.overview.title")));
+            this.addDrawableChild(new TexturedOverlayButtonWidget(this.width / 2 - 178 + i, this.height / 6 - 12, 20, 20, 0, 0, 20, PUZZLE_ICON_TEXTURE, 32, 64, (buttonWidget) -> (Objects.requireNonNull(this.client)).setScreen(new PuzzleOptionsScreen(this)), new TranslatableText("midnightlib.overview.title")));
         }
     }
 }

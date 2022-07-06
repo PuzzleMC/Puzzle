@@ -1,7 +1,7 @@
 package net.puzzlemc.gui.screen;
 
-import net.minecraft.screen.ScreenTexts;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.screen.ScreenTexts;
+import net.minecraft.text.TranslatableText;
 import net.puzzlemc.gui.PuzzleClient;
 import net.puzzlemc.gui.screen.page.GraphicsPage;
 import net.puzzlemc.gui.screen.page.MiscPage;
@@ -16,7 +16,7 @@ import java.util.Objects;
 public class PuzzleOptionsScreen extends Screen {
 
     public PuzzleOptionsScreen(Screen parent) {
-        super(Text.translatable("puzzle.screen.title"));
+        super(new TranslatableText("puzzle.screen.title"));
         this.parent = parent;
     }
     private final Screen parent;
