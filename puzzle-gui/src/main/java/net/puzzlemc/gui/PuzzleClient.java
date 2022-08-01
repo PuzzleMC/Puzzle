@@ -5,7 +5,6 @@ import dev.lambdaurora.lambdabettergrass.LambdaBetterGrass;
 import dev.lambdaurora.lambdynlights.DynamicLightsConfig;
 import dev.lambdaurora.lambdynlights.LambDynLights;
 import eu.midnightdust.cullleaves.config.CullLeavesConfig;
-import eu.midnightdust.lib.config.AutoModMenu;
 import me.pepperbell.continuity.client.config.ContinuityConfig;
 import me.pepperbell.continuity.client.config.Option;
 import net.dorianpb.cem.internal.config.CemConfig;
@@ -21,9 +20,8 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.puzzlemc.splashscreen.PuzzleSplashScreen;
 import shcm.shsupercm.fabric.citresewn.config.CITResewnConfig;
-import traben.entity_texture_features.client.ETFClient;
+import traben.entity_texture_features.ETFApi;
 import traben.entity_texture_features.config.ETFConfig;
-import traben.entity_texture_features.config.ETFConfigScreen;
 
 public class PuzzleClient implements ClientModInitializer {
 
@@ -160,32 +158,37 @@ public class PuzzleClient implements ClientModInitializer {
         }
         if (FabricLoader.getInstance().isModLoaded("entity_texture_features") && !PuzzleConfig.disabledIntegrations.contains("entity_texture_features")) {
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("config.etf.title")));
-            ETFConfig etfConfig = ETFClient.ETFConfigData;
-            ETFConfigScreen etfConfigScreen = new ETFConfigScreen();
+            ETFConfig etfConfig = ETFApi.getETFConfigObject;
+            //ETFConfigScreen etfConfigScreen = new ETFConfigScreen();
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("config.etf.enable_custom_textures.title"), (button) -> button.setMessage(etfConfig.enableCustomTextures ? YES : NO), (button) -> {
                 etfConfig.enableCustomTextures = !etfConfig.enableCustomTextures;
-                etfConfigScreen.saveConfig();
-                etfConfigScreen.resetVisuals();
+                ETFApi.saveETFConfigChangesAndResetETF();
+                //etfConfigScreen.saveConfig();
+                //etfConfigScreen.resetVisuals();
             }));
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("config.etf.enable_emissive_textures.title"), (button) -> button.setMessage(etfConfig.enableEmissiveTextures ? YES : NO), (button) -> {
                 etfConfig.enableEmissiveTextures = !etfConfig.enableEmissiveTextures;
-                etfConfigScreen.saveConfig();
-                etfConfigScreen.resetVisuals();
+                ETFApi.saveETFConfigChangesAndResetETF();
+                //etfConfigScreen.saveConfig();
+                //etfConfigScreen.resetVisuals();
             }));
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Emissive Texture Rendering Mode"), (button) -> button.setMessage(etfConfig.fullBrightEmissives ? Text.of("Brighter") : Text.of("Default")), (button) -> {
                 etfConfig.fullBrightEmissives  = !etfConfig.fullBrightEmissives ;
-                etfConfigScreen.saveConfig();
-                etfConfigScreen.resetVisuals();
+                ETFApi.saveETFConfigChangesAndResetETF();
+                //etfConfigScreen.saveConfig();
+                //etfConfigScreen.resetVisuals();
             }));
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("config.etf.blinking_mob_settings.title"), (button) -> button.setMessage(etfConfig.enableBlinking ? YES : NO), (button) -> {
                 etfConfig.enableBlinking = !etfConfig.enableBlinking;
-                etfConfigScreen.saveConfig();
-                etfConfigScreen.resetVisuals();
+                ETFApi.saveETFConfigChangesAndResetETF();
+                //etfConfigScreen.saveConfig();
+                //etfConfigScreen.resetVisuals();
             }));
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Enable Player Skin Features"), (button) -> button.setMessage(etfConfig.skinFeaturesEnabled ? YES : NO), (button) -> {
                 etfConfig.skinFeaturesEnabled = !etfConfig.skinFeaturesEnabled;
-                etfConfigScreen.saveConfig();
-                etfConfigScreen.resetVisuals();
+                ETFApi.saveETFConfigChangesAndResetETF();
+                //etfConfigScreen.saveConfig();
+                //etfConfigScreen.resetVisuals();
             }));
         }
         lateInitDone = true;
