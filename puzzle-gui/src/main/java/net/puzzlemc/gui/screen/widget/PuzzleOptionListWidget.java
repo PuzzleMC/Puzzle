@@ -12,7 +12,7 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
+import net.minecraft.text.TranslatableText;
 import net.puzzlemc.gui.screen.page.AbstractPuzzleOptionsPage;
 import org.apache.logging.log4j.LogManager;
 
@@ -87,7 +87,7 @@ public class PuzzleOptionListWidget extends ElementListWidget<PuzzleOptionListWi
             else drawTextWithShadow(matrices,textRenderer, text,x+15,y+5,0xFFFFFF);
 
             if (!(client.currentScreen instanceof AbstractPuzzleOptionsPage page)) return;
-            if (button != null && (button.isMouseOver(mouseX, mouseY) || ((page.list.getHoveredEntry() == null || page.list.getHoveredEntry().button == null || !page.list.getHoveredEntry().button.isMouseOver(mouseX, mouseY)) && button.isFocused())) && text.getContent() instanceof TranslatableTextContent content) {
+            if (button != null && (button.isMouseOver(mouseX, mouseY) || ((page.list.getHoveredEntry() == null || page.list.getHoveredEntry().button == null || !page.list.getHoveredEntry().button.isMouseOver(mouseX, mouseY)) && button.isFocused())) && text instanceof TranslatableText content) {
                 String key = null;
                 if (I18n.hasTranslation(content.getKey() + ".tooltip")) key = content.getKey() + ".tooltip";
                 else if (I18n.hasTranslation(content.getKey() + ".desc")) key = content.getKey() + ".desc";
@@ -100,7 +100,7 @@ public class PuzzleOptionListWidget extends ElementListWidget<PuzzleOptionListWi
                 if (key != null) {
                     List<Text> list = new ArrayList<>();
                     for (String str : I18n.translate(key).split("\n"))
-                        list.add(Text.literal(str));
+                        list.add(new LiteralText(str));
                     page.tooltip = list;
                 }
             }

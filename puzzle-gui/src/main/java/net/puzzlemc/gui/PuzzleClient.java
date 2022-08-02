@@ -16,6 +16,7 @@ import me.pepperbell.continuity.client.config.Option;
 import net.dorianpb.cem.internal.config.CemConfig;
 import net.dorianpb.cem.internal.config.CemConfigFairy;
 import net.dorianpb.cem.internal.config.CemOptions;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 import net.puzzlemc.core.config.PuzzleConfig;
 import net.puzzlemc.gui.mixin.CemConfigAccessor;
@@ -27,9 +28,10 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.puzzlemc.splashscreen.PuzzleSplashScreen;
 import shcm.shsupercm.fabric.citresewn.config.CITResewnConfig;
-import traben.entity_texture_features.ETFApi;
+import traben.entity_texture_features.client.ETFClient;
 import traben.entity_texture_features.config.ETFConfig;
 import io.github.kvverti.colormatic.ColormaticConfig;
+import traben.entity_texture_features.config.ETFConfigScreen;
 
 public class PuzzleClient implements ClientModInitializer {
 
@@ -74,7 +76,7 @@ public class PuzzleClient implements ClientModInitializer {
         }
         if (FabricLoader.getInstance().isModLoaded("cullleaves") && !PuzzleConfig.disabledIntegrations.contains("cullleaves")) {
             PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.of("CullLeaves")));
-            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.translatable("cullleaves.puzzle.option.enabled"), (button) -> button.setMessage(CullLeavesConfig.enabled ? YES : NO), (button) -> {
+            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(new TranslatableText("cullleaves.puzzle.option.enabled"), (button) -> button.setMessage(CullLeavesConfig.enabled ? YES : NO), (button) -> {
                 CullLeavesConfig.enabled = !CullLeavesConfig.enabled;
                 CullLeavesConfig.write("cullleaves");
                 MinecraftClient.getInstance().worldRenderer.reload();
@@ -83,27 +85,27 @@ public class PuzzleClient implements ClientModInitializer {
         if (FabricLoader.getInstance().isModLoaded("colormatic") && !PuzzleConfig.disabledIntegrations.contains("colormatic")) {
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Colormatic")));
             ColormaticConfig colormaticConfig = Colormatic.config();
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("colormatic.config.option.clearSky"), (button) -> button.setMessage(colormaticConfig.clearSky ? YES : NO), (button) -> {
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("colormatic.config.option.clearSky"), (button) -> button.setMessage(colormaticConfig.clearSky ? YES : NO), (button) -> {
                 colormaticConfig.clearSky = !colormaticConfig.clearSky;
                 ColormaticConfigController.persist(colormaticConfig);
             }));
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("colormatic.config.option.clearVoid"), (button) -> button.setMessage(colormaticConfig.clearVoid ? YES : NO), (button) -> {
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("colormatic.config.option.clearVoid"), (button) -> button.setMessage(colormaticConfig.clearVoid ? YES : NO), (button) -> {
                 colormaticConfig.clearVoid = !colormaticConfig.clearVoid;
                 ColormaticConfigController.persist(colormaticConfig);
             }));
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("colormatic.config.option.blendSkyLight"), (button) -> button.setMessage(colormaticConfig.blendSkyLight ? YES : NO), (button) -> {
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("colormatic.config.option.blendSkyLight"), (button) -> button.setMessage(colormaticConfig.blendSkyLight ? YES : NO), (button) -> {
                 colormaticConfig.blendSkyLight = !colormaticConfig.blendSkyLight;
                 ColormaticConfigController.persist(colormaticConfig);
             }));
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("colormatic.config.option.flickerBlockLight"), (button) -> button.setMessage(colormaticConfig.flickerBlockLight ? YES : NO), (button) -> {
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("colormatic.config.option.flickerBlockLight"), (button) -> button.setMessage(colormaticConfig.flickerBlockLight ? YES : NO), (button) -> {
                 colormaticConfig.flickerBlockLight = !colormaticConfig.flickerBlockLight;
                 ColormaticConfigController.persist(colormaticConfig);
             }));
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(0, 100, Text.translatable("colormatic.config.option.relativeBlockLightIntensity"),
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(0, 100, new TranslatableText("colormatic.config.option.relativeBlockLightIntensity"),
                     () -> (int) (100*(1.0 - colormaticConfig.relativeBlockLightIntensityExponent / -16.0)),
-                    (button) -> button.setMessage(Text.translatable("colormatic.config.option.relativeBlockLightIntensity")
+                    (button) -> button.setMessage(new TranslatableText("colormatic.config.option.relativeBlockLightIntensity")
                         .append(": ")
-                        .append(Text.literal(String.valueOf((int)(100 * Math.exp(ColormaticConfig.scaled(colormaticConfig.relativeBlockLightIntensityExponent))))).append("%"))),
+                        .append(new LiteralText(String.valueOf((int)(100 * Math.exp(ColormaticConfig.scaled(colormaticConfig.relativeBlockLightIntensityExponent))))).append("%"))),
                         (slider) -> {
                             try {
                                 colormaticConfig.relativeBlockLightIntensityExponent = ((1.00 - ((slider.getInt())/100f)) * -16.0);
@@ -115,11 +117,11 @@ public class PuzzleClient implements ClientModInitializer {
         if (FabricLoader.getInstance().isModLoaded("dynamicfps") && !PuzzleConfig.disabledIntegrations.contains("dynamicfps")) {
             PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.of("Dynamic FPS")));
             DynamicFPSConfig fpsConfig = DynamicFPSMod.config;
-            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.translatable("config.dynamicfps.reduce_when_unfocused"), (button) -> button.setMessage(fpsConfig.reduceFPSWhenUnfocused ? YES : NO), (button) -> {
+            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(new TranslatableText("config.dynamicfps.reduce_when_unfocused"), (button) -> button.setMessage(fpsConfig.reduceFPSWhenUnfocused ? YES : NO), (button) -> {
                 fpsConfig.reduceFPSWhenUnfocused = !fpsConfig.reduceFPSWhenUnfocused;
                 fpsConfig.save();
             }));
-            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(0, 60,Text.translatable("config.dynamicfps.unfocused_fps"), () -> fpsConfig.unfocusedFPS,
+            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(0, 60,new TranslatableText("config.dynamicfps.unfocused_fps"), () -> fpsConfig.unfocusedFPS,
                     (button) -> button.setMessage(Text.of(fpsConfig.unfocusedFPS + " FPS")),
                     (slider) -> {
                         try {
@@ -128,15 +130,15 @@ public class PuzzleClient implements ClientModInitializer {
                         catch (NumberFormatException ignored) {}
                         finally {fpsConfig.save();}
                     }));
-            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.translatable("config.dynamicfps.restore_when_hovered"), (button) -> button.setMessage(fpsConfig.restoreFPSWhenHovered ? YES : NO), (button) -> {
+            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(new TranslatableText("config.dynamicfps.restore_when_hovered"), (button) -> button.setMessage(fpsConfig.restoreFPSWhenHovered ? YES : NO), (button) -> {
                 fpsConfig.restoreFPSWhenHovered = !fpsConfig.restoreFPSWhenHovered;
                 fpsConfig.save();
             }));
-            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.translatable("config.dynamicfps.run_gc_on_unfocus"), (button) -> button.setMessage(fpsConfig.runGCOnUnfocus ? YES : NO), (button) -> {
+            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(new TranslatableText("config.dynamicfps.run_gc_on_unfocus"), (button) -> button.setMessage(fpsConfig.runGCOnUnfocus ? YES : NO), (button) -> {
                 fpsConfig.runGCOnUnfocus = !fpsConfig.runGCOnUnfocus;
                 fpsConfig.save();
             }));
-            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(0, 100,Text.translatable("config.dynamicfps.unfocused_volume"), () -> ((Number)(fpsConfig.unfocusedVolumeMultiplier * 100)).intValue(),
+            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(0, 100,new TranslatableText("config.dynamicfps.unfocused_volume"), () -> ((Number)(fpsConfig.unfocusedVolumeMultiplier * 100)).intValue(),
                     (button) -> button.setMessage(Text.of(((Number)(fpsConfig.unfocusedVolumeMultiplier * 100)).intValue() + "%")),
                     (slider) -> {
                         try {
@@ -145,7 +147,7 @@ public class PuzzleClient implements ClientModInitializer {
                         catch (NumberFormatException ignored) {}
                         finally {fpsConfig.save();}
                     }));
-            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(0, 100,Text.translatable("config.dynamicfps.hidden_volume"), () -> ((Number)(fpsConfig.hiddenVolumeMultiplier * 100)).intValue(),
+            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(0, 100,new TranslatableText("config.dynamicfps.hidden_volume"), () -> ((Number)(fpsConfig.hiddenVolumeMultiplier * 100)).intValue(),
                     (button) -> button.setMessage(Text.of(((Number)(fpsConfig.hiddenVolumeMultiplier * 100)).intValue() + "%")),
                     (slider) -> {
                         try {
@@ -158,12 +160,12 @@ public class PuzzleClient implements ClientModInitializer {
         if (FabricLoader.getInstance().isModLoaded("borderlessmining") && !PuzzleConfig.disabledIntegrations.contains("borderlessmining")) {
             PuzzleApi.addToMiscOptions(new PuzzleWidget(Text.of("Borderless Mining")));
             ConfigHandler bmConfig = ConfigHandler.getInstance();
-            PuzzleApi.addToMiscOptions(new PuzzleWidget(Text.translatable("config.borderlessmining.general.enabled"), (button) -> button.setMessage(bmConfig.isEnabledOrPending() ? YES : NO), (button) -> {
+            PuzzleApi.addToMiscOptions(new PuzzleWidget(new TranslatableText("config.borderlessmining.general.enabled"), (button) -> button.setMessage(bmConfig.isEnabledOrPending() ? YES : NO), (button) -> {
                 bmConfig.setEnabledPending(!bmConfig.isEnabledOrPending());
                 bmConfig.save();
             }));
             if (MinecraftClient.IS_SYSTEM_MAC) {
-                PuzzleApi.addToMiscOptions(new PuzzleWidget(Text.translatable("config.borderlessmining.general.enabledmac"), (button) -> button.setMessage(bmConfig.enableMacOS ? YES : NO), (button) -> {
+                PuzzleApi.addToMiscOptions(new PuzzleWidget(new TranslatableText("config.borderlessmining.general.enabledmac"), (button) -> button.setMessage(bmConfig.enableMacOS ? YES : NO), (button) -> {
                     bmConfig.enableMacOS = !bmConfig.enableMacOS;
                     bmConfig.setEnabledPending(bmConfig.isEnabled());
                     bmConfig.save();
@@ -261,24 +263,28 @@ public class PuzzleClient implements ClientModInitializer {
             ETFConfigScreen etfConfigScreen = new ETFConfigScreen();
             PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("config.etf.enable_custom_textures.title"), (button) -> button.setMessage(etfConfig.enableCustomTextures ? YES : NO), (button) -> {
                 etfConfig.enableCustomTextures = !etfConfig.enableCustomTextures;
-                ETFApi.saveETFConfigChangesAndResetETF();
+                etfConfigScreen.saveConfig();
+                etfConfigScreen.resetVisuals();
             }));
             PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("config.etf.enable_emissive_textures.title"), (button) -> button.setMessage(etfConfig.enableEmissiveTextures ? YES : NO), (button) -> {
                 etfConfig.enableEmissiveTextures = !etfConfig.enableEmissiveTextures;
-                ETFApi.saveETFConfigChangesAndResetETF();
+                etfConfigScreen.saveConfig();
+                etfConfigScreen.resetVisuals();
             }));
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("config.entity_texture_features.full_bright_emissives.title"), (button) -> button.setMessage(
-                    etfConfig.fullBrightEmissives ? Text.translatable("entity_texture_features.puzzle.emissive_type.brighter") : Text.translatable("entity_texture_features.puzzle.emissive_type.default")), (button) -> {
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Emissive Texture Rendering Mode"), (button) -> button.setMessage(etfConfig.fullBrightEmissives ? Text.of("Brighter") : Text.of("Default")), (button) -> {
                 etfConfig.fullBrightEmissives  = !etfConfig.fullBrightEmissives ;
-                ETFApi.saveETFConfigChangesAndResetETF();
+                etfConfigScreen.saveConfig();
+                etfConfigScreen.resetVisuals();
             }));
             PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("config.etf.blinking_mob_settings.title"), (button) -> button.setMessage(etfConfig.enableBlinking ? YES : NO), (button) -> {
                 etfConfig.enableBlinking = !etfConfig.enableBlinking;
-                ETFApi.saveETFConfigChangesAndResetETF();
+                etfConfigScreen.saveConfig();
+                etfConfigScreen.resetVisuals();
             }));
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("config.entity_texture_features.player_skin_features.title"), (button) -> button.setMessage(etfConfig.skinFeaturesEnabled ? YES : NO), (button) -> {
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Enable Player Skin Features"), (button) -> button.setMessage(etfConfig.skinFeaturesEnabled ? YES : NO), (button) -> {
                 etfConfig.skinFeaturesEnabled = !etfConfig.skinFeaturesEnabled;
-                ETFApi.saveETFConfigChangesAndResetETF();
+                etfConfigScreen.saveConfig();
+                etfConfigScreen.resetVisuals();
             }));
         }
         lateInitDone = true;
