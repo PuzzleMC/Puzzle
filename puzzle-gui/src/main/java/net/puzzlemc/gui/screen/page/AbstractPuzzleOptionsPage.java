@@ -12,8 +12,9 @@ import java.util.List;
 import java.util.Objects;
 
 public abstract class AbstractPuzzleOptionsPage extends Screen {
-    private PuzzleOptionListWidget list;
+    public PuzzleOptionListWidget list;
     private final List<PuzzleWidget> options;
+    public List<Text> tooltip = null;
 
     public AbstractPuzzleOptionsPage(Screen parent, Text title, List<PuzzleWidget> options) {
         super(title);
@@ -41,5 +42,12 @@ public abstract class AbstractPuzzleOptionsPage extends Screen {
 
         drawCenteredText(matrices, textRenderer, title, width/2, 15, 0xFFFFFF);
         super.render(matrices, mouseX, mouseY, delta);
+        if (tooltip != null) {
+            if (this.list.getFocused() != null && (this.list.getHoveredEntry() == null || this.list.getHoveredEntry().button == null || !this.list.getHoveredEntry().button.isMouseOver(mouseX, mouseY))) {
+                renderTooltip(matrices, tooltip, this.list.getFocused().getX() + this.list.getFocused().getWidth(), this.list.getFocused().getY() + (this.list.getFocused().getHeight() * 2));
+            }
+            else renderTooltip(matrices, tooltip, mouseX, mouseY);
+        }
+        tooltip = null;
     }
 }
