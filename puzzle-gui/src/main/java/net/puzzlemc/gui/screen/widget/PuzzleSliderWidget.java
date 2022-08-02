@@ -9,13 +9,12 @@ public class PuzzleSliderWidget extends SliderWidget {
     private final PuzzleWidget.TextAction setTextAction;
     private final PuzzleWidget.ChangeSliderValueAction changeAction;
 
-    public PuzzleSliderWidget(int min, int max, int x, int y, int width, int height, PuzzleWidget.SetSliderValueAction setValueAction, PuzzleWidget.TextAction setTextAction, PuzzleWidget.ChangeSliderValueAction changeAction) {
-        super(x,y,width,height,Text.of(""),0);
+    public PuzzleSliderWidget(int min, int max, int x, int y, int width, int height, float defaultValue, PuzzleWidget.TextAction setTextAction, PuzzleWidget.ChangeSliderValueAction changeAction) {
+        super(x,y,width,height,Text.of(""),(defaultValue-min) / (max - min));
 
         this.min = min;
         this.max = max;
 
-        setValueAction.setSliderValue(this);
         this.setTextAction = setTextAction;
         this.changeAction = changeAction;
         this.updateMessage();

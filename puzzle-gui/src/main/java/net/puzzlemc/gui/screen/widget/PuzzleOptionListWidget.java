@@ -8,8 +8,11 @@ import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableTextContent;
+import net.puzzlemc.gui.screen.page.AbstractPuzzleOptionsPage;
 import org.apache.logging.log4j.LogManager;
 
 import java.util.*;
@@ -35,7 +38,7 @@ public class PuzzleOptionListWidget extends ElementListWidget<PuzzleOptionListWi
             } else if (button.buttonType == ButtonType.BUTTON) {
                 this.addButton(new PuzzleButtonWidget(this.width / 2 + 25, 0, 150, 20, button.buttonTextAction, button.onPress), button.descriptionText);
             } else if (button.buttonType == ButtonType.SLIDER) {
-                this.addButton(new PuzzleSliderWidget(button.min, button.max, this.width / 2 + 25, 0, 150, 20, button.setSliderValue, button.buttonTextAction, button.changeSliderValue), button.descriptionText);
+                this.addButton(new PuzzleSliderWidget(button.min, button.max, this.width / 2 + 25, 0, 150, 20, button.defaultSliderValue.getAsInt(), button.buttonTextAction, button.changeSliderValue), button.descriptionText);
             } else if (button.buttonType == ButtonType.TEXT_FIELD) {
                 this.addButton(new PuzzleTextFieldWidget(textRenderer, this.width / 2 + 25, 0, 150, 20, button.setTextValue, button.changeTextValue), button.descriptionText);
             } else
@@ -51,15 +54,21 @@ public class PuzzleOptionListWidget extends ElementListWidget<PuzzleOptionListWi
         return super.getScrollbarPositionX() + 60;
     }
 
+    @Override
+    public ButtonEntry getHoveredEntry() {
+        return super.getHoveredEntry();
+    }
+
     public static class ButtonEntry extends ElementListWidget.Entry<ButtonEntry> {
         private static final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
         private List<ClickableWidget> buttons = new ArrayList<>();
-        private final ClickableWidget button;
-        private final Text text;
+        public final ClickableWidget button;
+        public final Text text;
+        private MinecraftClient client = MinecraftClient.getInstance();
 
         private ButtonEntry(ClickableWidget button, Text text) {
             if (button != null)
-            this.buttons.add(button);
+                this.buttons.add(button);
             this.button = button;
             this.text = text;
         }
@@ -75,6 +84,37 @@ public class PuzzleOptionListWidget extends ElementListWidget<PuzzleOptionListWi
             }
             if (button == null) drawCenteredText(matrices,textRenderer, Text.literal("－－－－－－ ").append(text).append(" －－－－－－"),x + 200,y+5,0xFFFFFF);
             else drawTextWithShadow(matrices,textRenderer, text,x+15,y+5,0xFFFFFF);
+
+            if (!(client.currentScreen instanceof AbstractPuzzleOptionsPage page)) return;
+            if (button != null && (button.isMouseOver(mouseX, mouseY) || ((page.list.getHoveredEntry() == null || page.list.getHoveredEntry().button == null || !page.list.getHoveredEntry().button.isMouseOver(mouseX, mouseY)) && button.isFocused())) && text.getContent() instanceof TranslatableTextContent content) {
+                String key = null;
+                if (I18n.hasTranslation(content.getKey() + ".tooltip")) key = content.getKey() + ".tooltip";
+                else if (I18n.hasTranslation(content.getKey() + ".desc")) key = content.getKey() + ".desc";
+                if (key == null && content.getKey().endsWith(".title")) {
+                    String strippedContent = content.getKey().substring(0, content.getKey().length()-6);
+                    if (I18n.hasTranslation(strippedContent + ".tooltip")) key = strippedContent + ".tooltip";
+                    else if (I18n.hasTranslation(strippedContent + ".desc")) key = strippedContent + ".desc";
+                }
+
+                if (key != null) {
+                    List<Text> list = new ArrayList<>();
+                    for (String str : I18n.translate(key).split("\n"))
+                        list.add(Text.literal(str));
+                    page.tooltip = list;
+                }
+            }
+        }
+        public int getY() {
+            return button.y;
+        }
+        public int getX() {
+            return button.x;
+        }
+        public int getHeight() {
+            return button.getHeight();
+        }
+        public int getWidth() {
+            return button.getWidth();
         }
 
         public List<? extends Element> children() {

@@ -42,6 +42,9 @@ dependencies {
 	modImplementation ("maven.modrinth:lambdabettergrass:${project.lbg_version}")
  	modImplementation ("maven.modrinth:iris:${project.iris_version}")
 	modImplementation ("maven.modrinth:cit-resewn:${project.cit_resewn_version}")
+	modImplementation ("maven.modrinth:colormatic:${project.colormatic_version}")
+	modImplementation ("maven.modrinth:borderless-mining:${project.borderless_mining_version}")
+	modImplementation ("maven.modrinth:dynamic-fps:${project.dynamic_fps_version}")
 	modImplementation ("maven.modrinth:entitytexturefeatures:${project.entitytexturefeatures_version}")
 	modImplementation ("maven.modrinth:cem:${project.cem_version}")
 	modImplementation "com.gitlab.Lortseam:completeconfig:${project.complete_config_version}"

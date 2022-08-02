@@ -127,6 +127,10 @@ dependencies {
     modCompileOnly ("maven.modrinth:cit-resewn:${project.cit_resewn_version}")
     modImplementation ("maven.modrinth:continuity:${project.continuity_version}")
     modImplementation ("maven.modrinth:animatica:${project.animatica_version}")
+    modImplementation ("maven.modrinth:colormatic:${project.colormatic_version}")
+    modImplementation ("maven.modrinth:borderless-mining:${project.borderless_mining_version}")
+    modImplementation ("maven.modrinth:dynamic-fps:${project.dynamic_fps_version}")
+    modImplementation("com.moandjiezana.toml:toml4j:${project.toml4j_version}")
     modImplementation ("maven.modrinth:entitytexturefeatures:${project.entitytexturefeatures_version}")
     modImplementation ("maven.modrinth:cem:${project.cem_version}")
     modImplementation "com.gitlab.Lortseam:completeconfig:${project.complete_config_version}"
