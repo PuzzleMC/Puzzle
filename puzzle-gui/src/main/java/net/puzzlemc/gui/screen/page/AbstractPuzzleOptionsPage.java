@@ -1,6 +1,6 @@
 package net.puzzlemc.gui.screen.page;
 
-import net.minecraft.screen.ScreenTexts;
+import net.minecraft.client.gui.screen.ScreenTexts;
 import net.minecraft.text.Text;
 import net.puzzlemc.gui.screen.widget.PuzzleOptionListWidget;
 import net.puzzlemc.gui.screen.widget.PuzzleWidget;

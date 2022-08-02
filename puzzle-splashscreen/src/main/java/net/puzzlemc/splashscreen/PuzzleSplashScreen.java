@@ -77,8 +77,8 @@ public class PuzzleSplashScreen implements ClientModInitializer {
                     client.getTextureManager().registerTexture(LOGO, new LogoTexture(LOGO));
                     client.getTextureManager().registerTexture(BACKGROUND, new LogoTexture(BACKGROUND));
 
-                    manager.findResources("optifine", path -> path.getPath().contains("color.properties")).forEach((id, resource) -> {
-                        try (InputStream stream = manager.getResource(id).get().getInputStream()) {
+                    manager.findResources("optifine", path -> path.contains("color.properties")).forEach(id -> {
+                        try (InputStream stream = manager.getResource(id).getInputStream()) {
                             Properties properties = new Properties();
                             properties.load(stream);
 
@@ -103,8 +103,8 @@ public class PuzzleSplashScreen implements ClientModInitializer {
                             LogManager.getLogger("Puzzle").error("Error occurred while loading color.properties " + id.toString(), e);
                         }
                     });
-                    manager.findResources("textures", path -> path.getPath().contains("mojangstudios.png")).forEach((id, resource) -> {
-                        try (InputStream stream = manager.getResource(id).get().getInputStream()) {
+                    manager.findResources("textures", path -> path.contains("mojangstudios.png")).forEach(id -> {
+                        try (InputStream stream = manager.getResource(id).getInputStream()) {
                             Files.copy(stream, LOGO_TEXTURE, StandardCopyOption.REPLACE_EXISTING);
                             InputStream input = new FileInputStream(String.valueOf(PuzzleSplashScreen.LOGO_TEXTURE));
                             client.getTextureManager().registerTexture(LOGO, new NativeImageBackedTexture(NativeImage.read(input)));
@@ -112,8 +112,8 @@ public class PuzzleSplashScreen implements ClientModInitializer {
                             LogManager.getLogger("Puzzle").error("Error occurred while loading custom minecraft logo " + id.toString(), e);
                         }
                     });
-                    manager.findResources("puzzle", path -> path.getPath().contains("splash_background.png")).forEach((id, resource) -> {
-                        try (InputStream stream = manager.getResource(id).get().getInputStream()) {
+                    manager.findResources("puzzle", path -> path.contains("splash_background.png")).forEach(id -> {
+                        try (InputStream stream = manager.getResource(id).getInputStream()) {
                             Files.copy(stream, BACKGROUND_TEXTURE, StandardCopyOption.REPLACE_EXISTING);
                             InputStream input = new FileInputStream(String.valueOf(PuzzleSplashScreen.BACKGROUND_TEXTURE));
                             client.getTextureManager().registerTexture(BACKGROUND, new NativeImageBackedTexture(NativeImage.read(input)));

@@ -10,6 +10,7 @@ import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableTextContent;
 import net.puzzlemc.gui.screen.page.AbstractPuzzleOptionsPage;
@@ -82,7 +83,7 @@ public class PuzzleOptionListWidget extends ElementListWidget<PuzzleOptionListWi
                 button.y = y;
                 button.render(matrices, mouseX, mouseY, tickDelta);
             }
-            if (button == null) drawCenteredText(matrices,textRenderer, Text.literal("－－－－－－ ").append(text).append(" －－－－－－"),x + 200,y+5,0xFFFFFF);
+            if (button == null) drawCenteredText(matrices,textRenderer, new LiteralText("－－－－－－ ").append(text).append(" －－－－－－"),x + 200,y+5,0xFFFFFF);
             else drawTextWithShadow(matrices,textRenderer, text,x+15,y+5,0xFFFFFF);
 
             if (!(client.currentScreen instanceof AbstractPuzzleOptionsPage page)) return;
