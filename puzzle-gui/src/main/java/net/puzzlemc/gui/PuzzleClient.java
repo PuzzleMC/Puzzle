@@ -268,7 +268,7 @@ public class PuzzleClient implements ClientModInitializer {
                 ETFApi.saveETFConfigChangesAndResetETF();
             }));
             PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("config.entity_texture_features.full_bright_emissives.title"), (button) -> button.setMessage(etfConfig.fullBrightEmissives ? Text.of("Brighter") : Text.of("Default")), (button) -> {
-                etfConfig.fullBrightEmissives  = !etfConfig.fullBrightEmissives ;
+                etfConfig.fullBrightEmissives  = !etfConfig.fullBrightEmissives;
                 ETFApi.saveETFConfigChangesAndResetETF();
             }));
             PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("config.entity_texture_features.blinking_mob_settings.title"), (button) -> button.setMessage(etfConfig.enableBlinking ? YES : NO), (button) -> {
