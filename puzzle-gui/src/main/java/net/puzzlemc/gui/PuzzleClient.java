@@ -28,10 +28,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.puzzlemc.splashscreen.PuzzleSplashScreen;
 import shcm.shsupercm.fabric.citresewn.config.CITResewnConfig;
-import traben.entity_texture_features.client.ETFClient;
+import traben.entity_texture_features.ETFApi;
 import traben.entity_texture_features.config.ETFConfig;
 import io.github.kvverti.colormatic.ColormaticConfig;
-import traben.entity_texture_features.config.ETFConfigScreen;
 
 public class PuzzleClient implements ClientModInitializer {
 
@@ -258,33 +257,27 @@ public class PuzzleClient implements ClientModInitializer {
             });
         }
         if (FabricLoader.getInstance().isModLoaded("entity_texture_features") && !PuzzleConfig.disabledIntegrations.contains("entity_texture_features")) {
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("config.etf.title")));
-            ETFConfig etfConfig = ETFClient.ETFConfigData;
-            ETFConfigScreen etfConfigScreen = new ETFConfigScreen();
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("config.etf.enable_custom_textures.title"), (button) -> button.setMessage(etfConfig.enableCustomTextures ? YES : NO), (button) -> {
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("config.entity_texture_features.title")));
+            ETFConfig etfConfig = ETFApi.getETFConfigObject;
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("config.entity_texture_features.enable_custom_textures.title"), (button) -> button.setMessage(etfConfig.enableCustomTextures ? YES : NO), (button) -> {
                 etfConfig.enableCustomTextures = !etfConfig.enableCustomTextures;
-                etfConfigScreen.saveConfig();
-                etfConfigScreen.resetVisuals();
+                ETFApi.saveETFConfigChangesAndResetETF();
             }));
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("config.etf.enable_emissive_textures.title"), (button) -> button.setMessage(etfConfig.enableEmissiveTextures ? YES : NO), (button) -> {
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("config.entity_texture_features.enable_emissive_textures.title"), (button) -> button.setMessage(etfConfig.enableEmissiveTextures ? YES : NO), (button) -> {
                 etfConfig.enableEmissiveTextures = !etfConfig.enableEmissiveTextures;
-                etfConfigScreen.saveConfig();
-                etfConfigScreen.resetVisuals();
+                ETFApi.saveETFConfigChangesAndResetETF();
             }));
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Emissive Texture Rendering Mode"), (button) -> button.setMessage(etfConfig.fullBrightEmissives ? Text.of("Brighter") : Text.of("Default")), (button) -> {
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("config.entity_texture_features.full_bright_emissives.title"), (button) -> button.setMessage(etfConfig.fullBrightEmissives ? Text.of("Brighter") : Text.of("Default")), (button) -> {
                 etfConfig.fullBrightEmissives  = !etfConfig.fullBrightEmissives ;
-                etfConfigScreen.saveConfig();
-                etfConfigScreen.resetVisuals();
+                ETFApi.saveETFConfigChangesAndResetETF();
             }));
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("config.etf.blinking_mob_settings.title"), (button) -> button.setMessage(etfConfig.enableBlinking ? YES : NO), (button) -> {
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("config.entity_texture_features.blinking_mob_settings.title"), (button) -> button.setMessage(etfConfig.enableBlinking ? YES : NO), (button) -> {
                 etfConfig.enableBlinking = !etfConfig.enableBlinking;
-                etfConfigScreen.saveConfig();
-                etfConfigScreen.resetVisuals();
+                ETFApi.saveETFConfigChangesAndResetETF();
             }));
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Enable Player Skin Features"), (button) -> button.setMessage(etfConfig.skinFeaturesEnabled ? YES : NO), (button) -> {
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(new TranslatableText("config.entity_texture_features.player_skin_features.title"), (button) -> button.setMessage(etfConfig.skinFeaturesEnabled ? YES : NO), (button) -> {
                 etfConfig.skinFeaturesEnabled = !etfConfig.skinFeaturesEnabled;
-                etfConfigScreen.saveConfig();
-                etfConfigScreen.resetVisuals();
+                ETFApi.saveETFConfigChangesAndResetETF();
             }));
         }
         lateInitDone = true;
