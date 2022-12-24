@@ -31,11 +31,11 @@ public class PuzzleOptionsScreen extends Screen {
         PerformancePage performancePage = new PerformancePage(this);
         ResourcesPage resourcesPage = new ResourcesPage(this);
 
-        if (!PuzzleApi.GRAPHICS_OPTIONS.isEmpty()) this.addDrawableChild(new ButtonWidget(this.width / 2 - 155, this.height / 6 + 48 - 6, 150, 20, graphicsPage.getTitle().copy().append("..."), (button) -> Objects.requireNonNull(client).setScreen(graphicsPage)));
-        if (!PuzzleApi.RESOURCE_OPTIONS.isEmpty()) this.addDrawableChild(new ButtonWidget(this.width / 2 + 5, this.height / 6 + 48 - 6, 150, 20, resourcesPage.getTitle().copy().append("..."), (button) -> Objects.requireNonNull(client).setScreen(resourcesPage)));
-        if (!PuzzleApi.PERFORMANCE_OPTIONS.isEmpty()) this.addDrawableChild(new ButtonWidget(this.width / 2 - 155, this.height / 6 + 72 - 6, 150, 20, performancePage.getTitle().copy().append("..."), (button) -> Objects.requireNonNull(client).setScreen(performancePage)));
-        if (!PuzzleApi.MISC_OPTIONS.isEmpty()) this.addDrawableChild(new ButtonWidget(this.width / 2 + 5, this.height / 6 + 72 - 6, 150, 20, miscPage.getTitle().copy().append("..."), (button) -> Objects.requireNonNull(client).setScreen(miscPage)));
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height / 6 + 168, 200, 20, ScreenTexts.DONE, (button) -> Objects.requireNonNull(client).setScreen(parent)));
+        if (!PuzzleApi.GRAPHICS_OPTIONS.isEmpty()) this.addDrawableChild(ButtonWidget.builder(graphicsPage.getTitle().copy().append("..."), (button) -> Objects.requireNonNull(client).setScreen(graphicsPage)).dimensions(this.width / 2 - 155, this.height / 6 + 48 - 6, 150, 20).build());
+        if (!PuzzleApi.RESOURCE_OPTIONS.isEmpty()) this.addDrawableChild(ButtonWidget.builder(resourcesPage.getTitle().copy().append("..."), (button) -> Objects.requireNonNull(client).setScreen(resourcesPage)).dimensions(this.width / 2 + 5, this.height / 6 + 48 - 6, 150, 20).build());
+        if (!PuzzleApi.PERFORMANCE_OPTIONS.isEmpty()) this.addDrawableChild(ButtonWidget.builder(performancePage.getTitle().copy().append("..."), (button) -> Objects.requireNonNull(client).setScreen(performancePage)).dimensions(this.width / 2 - 155, this.height / 6 + 72 - 6, 150, 20).build());
+        if (!PuzzleApi.MISC_OPTIONS.isEmpty()) this.addDrawableChild(ButtonWidget.builder(miscPage.getTitle().copy().append("..."), (button) -> Objects.requireNonNull(client).setScreen(miscPage)).dimensions(this.width / 2 + 5, this.height / 6 + 72 - 6, 150, 20).build());
+        this.addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, (button) -> Objects.requireNonNull(client).setScreen(parent)).dimensions(this.width / 2 - 100, this.height / 6 + 168, 200, 20).build());
     }
 
     @Override

@@ -79,7 +79,7 @@ public class PuzzleOptionListWidget extends ElementListWidget<PuzzleOptionListWi
 
         public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             if (button != null) {
-                button.y = y;
+                button.setY(y);
                 button.render(matrices, mouseX, mouseY, tickDelta);
             }
             if (button == null) drawCenteredText(matrices,textRenderer, Text.literal("－－－－－－ ").append(text).append(" －－－－－－"),x + 200,y+5,0xFFFFFF);
@@ -105,10 +105,10 @@ public class PuzzleOptionListWidget extends ElementListWidget<PuzzleOptionListWi
             }
         }
         public int getY() {
-            return button.y;
+            return button.getY();
         }
         public int getX() {
-            return button.x;
+            return button.getX();
         }
         public int getHeight() {
             return button.getHeight();

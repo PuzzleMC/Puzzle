@@ -29,6 +29,7 @@ import shcm.shsupercm.fabric.citresewn.config.CITResewnConfig;
 import traben.entity_texture_features.ETFApi;
 import traben.entity_texture_features.config.ETFConfig;
 import io.github.kvverti.colormatic.ColormaticConfig;
+import traben.entity_texture_features.texture_handlers.ETFManager;
 
 public class PuzzleClient implements ClientModInitializer {
 
@@ -265,9 +266,9 @@ public class PuzzleClient implements ClientModInitializer {
                 etfConfig.enableEmissiveTextures = !etfConfig.enableEmissiveTextures;
                 ETFApi.saveETFConfigChangesAndResetETF();
             }));
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("config.entity_texture_features.full_bright_emissives.title"), (button) -> button.setMessage(
-                    etfConfig.fullBrightEmissives ? Text.translatable("entity_texture_features.puzzle.emissive_type.brighter") : Text.translatable("entity_texture_features.puzzle.emissive_type.default")), (button) -> {
-                etfConfig.fullBrightEmissives  = !etfConfig.fullBrightEmissives ;
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("config.entity_texture_features.emissive_mode.title"), (button) -> button.setMessage(
+                    Text.literal(etfConfig.emissiveRenderMode.toString())), (button) -> {
+                etfConfig.emissiveRenderMode = etfConfig.emissiveRenderMode.next();
                 ETFApi.saveETFConfigChangesAndResetETF();
             }));
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("config.entity_texture_features.blinking_mob_settings.title"), (button) -> button.setMessage(etfConfig.enableBlinking ? YES : NO), (button) -> {

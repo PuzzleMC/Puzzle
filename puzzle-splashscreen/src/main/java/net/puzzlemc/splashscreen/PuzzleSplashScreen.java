@@ -30,6 +30,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Objects;
 import java.util.Properties;
 
 public class PuzzleSplashScreen implements ClientModInitializer {
@@ -138,9 +139,9 @@ public class PuzzleSplashScreen implements ClientModInitializer {
 
         protected TextureData loadTextureData(ResourceManager resourceManager) {
             MinecraftClient minecraftClient = MinecraftClient.getInstance();
-            DefaultResourcePack defaultResourcePack = minecraftClient.getResourcePackProvider().getPack();
+            DefaultResourcePack defaultResourcePack = minecraftClient.getDefaultResourcePack();
             try {
-                InputStream inputStream = defaultResourcePack.open(ResourceType.CLIENT_RESOURCES, LOGO);
+                InputStream inputStream = Objects.requireNonNull(defaultResourcePack.open(ResourceType.CLIENT_RESOURCES, LOGO)).get();
                 TextureData var6;
                 try {
                     var6 = new TextureData(new TextureResourceMetadata(true, true), NativeImage.read(inputStream));

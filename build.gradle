@@ -122,18 +122,18 @@ dependencies {
     }
     modImplementation ("maven.modrinth:cull-leaves:${project.cull_leaves_version}")
     modImplementation ("maven.modrinth:lambdynamiclights:${project.ldl_version}")
-    modImplementation ("maven.modrinth:lambdabettergrass:${project.lbg_version}")
+    modCompileOnlyApi ("maven.modrinth:lambdabettergrass:${project.lbg_version}")
     modImplementation ("maven.modrinth:iris:${project.iris_version}")
     modCompileOnly ("maven.modrinth:cit-resewn:${project.cit_resewn_version}")
-    modImplementation ("maven.modrinth:continuity:${project.continuity_version}")
+    modCompileOnlyApi ("maven.modrinth:continuity:${project.continuity_version}")
     modImplementation ("maven.modrinth:animatica:${project.animatica_version}")
-    modImplementation ("maven.modrinth:colormatic:${project.colormatic_version}")
+    modCompileOnlyApi ("maven.modrinth:colormatic:${project.colormatic_version}")
     modImplementation ("maven.modrinth:borderless-mining:${project.borderless_mining_version}")
     modImplementation ("maven.modrinth:dynamic-fps:${project.dynamic_fps_version}")
     modImplementation("com.moandjiezana.toml:toml4j:${project.toml4j_version}")
     modImplementation ("maven.modrinth:entitytexturefeatures:${project.entitytexturefeatures_version}")
     modImplementation ("maven.modrinth:cem:${project.cem_version}")
-    modImplementation "com.gitlab.Lortseam:completeconfig:${project.complete_config_version}"
+    modImplementation "com.github.Lortseam.completeconfig:base:${project.complete_config_version}"
 
     modImplementation("org.aperlambda:lambdajcommon:1.8.1") {
         exclude group: 'com.google.code.gson'

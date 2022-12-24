@@ -87,7 +87,7 @@ public abstract class MixinSplashScreen extends Overlay {
             RenderSystem.enableBlend();
             RenderSystem.blendEquation(32774);
             RenderSystem.defaultBlendFunc();
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, s);
             drawTexture(matrices, 0, 0, 0, 0, 0, width, height, width, height);
             RenderSystem.defaultBlendFunc();
