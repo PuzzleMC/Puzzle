@@ -33,7 +33,5 @@
 	"config.dynamicfps.restore_when_hovered.tooltip": "Whether or not to stop the\nFPS limiting while Minecraft is previewed\n(i.e. hovered on task bar or dock)",
 	"config.dynamicfps.run_gc_on_unfocus.tooltip": "Run a garbage collector while\nMinecraft is not focused to\nfree up some RAM",
 	"config.dynamicfps.unfocused_volume.tooltip": "The volume the game should play\nsound at while unfocused\n(i.e. another window is selected)",
-	"config.dynamicfps.hidden_volume.tooltip": "The volume the game should play\nsound at while not visible\n(i.e. minimized, covered by other windows\nor on another virtual desktop)",
-	"entity_texture_features.puzzle.emissive_type.brighter": "§eBrighter",
-	"entity_texture_features.puzzle.emissive_type.default": "§6Default"
+	"config.dynamicfps.hidden_volume.tooltip": "The volume the game should play\nsound at while not visible\n(i.e. minimized, covered by other windows\nor on another virtual desktop)"
 }
