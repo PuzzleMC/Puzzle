@@ -1,7 +1,10 @@
 package net.puzzlemc.splashscreen;
 
+import com.mojang.blaze3d.platform.TextureUtil;
+import com.mojang.blaze3d.systems.RenderSystem;
 import eu.midnightdust.lib.util.MidnightColorUtil;
 import net.fabricmc.api.ClientModInitializer;
+import net.minecraft.client.texture.AbstractTexture;
 import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.ColorHelper;
@@ -22,10 +25,8 @@ import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -67,10 +68,6 @@ public class PuzzleSplashScreen implements ClientModInitializer {
             public Identifier getFabricId() {
                 return new Identifier("puzzle", "splash_screen");
             }
-
-            public void method_14491(ResourceManager manager) {
-                reload(manager);
-            }
             @Override
             public void reload(ResourceManager manager) {
                 if (PuzzleConfig.resourcepackSplashScreen) {
@@ -107,8 +104,7 @@ public class PuzzleSplashScreen implements ClientModInitializer {
                     manager.findResources("textures", path -> path.getPath().contains("mojangstudios.png")).forEach((id, resource) -> {
                         try (InputStream stream = manager.getResource(id).get().getInputStream()) {
                             Files.copy(stream, LOGO_TEXTURE, StandardCopyOption.REPLACE_EXISTING);
-                            InputStream input = new FileInputStream(String.valueOf(PuzzleSplashScreen.LOGO_TEXTURE));
-                            client.getTextureManager().registerTexture(LOGO, new NativeImageBackedTexture(NativeImage.read(input)));
+                            client.getTextureManager().registerTexture(LOGO, new DynamicLogoTexture());
                         } catch (Exception e) {
                             LogManager.getLogger("Puzzle").error("Error occurred while loading custom minecraft logo " + id.toString(), e);
                         }
@@ -153,6 +149,20 @@ public class PuzzleSplashScreen implements ClientModInitializer {
                 return var6;
             } catch (IOException var18) {
                 return new TextureData(var18);
+            }
+        }
+    }
+    @Environment(EnvType.CLIENT)
+    public static class DynamicLogoTexture extends ResourceTexture {
+        public DynamicLogoTexture() {
+            super(LOGO);
+        }
+        protected TextureData loadTextureData(ResourceManager resourceManager) {
+            try {
+                InputStream input = new FileInputStream(String.valueOf(PuzzleSplashScreen.LOGO_TEXTURE));
+                return new TextureData(new TextureResourceMetadata(true, true), NativeImage.read(input));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
     }

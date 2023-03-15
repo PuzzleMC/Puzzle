@@ -20,7 +20,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class UpdateChecker {
     private static final Gson GSON = new Gson();
-    private static final String minecraftVersion = MinecraftClient.getInstance().getGame().getVersion().getId();
+    private static final String minecraftVersion = MinecraftClient.getInstance().getGameVersion();
     public static final Logger logger = LogManager.getLogger(PuzzleCore.name);
 
     public static final Type UPDATE_TYPE_TOKEN = new TypeToken<Map<String, String>>(){}.getType();

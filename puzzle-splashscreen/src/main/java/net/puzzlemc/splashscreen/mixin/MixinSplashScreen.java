@@ -45,11 +45,7 @@ public abstract class MixinSplashScreen extends Overlay {
     private static void puzzle$initSplashscreen(MinecraftClient client, CallbackInfo ci) { // Load our custom textures at game start //
         if (PuzzleConfig.resourcepackSplashScreen) {
             if (PuzzleSplashScreen.LOGO_TEXTURE.toFile().exists()) {
-                try {
-                    InputStream input = new FileInputStream(String.valueOf(PuzzleSplashScreen.LOGO_TEXTURE));
-                    client.getTextureManager().registerTexture(LOGO, new NativeImageBackedTexture(NativeImage.read(input)));
-                } catch (IOException ignored) {
-                }
+                client.getTextureManager().registerTexture(LOGO, new PuzzleSplashScreen.DynamicLogoTexture());
             }
             if (PuzzleSplashScreen.BACKGROUND_TEXTURE.toFile().exists()) {
                 try {
@@ -68,7 +64,7 @@ public abstract class MixinSplashScreen extends Overlay {
     private void puzzle$betterBlend(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (PuzzleConfig.disableBlend) RenderSystem.defaultBlendFunc();
     }
-    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/Window;getScaledWidth()I", shift = At.Shift.BEFORE))
+    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/Window;getScaledWidth()I", shift = At.Shift.BEFORE, ordinal = 2))
     private void puzzle$renderSplashBackground(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (Files.exists(PuzzleSplashScreen.BACKGROUND_TEXTURE)) {
             int width = client.getWindow().getScaledWidth();
@@ -96,11 +92,11 @@ public abstract class MixinSplashScreen extends Overlay {
     }
     @Inject(method = "renderProgressBar", at = @At("HEAD"))
     private void puzzle$addProgressBarBackground(MatrixStack matrices, int minX, int minY, int maxX, int maxY, float opacity, CallbackInfo ci) {
-        RenderSystem.disableBlend();
         if (!PuzzleConfig.resourcepackSplashScreen || PuzzleConfig.progressBarBackgroundColor == 15675965) return;
         long l = Util.getMeasuringTimeMs();
         float f = this.reloadCompleteTime > -1L ? (float)(l - this.reloadCompleteTime) / 1000.0F : -1.0F;
         int m = MathHelper.ceil((1.0F - MathHelper.clamp(f - 1.0F, 0.0F, 1.0F)) * 255.0F);
+        RenderSystem.disableBlend();
         fill(matrices, minX, minY, maxX, maxY, withAlpha(PuzzleConfig.progressBarBackgroundColor, m));
     }
 

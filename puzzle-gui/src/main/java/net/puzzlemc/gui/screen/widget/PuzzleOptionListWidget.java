@@ -12,7 +12,7 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableTextContent;
-import net.puzzlemc.gui.screen.page.AbstractPuzzleOptionsPage;
+import net.puzzlemc.gui.screen.PuzzleOptionsScreen;
 import org.apache.logging.log4j.LogManager;
 
 import java.util.*;
@@ -46,6 +46,9 @@ public class PuzzleOptionListWidget extends ElementListWidget<PuzzleOptionListWi
         }
     }
 
+    public void clear() {
+        super.clearEntries();
+    }
     public int getRowWidth() {
         return 400;
     }
@@ -82,10 +85,10 @@ public class PuzzleOptionListWidget extends ElementListWidget<PuzzleOptionListWi
                 button.setY(y);
                 button.render(matrices, mouseX, mouseY, tickDelta);
             }
-            if (button == null) drawCenteredText(matrices,textRenderer, Text.literal("－－－－－－ ").append(text).append(" －－－－－－"),x + 200,y+5,0xFFFFFF);
+            if (button == null) drawCenteredTextWithShadow(matrices,textRenderer, Text.literal("－－－－－－ ").append(text).append(" －－－－－－"),x + 200,y+5,0xFFFFFF);
             else drawTextWithShadow(matrices,textRenderer, text,x+15,y+5,0xFFFFFF);
 
-            if (!(client.currentScreen instanceof AbstractPuzzleOptionsPage page)) return;
+            if (!(client.currentScreen instanceof PuzzleOptionsScreen page)) return;
             if (button != null && (button.isMouseOver(mouseX, mouseY) || ((page.list.getHoveredEntry() == null || page.list.getHoveredEntry().button == null || !page.list.getHoveredEntry().button.isMouseOver(mouseX, mouseY)) && button.isFocused())) && text.getContent() instanceof TranslatableTextContent content) {
                 String key = null;
                 if (I18n.hasTranslation(content.getKey() + ".tooltip")) key = content.getKey() + ".tooltip";

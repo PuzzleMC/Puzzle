@@ -4,10 +4,14 @@ import dev.lambdaurora.lambdabettergrass.LBGConfig;
 import dev.lambdaurora.lambdabettergrass.LambdaBetterGrass;
 import dev.lambdaurora.lambdynlights.DynamicLightsConfig;
 import dev.lambdaurora.lambdynlights.LambDynLights;
+import dev.tr7zw.exordium.Config;
+import dev.tr7zw.exordium.ExordiumMod;
+import dev.tr7zw.exordium.ExordiumModBase;
 import dynamicfps.DynamicFPSConfig;
 import dynamicfps.DynamicFPSMod;
 import eu.midnightdust.core.MidnightLibClient;
 import eu.midnightdust.cullleaves.config.CullLeavesConfig;
+import eu.midnightdust.lib.util.PlatformFunctions;
 import io.github.kvverti.colormatic.Colormatic;
 import io.github.kvverti.colormatic.ColormaticConfigController;
 import link.infra.borderlessmining.config.ConfigHandler;
@@ -54,7 +58,7 @@ public class PuzzleClient implements ClientModInitializer {
             client.setScreen(PuzzleConfig.getScreen(client.currentScreen, "puzzle"));
         }));
         PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Puzzle")));
-        if (FabricLoader.getInstance().isModLoaded("puzzle-splashscreen") && !PuzzleConfig.disabledIntegrations.contains("puzzle-splashscreen")) {
+        if (isActive("puzzle-splashscreen")) {
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("puzzle.option.resourcepack_splash_screen"), (button) -> button.setMessage(PuzzleConfig.resourcepackSplashScreen ? YES : NO), (button) -> {
                 PuzzleConfig.resourcepackSplashScreen = !PuzzleConfig.resourcepackSplashScreen;
                 PuzzleConfig.write(id);
@@ -62,7 +66,7 @@ public class PuzzleClient implements ClientModInitializer {
                 MinecraftClient.getInstance().getTextureManager().registerTexture(PuzzleSplashScreen.LOGO, new PuzzleSplashScreen.LogoTexture(PuzzleSplashScreen.LOGO));
             }));
         }
-        if (FabricLoader.getInstance().isModLoaded("puzzle-models") && !PuzzleConfig.disabledIntegrations.contains("puzzle-models")) {
+        if (isActive("puzzle-models")) {
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("puzzle.option.unlimited_model_rotations"), (button) -> button.setMessage(PuzzleConfig.unlimitedRotations ? YES : NO), (button) -> {
                 PuzzleConfig.unlimitedRotations = !PuzzleConfig.unlimitedRotations;
                 PuzzleConfig.write(id);
@@ -72,7 +76,7 @@ public class PuzzleClient implements ClientModInitializer {
                 PuzzleConfig.write(id);
             }));
         }
-        if (FabricLoader.getInstance().isModLoaded("cullleaves") && !PuzzleConfig.disabledIntegrations.contains("cullleaves")) {
+        if (isActive("cullleaves")) {
             PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.of("CullLeaves")));
             PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.translatable("cullleaves.puzzle.option.enabled"), (button) -> button.setMessage(CullLeavesConfig.enabled ? YES : NO), (button) -> {
                 CullLeavesConfig.enabled = !CullLeavesConfig.enabled;
@@ -80,7 +84,7 @@ public class PuzzleClient implements ClientModInitializer {
                 MinecraftClient.getInstance().worldRenderer.reload();
             }));
         }
-        if (FabricLoader.getInstance().isModLoaded("colormatic") && !PuzzleConfig.disabledIntegrations.contains("colormatic")) {
+        if (isActive("colormatic")) {
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Colormatic")));
             ColormaticConfig colormaticConfig = Colormatic.config();
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("colormatic.config.option.clearSky"), (button) -> button.setMessage(colormaticConfig.clearSky ? YES : NO), (button) -> {
@@ -112,7 +116,7 @@ public class PuzzleClient implements ClientModInitializer {
                             catch (NumberFormatException ignored) {}
             }));
         }
-        if (FabricLoader.getInstance().isModLoaded("dynamicfps") && !PuzzleConfig.disabledIntegrations.contains("dynamicfps")) {
+        if (isActive("dynamicfps")) {
             PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.of("Dynamic FPS")));
             DynamicFPSConfig fpsConfig = DynamicFPSMod.config;
             PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.translatable("config.dynamicfps.reduce_when_unfocused"), (button) -> button.setMessage(fpsConfig.reduceFPSWhenUnfocused ? YES : NO), (button) -> {
@@ -155,7 +159,7 @@ public class PuzzleClient implements ClientModInitializer {
                         finally {fpsConfig.save();}
                     }));
         }
-        if (FabricLoader.getInstance().isModLoaded("borderlessmining") && !PuzzleConfig.disabledIntegrations.contains("borderlessmining")) {
+        if (isActive("borderlessmining")) {
             PuzzleApi.addToMiscOptions(new PuzzleWidget(Text.of("Borderless Mining")));
             ConfigHandler bmConfig = ConfigHandler.getInstance();
             PuzzleApi.addToMiscOptions(new PuzzleWidget(Text.translatable("config.borderlessmining.general.enabled"), (button) -> button.setMessage(bmConfig.isEnabledOrPending() ? YES : NO), (button) -> {
@@ -170,13 +174,13 @@ public class PuzzleClient implements ClientModInitializer {
                 }));
             }
         }
-        if (FabricLoader.getInstance().isModLoaded("iris") && !PuzzleConfig.disabledIntegrations.contains("iris")) {
+        if (isActive("iris")) {
             IrisCompat.init();
         }
     }
     public static boolean lateInitDone = false;
     public static void lateInit() { // Some mods are initialized after Puzzle, so we can't access them in our ClientModInitializer
-        if (FabricLoader.getInstance().isModLoaded("lambdynlights") && !PuzzleConfig.disabledIntegrations.contains("lambdynlights")) {
+        if (isActive("lambdynlights")) {
             DynamicLightsConfig ldlConfig = LambDynLights.get().config;
 
             PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.of("LambDynamicLights")));
@@ -187,7 +191,7 @@ public class PuzzleClient implements ClientModInitializer {
             PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.translatable("").append("DynLights: ").append(Text.translatable("block.minecraft.tnt")), (button) -> button.setMessage(ldlConfig.getTntLightingMode().getTranslatedText()), (button) -> ldlConfig.setTntLightingMode(ldlConfig.getTntLightingMode().next())));
             PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.translatable("").append("DynLights: ").append(Text.translatable("lambdynlights.option.light_sources.water_sensitive_check")), (button) -> button.setMessage(ldlConfig.getWaterSensitiveCheck().get() ? YES : NO), (button) -> ldlConfig.getWaterSensitiveCheck().set(!ldlConfig.getWaterSensitiveCheck().get())));
         }
-        if (FabricLoader.getInstance().isModLoaded("citresewn") && !PuzzleConfig.disabledIntegrations.contains("citresewn") && CITResewnConfig.INSTANCE != null) {
+        if (isActive("citresewn") && CITResewnConfig.INSTANCE != null) {
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("CIT Resewn")));
             CITResewnConfig citConfig = CITResewnConfig.INSTANCE;
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("config.citresewn.enabled.title"), (button) -> button.setMessage(citConfig.enabled ? YES : NO), (button) -> {
@@ -217,13 +221,13 @@ public class PuzzleClient implements ClientModInitializer {
                 citConfig.write();
             }));
         }
-        if (FabricLoader.getInstance().isModLoaded("lambdabettergrass") && !PuzzleConfig.disabledIntegrations.contains("lambdabettergrass")) {
+        if (isActive("lambdabettergrass")) {
             LBGConfig lbgConfig = LambdaBetterGrass.get().config;
             PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.of("LambdaBetterGrass")));
             PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.translatable("lambdabettergrass.option.mode"), (button) -> button.setMessage(lbgConfig.getMode().getTranslatedText()), (button) -> lbgConfig.setMode(lbgConfig.getMode().next())));
             PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.translatable("lambdabettergrass.option.better_snow"), (button) -> button.setMessage(lbgConfig.hasBetterLayer() ? YES : NO), (button) -> lbgConfig.setBetterLayer(!lbgConfig.hasBetterLayer())));
         }
-        if (FabricLoader.getInstance().isModLoaded("cem") && FabricLoader.getInstance().isModLoaded("completeconfig") && !PuzzleConfig.disabledIntegrations.contains("cem")) {
+        if (isActive("cem") && FabricLoader.getInstance().isModLoaded("completeconfig")) {
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Custom Entity Models")));
             CemConfig cemConfig = (CemConfig) CemConfigFairy.getConfig();
             CemOptions cemOptions = CemConfigFairy.getConfig();
@@ -240,7 +244,7 @@ public class PuzzleClient implements ClientModInitializer {
                 cemConfig.save();
             }));
         }
-        if (FabricLoader.getInstance().isModLoaded("continuity") && !PuzzleConfig.disabledIntegrations.contains("continuity")) {
+        if (isActive("continuity")) {
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Continuity")));
             ContinuityConfig contConfig = ContinuityConfig.INSTANCE;
             contConfig.getOptionMapView().forEach((s, option) -> {
@@ -255,7 +259,7 @@ public class PuzzleClient implements ClientModInitializer {
                 } catch (Exception ignored) {}
             });
         }
-        if (FabricLoader.getInstance().isModLoaded("entity_texture_features") && !PuzzleConfig.disabledIntegrations.contains("entity_texture_features")) {
+        if (isActive("entity_texture_features")) {
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("config.entity_texture_features.title")));
             ETFConfig etfConfig = ETFApi.getETFConfigObject;
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("config.entity_texture_features.enable_custom_textures.title"), (button) -> button.setMessage(etfConfig.enableCustomTextures ? YES : NO), (button) -> {
@@ -278,6 +282,38 @@ public class PuzzleClient implements ClientModInitializer {
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("config.entity_texture_features.player_skin_features.title"), (button) -> button.setMessage(etfConfig.skinFeaturesEnabled ? YES : NO), (button) -> {
                 etfConfig.skinFeaturesEnabled = !etfConfig.skinFeaturesEnabled;
                 ETFApi.saveETFConfigChangesAndResetETF();
+            }));
+        }
+        if (isActive("exordium")) {
+            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.translatable("text.exordium.title")));
+            Config exordiumConfig = ExordiumModBase.instance.config;
+            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.translatable("text.exordium.enableGui"), (button) -> button.setMessage(exordiumConfig.enabledGui ? YES : NO), (button) -> {
+                exordiumConfig.enabledGui = !exordiumConfig.enabledGui;
+                ExordiumModBase.instance.writeConfig();
+            }));
+            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(5, 60, Text.translatable("text.exordium.targetFramerateGui"), () -> exordiumConfig.targetFPSIngameGui, (button) -> button.setMessage(Text.literal(exordiumConfig.targetFPSIngameGui+"")), (slider) -> {
+                exordiumConfig.targetFPSIngameGui = slider.getInt();
+                ExordiumModBase.instance.writeConfig();
+            }));
+            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.translatable("text.exordium.enabledGuiAnimationSpeedup"), (button) -> button.setMessage(exordiumConfig.enabledGuiAnimationSpeedup ? YES : NO), (button) -> {
+                exordiumConfig.enabledGuiAnimationSpeedup = !exordiumConfig.enabledGuiAnimationSpeedup;
+                ExordiumModBase.instance.writeConfig();
+            }));
+            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(30, 120, Text.translatable("text.exordium.targetFPSIngameGuiAnimated"), () -> exordiumConfig.targetFPSIngameGuiAnimated, (button) -> button.setMessage(Text.literal(exordiumConfig.targetFPSIngameGuiAnimated+"")), (slider) -> {
+                exordiumConfig.targetFPSIngameGuiAnimated = slider.getInt();
+                ExordiumModBase.instance.writeConfig();
+            }));
+            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.translatable("text.exordium.enableNametagScreenBuffering"), (button) -> button.setMessage(exordiumConfig.enableNametagScreenBuffering ? YES : NO), (button) -> {
+                exordiumConfig.enableNametagScreenBuffering = !exordiumConfig.enableNametagScreenBuffering;
+                ExordiumModBase.instance.writeConfig();
+            }));
+            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(30, 80, Text.translatable("text.exordium.targetFPSNameTags"), () -> exordiumConfig.targetFPSNameTags, (button) -> button.setMessage(Text.literal(exordiumConfig.targetFPSNameTags+"")), (slider) -> {
+                exordiumConfig.targetFPSNameTags = slider.getInt();
+                ExordiumModBase.instance.writeConfig();
+            }));
+            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.translatable("text.exordium.enableSignBuffering"), (button) -> button.setMessage(exordiumConfig.enableSignBuffering ? YES : NO), (button) -> {
+                exordiumConfig.enableSignBuffering = !exordiumConfig.enableSignBuffering;
+                ExordiumModBase.instance.writeConfig();
             }));
         }
         lateInitDone = true;
@@ -306,5 +342,8 @@ public class PuzzleClient implements ClientModInitializer {
 
                 return (Text.translatable("config.citresewn.cache_ms.ticks.any", ticks)).formatted(color);
             }
+    }
+    public static boolean isActive(String modid) {
+        return PlatformFunctions.isModLoaded(modid) && !PuzzleConfig.disabledIntegrations.contains(modid);
     }
 }

@@ -1,6 +1,6 @@
 // Based on https://github.com/OnyxStudios/Cardinal-Components-API/blob/1.17/build.gradle
 plugins {
-    id "fabric-loom" version "0.12-SNAPSHOT" apply false
+    id "fabric-loom" version "1.1-SNAPSHOT" apply false
     id "com.matthewprenger.cursegradle" version "1.4.0"
     id "maven-publish"
     id "java-library"
@@ -134,6 +134,7 @@ dependencies {
     modImplementation ("maven.modrinth:entitytexturefeatures:${project.entitytexturefeatures_version}")
     modImplementation ("maven.modrinth:cem:${project.cem_version}")
     modImplementation "com.github.Lortseam.completeconfig:base:${project.complete_config_version}"
+    modImplementation ("maven.modrinth:exordium:${project.exordium_version}")
 
     modImplementation("org.aperlambda:lambdajcommon:1.8.1") {
         exclude group: 'com.google.code.gson'
