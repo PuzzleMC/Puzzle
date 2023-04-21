@@ -27,7 +27,7 @@
 	"cullleaves.puzzle.option.enabled.tooltip": "Включить отбраковку блоков листьев\nдля улучшения производительности",
 	"iris.puzzle.option.enableShaders": "Шейдеры",
 	"iris.puzzle.option.enableShaders.tooltip": "Включить выбранный набор шейдеров",
-	"iris.puzzle.option.open": "Выбрать",
+	"iris.puzzle.option.open": "Выбрать  ",
 	"options.iris.shaderPackSelection.tooltip": "Открыть  экран  переключения\nи настройки наборов шейдеров",
 	"lambdabettergrass.option.mode.tooltip": "Включить соединение текстуры\nтравы у соседних блоков дёрна",
 	"lambdabettergrass.option.better_snow.tooltip": "Добавить имитацию наличия слоя снега\nили мха для неполных блоков, имеющих\nсоответствующее окружение",
