@@ -3,8 +3,7 @@
   "package": "net.puzzlemc.gui.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "MixinOptionsScreen",
-    "CemConfigAccessor"
+    "MixinOptionsScreen"
   ],
   "injectors": {
     "defaultRequire": 1

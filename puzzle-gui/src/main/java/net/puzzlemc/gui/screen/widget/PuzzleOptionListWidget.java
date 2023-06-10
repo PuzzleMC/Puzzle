@@ -4,6 +4,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.widget.ClickableWidget;
@@ -80,13 +81,13 @@ public class PuzzleOptionListWidget extends ElementListWidget<PuzzleOptionListWi
             return new ButtonEntry(button, text);
         }
 
-        public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             if (button != null) {
                 button.setY(y);
-                button.render(matrices, mouseX, mouseY, tickDelta);
+                button.render(context, mouseX, mouseY, tickDelta);
             }
-            if (button == null) drawCenteredTextWithShadow(matrices,textRenderer, Text.literal("－－－－－－ ").append(text).append(" －－－－－－"),x + 200,y+5,0xFFFFFF);
-            else drawTextWithShadow(matrices,textRenderer, text,x+15,y+5,0xFFFFFF);
+            if (button == null) context.drawCenteredTextWithShadow(textRenderer, Text.literal("－－－－－－ ").append(text).append(" －－－－－－"),x + 200,y+5,0xFFFFFF);
+            else context.drawTextWithShadow(textRenderer, text,x+15,y+5,0xFFFFFF);
 
             if (!(client.currentScreen instanceof PuzzleOptionsScreen page)) return;
             if (button != null && (button.isMouseOver(mouseX, mouseY) || ((page.list.getHoveredEntry() == null || page.list.getHoveredEntry().button == null || !page.list.getHoveredEntry().button.isMouseOver(mouseX, mouseY)) && button.isFocused())) && text.getContent() instanceof TranslatableTextContent content) {

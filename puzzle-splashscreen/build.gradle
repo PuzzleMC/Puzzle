@@ -1,5 +1,6 @@
 archivesBaseName = "puzzle-splashscreen"
 repositories {
+    maven { url "https://maven.terraformersmc.com/releases" }
     maven {
         url = "https://api.modrinth.com/maven"
     }

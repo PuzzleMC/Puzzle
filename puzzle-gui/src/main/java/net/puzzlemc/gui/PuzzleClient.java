@@ -4,9 +4,6 @@ import dev.lambdaurora.lambdabettergrass.LBGConfig;
 import dev.lambdaurora.lambdabettergrass.LambdaBetterGrass;
 import dev.lambdaurora.lambdynlights.DynamicLightsConfig;
 import dev.lambdaurora.lambdynlights.LambDynLights;
-import dev.tr7zw.exordium.Config;
-import dev.tr7zw.exordium.ExordiumMod;
-import dev.tr7zw.exordium.ExordiumModBase;
 import dynamicfps.DynamicFPSConfig;
 import dynamicfps.DynamicFPSMod;
 import eu.midnightdust.core.MidnightLibClient;
@@ -17,23 +14,19 @@ import io.github.kvverti.colormatic.ColormaticConfigController;
 import link.infra.borderlessmining.config.ConfigHandler;
 import me.pepperbell.continuity.client.config.ContinuityConfig;
 import me.pepperbell.continuity.client.config.Option;
-import net.dorianpb.cem.internal.config.CemConfig;
-import net.dorianpb.cem.internal.config.CemConfigFairy;
-import net.dorianpb.cem.internal.config.CemOptions;
 import net.puzzlemc.core.config.PuzzleConfig;
-import net.puzzlemc.gui.mixin.CemConfigAccessor;
 import net.puzzlemc.gui.screen.widget.PuzzleWidget;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.puzzlemc.splashscreen.PuzzleSplashScreen;
 import shcm.shsupercm.fabric.citresewn.config.CITResewnConfig;
+import traben.entity_model_features.config.EMFConfig;
+import traben.entity_model_features.utils.EMFManager;
 import traben.entity_texture_features.ETFApi;
 import traben.entity_texture_features.config.ETFConfig;
 import io.github.kvverti.colormatic.ColormaticConfig;
-import traben.entity_texture_features.texture_handlers.ETFManager;
 
 public class PuzzleClient implements ClientModInitializer {
 
@@ -227,23 +220,6 @@ public class PuzzleClient implements ClientModInitializer {
             PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.translatable("lambdabettergrass.option.mode"), (button) -> button.setMessage(lbgConfig.getMode().getTranslatedText()), (button) -> lbgConfig.setMode(lbgConfig.getMode().next())));
             PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.translatable("lambdabettergrass.option.better_snow"), (button) -> button.setMessage(lbgConfig.hasBetterLayer() ? YES : NO), (button) -> lbgConfig.setBetterLayer(!lbgConfig.hasBetterLayer())));
         }
-        if (isActive("cem") && FabricLoader.getInstance().isModLoaded("completeconfig")) {
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Custom Entity Models")));
-            CemConfig cemConfig = (CemConfig) CemConfigFairy.getConfig();
-            CemOptions cemOptions = CemConfigFairy.getConfig();
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("config.cem.use_optifine_folder"), (button) -> button.setMessage(cemConfig.useOptifineFolder() ? YES : NO), (button) -> {
-                ((CemConfigAccessor)cemOptions).setUseOptifineFolder(!cemConfig.useOptifineFolder());
-                cemConfig.save();
-            }));
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("config.cem.use_new_model_creation_fix"), (button) -> button.setMessage(cemConfig.useTransparentParts() ? YES : NO), (button) -> {
-                ((CemConfigAccessor)cemOptions).setUseModelCreationFix(!cemConfig.useTransparentParts());
-                cemConfig.save();
-            }));
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("config.cem.use_old_animations"), (button) -> button.setMessage(cemConfig.useOldAnimations() ? YES : NO), (button) -> {
-                ((CemConfigAccessor)cemOptions).setUseOldAnimations(!cemConfig.useOldAnimations());
-                cemConfig.save();
-            }));
-        }
         if (isActive("continuity")) {
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Continuity")));
             ContinuityConfig contConfig = ContinuityConfig.INSTANCE;
@@ -261,7 +237,7 @@ public class PuzzleClient implements ClientModInitializer {
         }
         if (isActive("entity_texture_features")) {
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("config.entity_texture_features.title")));
-            ETFConfig etfConfig = ETFApi.getETFConfigObject;
+            ETFConfig etfConfig = ETFApi.getETFConfigObject();
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("config.entity_texture_features.enable_custom_textures.title"), (button) -> button.setMessage(etfConfig.enableCustomTextures ? YES : NO), (button) -> {
                 etfConfig.enableCustomTextures = !etfConfig.enableCustomTextures;
                 ETFApi.saveETFConfigChangesAndResetETF();
@@ -284,36 +260,15 @@ public class PuzzleClient implements ClientModInitializer {
                 ETFApi.saveETFConfigChangesAndResetETF();
             }));
         }
-        if (isActive("exordium")) {
-            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.translatable("text.exordium.title")));
-            Config exordiumConfig = ExordiumModBase.instance.config;
-            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.translatable("text.exordium.enableGui"), (button) -> button.setMessage(exordiumConfig.enabledGui ? YES : NO), (button) -> {
-                exordiumConfig.enabledGui = !exordiumConfig.enabledGui;
-                ExordiumModBase.instance.writeConfig();
-            }));
-            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(5, 60, Text.translatable("text.exordium.targetFramerateGui"), () -> exordiumConfig.targetFPSIngameGui, (button) -> button.setMessage(Text.literal(exordiumConfig.targetFPSIngameGui+"")), (slider) -> {
-                exordiumConfig.targetFPSIngameGui = slider.getInt();
-                ExordiumModBase.instance.writeConfig();
-            }));
-            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.translatable("text.exordium.enabledGuiAnimationSpeedup"), (button) -> button.setMessage(exordiumConfig.enabledGuiAnimationSpeedup ? YES : NO), (button) -> {
-                exordiumConfig.enabledGuiAnimationSpeedup = !exordiumConfig.enabledGuiAnimationSpeedup;
-                ExordiumModBase.instance.writeConfig();
-            }));
-            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(30, 120, Text.translatable("text.exordium.targetFPSIngameGuiAnimated"), () -> exordiumConfig.targetFPSIngameGuiAnimated, (button) -> button.setMessage(Text.literal(exordiumConfig.targetFPSIngameGuiAnimated+"")), (slider) -> {
-                exordiumConfig.targetFPSIngameGuiAnimated = slider.getInt();
-                ExordiumModBase.instance.writeConfig();
-            }));
-            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.translatable("text.exordium.enableNametagScreenBuffering"), (button) -> button.setMessage(exordiumConfig.enableNametagScreenBuffering ? YES : NO), (button) -> {
-                exordiumConfig.enableNametagScreenBuffering = !exordiumConfig.enableNametagScreenBuffering;
-                ExordiumModBase.instance.writeConfig();
-            }));
-            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(30, 80, Text.translatable("text.exordium.targetFPSNameTags"), () -> exordiumConfig.targetFPSNameTags, (button) -> button.setMessage(Text.literal(exordiumConfig.targetFPSNameTags+"")), (slider) -> {
-                exordiumConfig.targetFPSNameTags = slider.getInt();
-                ExordiumModBase.instance.writeConfig();
-            }));
-            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.translatable("text.exordium.enableSignBuffering"), (button) -> button.setMessage(exordiumConfig.enableSignBuffering ? YES : NO), (button) -> {
-                exordiumConfig.enableSignBuffering = !exordiumConfig.enableSignBuffering;
-                ExordiumModBase.instance.writeConfig();
+        if (isActive("entity_model_features")) {
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("entity_model_features.title")));
+            EMFConfig emfConfig = EMFConfig.getConfig();
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("entity_model_features.config.substitute_vanilla"), (button) -> button.setMessage(emfConfig.attemptToCopyVanillaModelIntoMissingModelPart ? YES : NO), (button) -> {
+                emfConfig.attemptToCopyVanillaModelIntoMissingModelPart = !emfConfig.attemptToCopyVanillaModelIntoMissingModelPart;
+                EMFConfig.EMF_saveConfig();
+                if (EMFConfig.getConfig().reloadMode == EMFConfig.ModelDataRefreshMode.MANUAL) {
+                    EMFManager.resetInstance();
+                }
             }));
         }
         lateInitDone = true;

@@ -1,9 +1,11 @@
 archivesBaseName = "puzzle-base"
 repositories {
+    maven { url "https://maven.terraformersmc.com/releases" }
     maven {
         url = "https://api.modrinth.com/maven"
     }
 }
 dependencies {
     modImplementation "maven.modrinth:midnightlib:${project.midnightlib_version}"
+    modImplementation ("com.terraformersmc:modmenu:${project.mod_menu_version}")
 }

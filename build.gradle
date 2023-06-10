@@ -1,6 +1,6 @@
 // Based on https://github.com/OnyxStudios/Cardinal-Components-API/blob/1.17/build.gradle
 plugins {
-    id "fabric-loom" version "1.1-SNAPSHOT" apply false
+    id "fabric-loom" version "1.2-SNAPSHOT" apply false
     id "com.matthewprenger.cursegradle" version "1.4.0"
     id "maven-publish"
     id "java-library"
@@ -131,9 +131,9 @@ dependencies {
     modImplementation ("maven.modrinth:borderless-mining:${project.borderless_mining_version}")
     modImplementation ("maven.modrinth:dynamic-fps:${project.dynamic_fps_version}")
     modImplementation("com.moandjiezana.toml:toml4j:${project.toml4j_version}")
-    modImplementation ("maven.modrinth:entitytexturefeatures:${project.entitytexturefeatures_version}")
-    modImplementation ("maven.modrinth:cem:${project.cem_version}")
-    modImplementation "com.github.Lortseam.completeconfig:base:${project.complete_config_version}"
+    modImplementation ("maven.modrinth:entitytexturefeatures:${project.etf_version}")
+    modImplementation ("maven.modrinth:entity-model-features:${project.emf_version}")
+    modImplementation ("maven.modrinth:completeconfig:${project.complete_config_version}")
     modImplementation ("maven.modrinth:exordium:${project.exordium_version}")
 
     modImplementation("org.aperlambda:lambdajcommon:1.8.1") {

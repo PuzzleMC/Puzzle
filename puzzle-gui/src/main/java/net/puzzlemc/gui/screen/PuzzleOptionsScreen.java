@@ -1,6 +1,7 @@
 package net.puzzlemc.gui.screen;
 
 import com.google.common.collect.Lists;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.tab.GridScreenTab;
 import net.minecraft.client.gui.tab.Tab;
 import net.minecraft.client.gui.tab.TabManager;
@@ -13,7 +14,6 @@ import net.puzzlemc.gui.screen.widget.PuzzleOptionListWidget;
 import net.puzzlemc.gui.screen.widget.PuzzleWidget;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.util.math.MatrixStack;
 
 import java.util.List;
 import java.util.Objects;
@@ -85,18 +85,17 @@ public class PuzzleOptionsScreen extends Screen {
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        this.renderBackground(matrices);
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        this.renderBackground(context);
         if (client != null && client.world != null) this.list.setRenderBackground(false);
-        this.list.render(matrices, mouseX, mouseY, delta);
+        this.list.render(context, mouseX, mouseY, delta);
 
-        drawCenteredTextWithShadow(matrices, textRenderer, title, width/2, 15, 0xFFFFFF);
-        super.render(matrices, mouseX, mouseY, delta);
+        super.render(context, mouseX, mouseY, delta);
         if (tooltip != null) {
             if (this.list.getFocused() != null && (this.list.getHoveredEntry() == null || this.list.getHoveredEntry().button == null || !this.list.getHoveredEntry().button.isMouseOver(mouseX, mouseY))) {
-                renderTooltip(matrices, tooltip, this.list.getFocused().getX(), this.list.getFocused().getY() + (this.list.getFocused().getHeight() * 2));
+                context.drawTooltip(textRenderer, tooltip, this.list.getFocused().getX(), this.list.getFocused().getY() + (this.list.getFocused().getHeight() * 2));
             }
-            else renderTooltip(matrices, tooltip, mouseX, mouseY);
+            else context.drawTooltip(textRenderer, tooltip, mouseX, mouseY);
         }
         tooltip = null;
     }

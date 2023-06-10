@@ -1,5 +1,7 @@
 package net.puzzlemc.core.mixin;
 
+import com.terraformersmc.modmenu.config.ModMenuConfig;
+import eu.midnightdust.lib.util.PlatformFunctions;
 import net.minecraft.client.gui.widget.PressableTextWidget;
 import net.puzzlemc.core.PuzzleCore;
 import net.puzzlemc.core.config.PuzzleConfig;
@@ -23,7 +25,10 @@ public abstract class MixinTitleScreen extends Screen {
     }
     @Inject(at = @At("TAIL"), method = "init")
     private void puzzle$init(CallbackInfo ci) {
-        int yOffset = 20;
+        int yOffset = 8;
+        if (PlatformFunctions.isModLoaded("modmenu") && ModMenuConfig.MODIFY_TITLE_SCREEN.getValue() && ModMenuConfig.MODS_BUTTON_STYLE.getValue() == ModMenuConfig.TitleMenuButtonStyle.CLASSIC) {
+            yOffset += 12;
+        }
         Text puzzleText;
         if (UpdateChecker.isUpToDate) {
             puzzleText = Text.literal(versionText);

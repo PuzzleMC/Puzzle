@@ -4,6 +4,7 @@ loom {
     accessWidenerPath =  file("src/main/resources/puzzle-models.accesswidener")
 }
 repositories {
+    maven { url "https://maven.terraformersmc.com/releases" }
     maven {
         url = "https://api.modrinth.com/maven"
     }

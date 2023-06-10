@@ -27,6 +27,7 @@ repositories {
 	maven {
 		url "https://maven.shedaniel.me/"
 	}
+	maven { url "https://maven.quiltmc.org/repository/release/" }
 }
 
 dependencies {
@@ -35,26 +36,28 @@ dependencies {
 
 	modImplementation "dev.lambdaurora:spruceui:${project.spruceui_version}"
 	modImplementation "maven.modrinth:midnightlib:${project.midnightlib_version}"
-
 	modImplementation ("com.terraformersmc:modmenu:${project.mod_menu_version}")
+
 	modImplementation ("maven.modrinth:cull-leaves:${project.cull_leaves_version}")
 	modImplementation ("maven.modrinth:lambdynamiclights:${project.ldl_version}")
 	modCompileOnlyApi ("maven.modrinth:lambdabettergrass:${project.lbg_version}")
- 	modImplementation ("maven.modrinth:iris:${project.iris_version}")
-	modImplementation ("maven.modrinth:cit-resewn:${project.cit_resewn_version}")
+	modCompileOnly "org.quiltmc:quilt-loader:${rootProject.quilt_loader_version}"
+	modCompileOnlyApi "org.quiltmc.quilted-fabric-api:quilted-fabric-api:${rootProject.quilt_fabric_api_version}"
+	modImplementation ("maven.modrinth:iris:${project.iris_version}")
+	modCompileOnly ("maven.modrinth:cit-resewn:${project.cit_resewn_version}")
+	modCompileOnlyApi ("maven.modrinth:continuity:${project.continuity_version}")
+	modImplementation ("maven.modrinth:animatica:${project.animatica_version}")
 	modCompileOnlyApi ("maven.modrinth:colormatic:${project.colormatic_version}")
 	modImplementation ("maven.modrinth:borderless-mining:${project.borderless_mining_version}")
 	modImplementation ("maven.modrinth:dynamic-fps:${project.dynamic_fps_version}")
-	modImplementation ("maven.modrinth:entitytexturefeatures:${project.entitytexturefeatures_version}")
-	modImplementation ("maven.modrinth:cem:${project.cem_version}")
-	modImplementation "com.github.Lortseam.completeconfig:base:${project.complete_config_version}"
+	modImplementation("com.moandjiezana.toml:toml4j:${project.toml4j_version}")
+	modImplementation ("maven.modrinth:entitytexturefeatures:${project.etf_version}")
+	modImplementation ("maven.modrinth:entity-model-features:${project.emf_version}")
+	modImplementation ("maven.modrinth:completeconfig:${project.complete_config_version}")
 	modImplementation ("maven.modrinth:exordium:${project.exordium_version}")
 
 	modImplementation("org.aperlambda:lambdajcommon:1.8.1") {
 		exclude group: 'com.google.code.gson'
 		exclude group: 'com.google.guava'
 	}
-	modCompileOnlyApi ("maven.modrinth:continuity:${project.continuity_version}") {
-         exclude module: "modmenu"
- 	}
 } 
