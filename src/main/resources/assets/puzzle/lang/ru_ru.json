@@ -1,9 +1,9 @@
 {
 	"puzzle.text.update_available":"Доступно обновление!",
 	"puzzle.screen.title":"Настройки Puzzle",
-	"puzzle.page.graphics":"графики",
-	"puzzle.page.resources":"ресурсов",
-	"puzzle.page.performance":"Производительность",
+	"puzzle.page.graphics":"Графика",
+	"puzzle.page.resources":"Ресурсы",
+	"puzzle.page.performance":"Оптимизация",
 	"puzzle.page.misc":"Прочие",
 	"puzzle.option.check_for_updates":"Проверять обновления",
 	"puzzle.option.check_for_updates.tooltip":"Включить встроенную в Puzzle проверку обновлений",
@@ -18,10 +18,13 @@
 	"puzzle.option.bigger_custom_models":"Увеличенный размер моделей",
 	"puzzle.option.bigger_custom_models.tooltip":"Увеличить предельный размер\nпользовательских моделей блоков\nи предметов с 3×3×3 до 5×5×5",
 	"puzzle.midnightconfig.title":"Расширенные настройки Puzzle",
+	"puzzle.midnightconfig.category.gui":"Интерфейс",
+	"puzzle.midnightconfig.category.features":"Функционал",
+	"puzzle.midnightconfig.category.debug":"Отладка",
 	"puzzle.midnightconfig.tooltip":"Только для продвинутых пользователей!",
 
-	"cullleaves.puzzle.option.enabled": "Отбраковка листвы",
-	"cullleaves.puzzle.option.enabled.tooltip": "Включить отбраковку блоков листвы\nдля улучшения производительности",
+	"cullleaves.puzzle.option.enabled": "Отбраковка листьев",
+	"cullleaves.puzzle.option.enabled.tooltip": "Включить отбраковку блоков листьев\nдля улучшения производительности",
 	"iris.puzzle.option.enableShaders": "Шейдеры",
 	"iris.puzzle.option.enableShaders.tooltip": "Включить выбранный набор шейдеров",
 	"iris.puzzle.option.open": "Выбрать  ",
@@ -35,5 +38,11 @@
 	"config.dynamicfps.unfocused_volume.tooltip": "Громкость звука игры в состоянии фона\n(когда активно другое окно)",
 	"config.dynamicfps.hidden_volume.tooltip": "Громкость звука игры в скрытом состоянии\n(когда окно свёрнуто, закрыто другим окном\nили находится на другом рабочем столе)",
 	"entity_texture_features.puzzle.emissive_type.brighter": "§eЯркие",
-	"entity_texture_features.puzzle.emissive_type.default": "§6Обычные"
+	"entity_texture_features.puzzle.emissive_type.default": "§6Обычные",
+
+	"modmenu.descriptionTranslation.puzzle": "Функции улучшения внешнего вида и производительности.",
+	"modmenu.descriptionTranslation.puzzle-base": "Общий код всех модулей Puzzle.",
+	"modmenu.descriptionTranslation.puzzle-gui": "Альтернативы Optifine, объединённые в едином меню.",
+	"modmenu.descriptionTranslation.puzzle-models": "Больше свободы моделям блоков и предметов!",
+	"modmenu.descriptionTranslation.puzzle-splashscreen": "Свой экран загрузки при помощи наборов ресурсов."
 }
