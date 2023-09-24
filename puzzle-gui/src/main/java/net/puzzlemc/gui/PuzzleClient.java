@@ -4,8 +4,6 @@ import dev.lambdaurora.lambdabettergrass.LBGConfig;
 import dev.lambdaurora.lambdabettergrass.LambdaBetterGrass;
 import dev.lambdaurora.lambdynlights.DynamicLightsConfig;
 import dev.lambdaurora.lambdynlights.LambDynLights;
-import dynamicfps.DynamicFPSConfig;
-import dynamicfps.DynamicFPSMod;
 import eu.midnightdust.core.MidnightLibClient;
 import eu.midnightdust.cullleaves.config.CullLeavesConfig;
 import eu.midnightdust.lib.util.PlatformFunctions;
@@ -14,6 +12,8 @@ import io.github.kvverti.colormatic.ColormaticConfigController;
 import link.infra.borderlessmining.config.ConfigHandler;
 import me.pepperbell.continuity.client.config.ContinuityConfig;
 import me.pepperbell.continuity.client.config.Option;
+import net.minecraft.screen.ScreenTexts;
+import net.minecraft.util.Identifier;
 import net.puzzlemc.core.config.PuzzleConfig;
 import net.puzzlemc.gui.screen.widget.PuzzleWidget;
 import net.fabricmc.api.ClientModInitializer;
@@ -23,7 +23,6 @@ import net.minecraft.util.Formatting;
 import net.puzzlemc.splashscreen.PuzzleSplashScreen;
 import shcm.shsupercm.fabric.citresewn.config.CITResewnConfig;
 import traben.entity_model_features.config.EMFConfig;
-import traben.entity_model_features.utils.EMFManager;
 import traben.entity_texture_features.ETFApi;
 import traben.entity_texture_features.config.ETFConfig;
 import io.github.kvverti.colormatic.ColormaticConfig;
@@ -33,6 +32,7 @@ public class PuzzleClient implements ClientModInitializer {
     public final static String id = "puzzle";
     public static final Text YES = Text.translatable("gui.yes").formatted(Formatting.GREEN);
     public static final Text NO = Text.translatable("gui.no").formatted(Formatting.RED);
+    public static final Identifier PUZZLE_BUTTON = new Identifier(id, "icon/button");
 
     @Override
     public void onInitializeClient() {
@@ -108,49 +108,6 @@ public class PuzzleClient implements ClientModInitializer {
                             }
                             catch (NumberFormatException ignored) {}
             }));
-        }
-        if (isActive("dynamicfps")) {
-            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.of("Dynamic FPS")));
-            DynamicFPSConfig fpsConfig = DynamicFPSMod.config;
-            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.translatable("config.dynamicfps.reduce_when_unfocused"), (button) -> button.setMessage(fpsConfig.reduceFPSWhenUnfocused ? YES : NO), (button) -> {
-                fpsConfig.reduceFPSWhenUnfocused = !fpsConfig.reduceFPSWhenUnfocused;
-                fpsConfig.save();
-            }));
-            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(0, 60,Text.translatable("config.dynamicfps.unfocused_fps"), () -> fpsConfig.unfocusedFPS,
-                    (button) -> button.setMessage(Text.of(fpsConfig.unfocusedFPS + " FPS")),
-                    (slider) -> {
-                        try {
-                            fpsConfig.unfocusedFPS = slider.getInt();
-                        }
-                        catch (NumberFormatException ignored) {}
-                        finally {fpsConfig.save();}
-                    }));
-            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.translatable("config.dynamicfps.restore_when_hovered"), (button) -> button.setMessage(fpsConfig.restoreFPSWhenHovered ? YES : NO), (button) -> {
-                fpsConfig.restoreFPSWhenHovered = !fpsConfig.restoreFPSWhenHovered;
-                fpsConfig.save();
-            }));
-            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.translatable("config.dynamicfps.run_gc_on_unfocus"), (button) -> button.setMessage(fpsConfig.runGCOnUnfocus ? YES : NO), (button) -> {
-                fpsConfig.runGCOnUnfocus = !fpsConfig.runGCOnUnfocus;
-                fpsConfig.save();
-            }));
-            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(0, 100,Text.translatable("config.dynamicfps.unfocused_volume"), () -> ((Number)(fpsConfig.unfocusedVolumeMultiplier * 100)).intValue(),
-                    (button) -> button.setMessage(Text.of(((Number)(fpsConfig.unfocusedVolumeMultiplier * 100)).intValue() + "%")),
-                    (slider) -> {
-                        try {
-                            fpsConfig.unfocusedVolumeMultiplier = ((Number)slider.getInt()).floatValue() / 100;
-                        }
-                        catch (NumberFormatException ignored) {}
-                        finally {fpsConfig.save();}
-                    }));
-            PuzzleApi.addToPerformanceOptions(new PuzzleWidget(0, 100,Text.translatable("config.dynamicfps.hidden_volume"), () -> ((Number)(fpsConfig.hiddenVolumeMultiplier * 100)).intValue(),
-                    (button) -> button.setMessage(Text.of(((Number)(fpsConfig.hiddenVolumeMultiplier * 100)).intValue() + "%")),
-                    (slider) -> {
-                        try {
-                            fpsConfig.hiddenVolumeMultiplier = ((Number)slider.getInt()).floatValue() / 100;
-                        }
-                        catch (NumberFormatException ignored) {}
-                        finally {fpsConfig.save();}
-                    }));
         }
         if (isActive("borderlessmining")) {
             PuzzleApi.addToMiscOptions(new PuzzleWidget(Text.of("Borderless Mining")));
@@ -229,7 +186,6 @@ public class PuzzleClient implements ClientModInitializer {
                     Option.BooleanOption booleanOption = ((Option.BooleanOption)option);
                     PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("options.continuity."+s), (button) -> button.setMessage(booleanOption.get() ? YES : NO), (button) -> {
                         booleanOption.set(!booleanOption.get());
-                        contConfig.onChange();
                         contConfig.save();
                     }));
                 } catch (Exception ignored) {}
@@ -263,13 +219,17 @@ public class PuzzleClient implements ClientModInitializer {
         if (isActive("entity_model_features")) {
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("entity_model_features.title")));
             EMFConfig emfConfig = EMFConfig.getConfig();
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("entity_model_features.config.substitute_vanilla"), (button) -> button.setMessage(emfConfig.attemptToCopyVanillaModelIntoMissingModelPart ? YES : NO), (button) -> {
-                emfConfig.attemptToCopyVanillaModelIntoMissingModelPart = !emfConfig.attemptToCopyVanillaModelIntoMissingModelPart;
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("entity_model_features.config.force_models"), (button) -> button.setMessage(emfConfig.attemptRevertingEntityModelsAlteredByAnotherMod ? YES : NO), (button) -> {
+                emfConfig.attemptRevertingEntityModelsAlteredByAnotherMod = !emfConfig.attemptRevertingEntityModelsAlteredByAnotherMod;
                 EMFConfig.EMF_saveConfig();
-                if (EMFConfig.getConfig().reloadMode == EMFConfig.ModelDataRefreshMode.MANUAL) {
-                    EMFManager.resetInstance();
-                }
             }));
+            if (PlatformFunctions.isModLoaded("physicsmod")) {
+                PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("entity_model_features.config.physics"), (button) -> button.setMessage(emfConfig.attemptPhysicsModPatch_2 != EMFConfig.PhysicsModCompatChoice.OFF ?
+                        Text.translatable("entity_model_features.config." + (emfConfig.attemptPhysicsModPatch_2 == EMFConfig.PhysicsModCompatChoice.VANILLA ? "physics.1" : "physics.2")) : ScreenTexts.OFF), (button) -> {
+                    emfConfig.attemptPhysicsModPatch_2 = emfConfig.attemptPhysicsModPatch_2.next();
+                    EMFConfig.EMF_saveConfig();
+                }));
+            }
         }
         lateInitDone = true;
     }

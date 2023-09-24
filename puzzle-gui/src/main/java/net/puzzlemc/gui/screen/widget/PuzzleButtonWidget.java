@@ -16,7 +16,9 @@ public class PuzzleButtonWidget extends ButtonWidget {
     }
     @Override
     public void renderButton(DrawContext context, int mouseX, int mouseY, float delta) {
-        title.setTitle(this);
+        try {
+            title.setTitle(this);
+        } catch (Exception e) {e.printStackTrace(); this.visible = false;}
         super.renderButton(context, mouseX, mouseY, delta);
     }
 }

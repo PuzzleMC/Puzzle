@@ -43,10 +43,10 @@ dependencies {
 	modCompileOnlyApi ("maven.modrinth:lambdabettergrass:${project.lbg_version}")
 	modCompileOnly "org.quiltmc:quilt-loader:${rootProject.quilt_loader_version}"
 	modCompileOnlyApi "org.quiltmc.quilted-fabric-api:quilted-fabric-api:${rootProject.quilt_fabric_api_version}"
-	modImplementation ("maven.modrinth:iris:${project.iris_version}")
+	modCompileOnlyApi ("maven.modrinth:iris:${project.iris_version}")
 	modCompileOnly ("maven.modrinth:cit-resewn:${project.cit_resewn_version}")
 	modCompileOnlyApi ("maven.modrinth:continuity:${project.continuity_version}")
-	modImplementation ("maven.modrinth:animatica:${project.animatica_version}")
+	modCompileOnlyApi ("maven.modrinth:animatica:${project.animatica_version}")
 	modCompileOnlyApi ("maven.modrinth:colormatic:${project.colormatic_version}")
 	modImplementation ("maven.modrinth:borderless-mining:${project.borderless_mining_version}")
 	modImplementation ("maven.modrinth:dynamic-fps:${project.dynamic_fps_version}")

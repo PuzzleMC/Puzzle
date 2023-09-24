@@ -56,6 +56,7 @@ public class PuzzleOptionsScreen extends Screen {
         this.addSelectableChild(this.list);
 
         super.init();
+        if (client != null && client.world != null) this.list.setRenderBackground(false);
 
         this.addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, (button) -> Objects.requireNonNull(client).setScreen(parent)).dimensions(this.width / 2 - 100, this.height - 28, 200, 20).build());
     }
@@ -86,11 +87,10 @@ public class PuzzleOptionsScreen extends Screen {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        this.renderBackground(context);
-        if (client != null && client.world != null) this.list.setRenderBackground(false);
+        super.render(context, mouseX, mouseY, delta);
+
         this.list.render(context, mouseX, mouseY, delta);
 
-        super.render(context, mouseX, mouseY, delta);
         if (tooltip != null) {
             if (this.list.getFocused() != null && (this.list.getHoveredEntry() == null || this.list.getHoveredEntry().button == null || !this.list.getHoveredEntry().button.isMouseOver(mouseX, mouseY))) {
                 context.drawTooltip(textRenderer, tooltip, this.list.getFocused().getX(), this.list.getFocused().getY() + (this.list.getFocused().getHeight() * 2));

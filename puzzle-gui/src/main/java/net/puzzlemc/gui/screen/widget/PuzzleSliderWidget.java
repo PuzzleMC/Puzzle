@@ -17,7 +17,9 @@ public class PuzzleSliderWidget extends SliderWidget {
 
         this.setTextAction = setTextAction;
         this.changeAction = changeAction;
-        this.updateMessage();
+        try {
+            this.updateMessage();
+        } catch (Exception e) {e.printStackTrace(); this.visible = false;}
     }
     public int getInt() {
         int difference = max - min;

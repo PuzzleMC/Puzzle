@@ -12,7 +12,9 @@ public class PuzzleTextFieldWidget extends TextFieldWidget {
         super(textRenderer, x, y, width, height, Text.of(""));
         this.setValueAction = setValue;
         this.change = change;
-        setValueAction.setTextValue(this);
+        try {
+            setValueAction.setTextValue(this);
+        } catch (Exception e) {e.printStackTrace(); this.setVisible(false);}
     }
     @Override
     public void write(String text) {
