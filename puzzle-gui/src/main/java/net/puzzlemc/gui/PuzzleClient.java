@@ -4,7 +4,7 @@ import dev.lambdaurora.lambdabettergrass.LBGConfig;
 import dev.lambdaurora.lambdabettergrass.LambdaBetterGrass;
 import dev.lambdaurora.lambdynlights.DynamicLightsConfig;
 import dev.lambdaurora.lambdynlights.LambDynLights;
-import eu.midnightdust.core.MidnightLibClient;
+import eu.midnightdust.core.MidnightLib;
 import eu.midnightdust.cullleaves.config.CullLeavesConfig;
 import eu.midnightdust.lib.util.PlatformFunctions;
 import io.github.kvverti.colormatic.Colormatic;
@@ -36,7 +36,7 @@ public class PuzzleClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        MidnightLibClient.hiddenMods.add("puzzle");
+        MidnightLib.hiddenMods.add("puzzle");
         MinecraftClient client = MinecraftClient.getInstance();
         PuzzleApi.addToMiscOptions(new PuzzleWidget(Text.of("Puzzle")));
         PuzzleApi.addToMiscOptions(new PuzzleWidget(Text.translatable("puzzle.option.check_for_updates"), (button) -> button.setMessage(PuzzleConfig.checkUpdates ? YES : NO), (button) -> {
@@ -135,11 +135,11 @@ public class PuzzleClient implements ClientModInitializer {
 
             PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.of("LambDynamicLights")));
             PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.translatable("lambdynlights.option.mode"), (button) -> button.setMessage(ldlConfig.getDynamicLightsMode().getTranslatedText()), (button) -> ldlConfig.setDynamicLightsMode(ldlConfig.getDynamicLightsMode().next())));
-            PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.translatable("").append("DynLights: ").append(Text.translatable("lambdynlights.option.light_sources.entities")), (button) -> button.setMessage(ldlConfig.getEntitiesLightSource().get() ? YES : NO), (button) -> ldlConfig.getEntitiesLightSource().set(!ldlConfig.getEntitiesLightSource().get())));
-            PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.translatable("").append("DynLights: ").append(Text.translatable("lambdynlights.option.light_sources.block_entities")), (button) -> button.setMessage(ldlConfig.getBlockEntitiesLightSource().get() ? YES : NO), (button) -> ldlConfig.getBlockEntitiesLightSource().set(!ldlConfig.getBlockEntitiesLightSource().get())));
-            PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.translatable("").append("DynLights: ").append(Text.translatable("entity.minecraft.creeper")), (button) -> button.setMessage(ldlConfig.getCreeperLightingMode().getTranslatedText()), (button) -> ldlConfig.setCreeperLightingMode(ldlConfig.getCreeperLightingMode().next())));
-            PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.translatable("").append("DynLights: ").append(Text.translatable("block.minecraft.tnt")), (button) -> button.setMessage(ldlConfig.getTntLightingMode().getTranslatedText()), (button) -> ldlConfig.setTntLightingMode(ldlConfig.getTntLightingMode().next())));
-            PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.translatable("").append("DynLights: ").append(Text.translatable("lambdynlights.option.light_sources.water_sensitive_check")), (button) -> button.setMessage(ldlConfig.getWaterSensitiveCheck().get() ? YES : NO), (button) -> ldlConfig.getWaterSensitiveCheck().set(!ldlConfig.getWaterSensitiveCheck().get())));
+            PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.empty().append("DynLights: ").append(Text.translatable("lambdynlights.option.light_sources.entities")), (button) -> button.setMessage(ldlConfig.getEntitiesLightSource().get() ? YES : NO), (button) -> ldlConfig.getEntitiesLightSource().set(!ldlConfig.getEntitiesLightSource().get())));
+            PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.empty().append("DynLights: ").append(Text.translatable("lambdynlights.option.light_sources.block_entities")), (button) -> button.setMessage(ldlConfig.getBlockEntitiesLightSource().get() ? YES : NO), (button) -> ldlConfig.getBlockEntitiesLightSource().set(!ldlConfig.getBlockEntitiesLightSource().get())));
+            PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.empty().append("DynLights: ").append(Text.translatable("entity.minecraft.creeper")), (button) -> button.setMessage(ldlConfig.getCreeperLightingMode().getTranslatedText()), (button) -> ldlConfig.setCreeperLightingMode(ldlConfig.getCreeperLightingMode().next())));
+            PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.empty().append("DynLights: ").append(Text.translatable("block.minecraft.tnt")), (button) -> button.setMessage(ldlConfig.getTntLightingMode().getTranslatedText()), (button) -> ldlConfig.setTntLightingMode(ldlConfig.getTntLightingMode().next())));
+            PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.empty().append("DynLights: ").append(Text.translatable("lambdynlights.option.light_sources.water_sensitive_check")), (button) -> button.setMessage(ldlConfig.getWaterSensitiveCheck().get() ? YES : NO), (button) -> ldlConfig.getWaterSensitiveCheck().set(!ldlConfig.getWaterSensitiveCheck().get())));
         }
         if (isActive("citresewn") && CITResewnConfig.INSTANCE != null) {
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("CIT Resewn")));

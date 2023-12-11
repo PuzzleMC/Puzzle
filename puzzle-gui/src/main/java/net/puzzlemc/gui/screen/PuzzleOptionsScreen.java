@@ -10,8 +10,7 @@ import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 import net.puzzlemc.gui.PuzzleApi;
 import net.puzzlemc.gui.PuzzleClient;
-import net.puzzlemc.gui.screen.widget.PuzzleOptionListWidget;
-import net.puzzlemc.gui.screen.widget.PuzzleWidget;
+import net.puzzlemc.gui.screen.widget.*;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 
@@ -51,7 +50,7 @@ public class PuzzleOptionsScreen extends Screen {
         tabNavigation.init();
         prevTab = tabManager.getCurrentTab();
         this.addDrawableChild(tabNavigation);
-        this.list = new PuzzleOptionListWidget(this.client, this.width, this.height, 32, this.height - 32, 25);
+        this.list = new PuzzleOptionListWidget(this.client, this.width, this.height - 64, 32, 25);
         fillList();
         this.addSelectableChild(this.list);
 
@@ -87,16 +86,9 @@ public class PuzzleOptionsScreen extends Screen {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
-
+        if (client != null && client.world != null) super.renderInGameBackground(context);
         this.list.render(context, mouseX, mouseY, delta);
-
-        if (tooltip != null) {
-            if (this.list.getFocused() != null && (this.list.getHoveredEntry() == null || this.list.getHoveredEntry().button == null || !this.list.getHoveredEntry().button.isMouseOver(mouseX, mouseY))) {
-                context.drawTooltip(textRenderer, tooltip, this.list.getFocused().getX(), this.list.getFocused().getY() + (this.list.getFocused().getHeight() * 2));
-            }
-            else context.drawTooltip(textRenderer, tooltip, mouseX, mouseY);
-        }
-        tooltip = null;
+        super.render(context, mouseX, mouseY, delta);
     }
+    @Override public void renderBackground(DrawContext c, int x, int y, float d) {}
 }

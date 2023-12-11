@@ -54,7 +54,7 @@ dependencies {
 	modImplementation ("maven.modrinth:entitytexturefeatures:${project.etf_version}")
 	modImplementation ("maven.modrinth:entity-model-features:${project.emf_version}")
 	modImplementation ("maven.modrinth:completeconfig:${project.complete_config_version}")
-	modImplementation ("maven.modrinth:exordium:${project.exordium_version}")
+	//modImplementation ("maven.modrinth:exordium:${project.exordium_version}")
 
 	modImplementation("org.aperlambda:lambdajcommon:1.8.1") {
 		exclude group: 'com.google.code.gson'
