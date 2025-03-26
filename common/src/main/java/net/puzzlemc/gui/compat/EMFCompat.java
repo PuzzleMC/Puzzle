@@ -20,10 +20,6 @@ public class EMFCompat {
     public static void init() {
         PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("entity_model_features.title")));
         EMFConfig emfConfig = EMF.config().getConfig();
-        PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("entity_model_features.config.force_models"), (button) -> button.setMessage(emfConfig.attemptRevertingEntityModelsAlteredByAnotherMod ? YES : NO), (button) -> {
-            emfConfig.attemptRevertingEntityModelsAlteredByAnotherMod = !emfConfig.attemptRevertingEntityModelsAlteredByAnotherMod;
-            EMF.config().saveToFile();
-        }));
         if (PlatformFunctions.isModLoaded("physicsmod")) {
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("entity_model_features.config.physics"), (button) -> button.setMessage(emfConfig.attemptPhysicsModPatch_2 != EMFConfig.PhysicsModCompatChoice.OFF ?
                     Text.translatable("entity_model_features.config." + (emfConfig.attemptPhysicsModPatch_2 == EMFConfig.PhysicsModCompatChoice.VANILLA ? "physics.1" : "physics.2")) : ScreenTexts.OFF), (button) -> {
