@@ -107,7 +107,7 @@ public class PuzzleSplashScreen {
                     try (InputStream stream = resource.getInputStream()) {
                         Files.copy(stream, BACKGROUND_TEXTURE, StandardCopyOption.REPLACE_EXISTING);
                         InputStream input = new FileInputStream(String.valueOf(PuzzleSplashScreen.BACKGROUND_TEXTURE));
-                        client.getTextureManager().registerTexture(BACKGROUND, new NativeImageBackedTexture(NativeImage.read(input)));
+                        client.getTextureManager().registerTexture(BACKGROUND, new NativeImageBackedTexture(() -> "splash_screen_background", NativeImage.read(input)));
                         keepBackground = true;
                         PuzzleConfig.hasCustomSplashScreen = true;
                     } catch (Exception e) {
