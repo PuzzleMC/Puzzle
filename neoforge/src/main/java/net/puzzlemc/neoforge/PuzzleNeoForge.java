@@ -1,11 +1,12 @@
 package net.puzzlemc.neoforge;
 
+import net.minecraft.util.Identifier;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
+import net.neoforged.neoforge.client.event.AddClientReloadListenersEvent;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.puzzlemc.core.PuzzleCore;
 import net.puzzlemc.gui.screen.PuzzleOptionsScreen;
@@ -23,8 +24,8 @@ public class PuzzleNeoForge {
     @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class MidnightLibBusEvents {
         @SubscribeEvent
-        public static void onResourceReload(RegisterClientReloadListenersEvent event) {
-            event.registerReloadListener(PuzzleSplashScreen.ReloadListener.INSTANCE);
+        public static void onResourceReload(AddClientReloadListenersEvent event) {
+            event.addListener(Identifier.of(MOD_ID, "splash_screen"), PuzzleSplashScreen.ReloadListener.INSTANCE);
         }
     }
 }

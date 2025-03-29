@@ -33,7 +33,7 @@ public class PuzzleSplashScreen {
     public static File CONFIG_PATH = new File(String.valueOf(PlatformFunctions.getConfigDirectory().resolve(".puzzle_cache")));
     public static Path LOGO_TEXTURE = Paths.get(CONFIG_PATH + "/mojangstudios.png");
     public static Path BACKGROUND_TEXTURE = Paths.get(CONFIG_PATH + "/splash_background.png");
-    private static final MinecraftClient client = MinecraftClient.getInstance();
+    private static MinecraftClient client = MinecraftClient.getInstance();
     private static boolean keepBackground = false;
 
     public static void init() {
@@ -55,6 +55,7 @@ public class PuzzleSplashScreen {
 
         @Override
         public void reload(ResourceManager manager) {
+            client = MinecraftClient.getInstance();
             if (PuzzleConfig.resourcepackSplashScreen) {
                 PuzzleSplashScreen.resetColors();
                 client.getTextureManager().registerTexture(LOGO, new LogoTexture(LOGO));

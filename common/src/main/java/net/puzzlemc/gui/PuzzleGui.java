@@ -21,10 +21,9 @@ public class PuzzleGui {
 
     public static void init() {
         MidnightLib.hiddenMods.add("puzzle");
-        MinecraftClient client = MinecraftClient.getInstance();
         PuzzleApi.addToMiscOptions(new PuzzleWidget(Text.of("\uD83E\uDDE9 Puzzle")));
         PuzzleApi.addToMiscOptions(new PuzzleWidget(Text.translatable("puzzle.midnightconfig.title"), (button) -> button.setMessage(Text.of("OPEN")), (button) -> {
-            client.setScreen(PuzzleConfig.getScreen(client.currentScreen, "puzzle"));
+            MinecraftClient.getInstance().setScreen(PuzzleConfig.getScreen(MinecraftClient.getInstance().currentScreen, "puzzle"));
         }));
         PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("\uD83E\uDDE9 Puzzle")));
         PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("puzzle.option.resourcepack_splash_screen"), (button) -> button.setMessage(PuzzleConfig.resourcepackSplashScreen ? YES : NO), (button) -> {
