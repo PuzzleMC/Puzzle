@@ -3,7 +3,8 @@
   "package": "net.puzzlemc.splashscreen.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "MixinSplashScreen"
+    "MixinSplashScreen",
+    "RenderPipelinesAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

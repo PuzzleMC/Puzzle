@@ -1,10 +1,19 @@
 package net.puzzlemc.splashscreen;
 
+import com.mojang.blaze3d.pipeline.BlendFunction;
+import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.platform.DepthTestFunction;
+import com.mojang.blaze3d.platform.DestFactor;
+import com.mojang.blaze3d.platform.SourceFactor;
 import eu.midnightdust.lib.util.MidnightColorUtil;
 import eu.midnightdust.lib.util.PlatformFunctions;
+import net.minecraft.client.gui.screen.SplashOverlay;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderPhase;
 import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.client.texture.TextureContents;
 import net.minecraft.resource.*;
+import net.minecraft.util.TriState;
 import net.minecraft.util.Util;
 import net.puzzlemc.core.config.PuzzleConfig;
 import net.minecraft.client.MinecraftClient;
@@ -12,6 +21,7 @@ import net.minecraft.client.resource.metadata.TextureResourceMetadata;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.ResourceTexture;
 import net.minecraft.util.Identifier;
+import net.puzzlemc.splashscreen.mixin.RenderPipelinesAccessor;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,6 +45,7 @@ public class PuzzleSplashScreen {
     public static Path BACKGROUND_TEXTURE = Paths.get(CONFIG_PATH + "/splash_background.png");
     private static MinecraftClient client = MinecraftClient.getInstance();
     private static boolean keepBackground = false;
+    private static RenderLayer CUSTOM_LOGO_LAYER;
 
     public static void init() {
         if (!CONFIG_PATH.exists()) { // Run when config directory is nonexistent //
@@ -45,8 +56,41 @@ public class PuzzleSplashScreen {
                 }
             }
         }
+        buildRenderLayer();
     }
 
+    public static RenderLayer getCustomLogoRenderLayer() {
+        return CUSTOM_LOGO_LAYER;
+    }
+
+    public static void buildRenderLayer() {
+        if (PuzzleConfig.resourcepackSplashScreen) {
+            BlendFunction blendFunction = new BlendFunction(SourceFactor.SRC_ALPHA, DestFactor.ONE);
+            if (PuzzleConfig.disableBlend) blendFunction = null;
+            else if (PuzzleConfig.customBlendFunction.size() == 4) {
+                try {
+                    blendFunction = new BlendFunction(
+                            SourceFactor.valueOf(PuzzleConfig.customBlendFunction.get(0)),
+                            DestFactor.valueOf(PuzzleConfig.customBlendFunction.get(1)),
+                            SourceFactor.valueOf(PuzzleConfig.customBlendFunction.get(2)),
+                            DestFactor.valueOf(PuzzleConfig.customBlendFunction.get(3)));
+                } catch (Exception e) {
+                    LOGGER.error("Incorrect blend function defined in color.properties: {}{}", PuzzleConfig.customBlendFunction, e.getMessage());
+                }
+            }
+
+            var CUSTOM_LOGO_PIPELINE_BUILDER = RenderPipeline.builder(RenderPipelinesAccessor.getPOSITION_TEX_COLOR_SNIPPET())
+                .withLocation("pipeline/mojang_logo_puzzle")
+                .withDepthTestFunction(DepthTestFunction.NO_DEPTH_TEST)
+                .withDepthWrite(false);
+            CUSTOM_LOGO_PIPELINE_BUILDER = blendFunction != null ? CUSTOM_LOGO_PIPELINE_BUILDER.withBlend(blendFunction) : CUSTOM_LOGO_PIPELINE_BUILDER.withoutBlend();
+
+            CUSTOM_LOGO_LAYER = RenderLayer.of("mojang_logo_puzzle", 786432, CUSTOM_LOGO_PIPELINE_BUILDER.build(),
+                            RenderLayer.MultiPhaseParameters.builder()
+                            .texture(new RenderPhase.Texture(SplashOverlay.LOGO, TriState.DEFAULT, false))
+                            .build(false));
+        }
+    }
 
     public static class ReloadListener implements SynchronousResourceReloader {
         public static final ReloadListener INSTANCE = new ReloadListener();
@@ -122,6 +166,7 @@ public class PuzzleSplashScreen {
                 }
                 keepBackground = false;
                 PuzzleConfig.write(MOD_ID);
+                buildRenderLayer();
             }
         }
     }
