@@ -16,7 +16,7 @@ import static net.puzzlemc.gui.PuzzleGui.YES;
 
 public class ETFCompat {
     public static void init() {
-        PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("config.entity_texture_features.title")));
+        PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.literal("\uD83D\uDC2E ").append(Text.translatable("config.entity_texture_features.title"))));
         ETFConfig etfConfig = ETFApi.getETFConfigObject();
         PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("config.entity_texture_features.enable_custom_textures.title"), (button) -> button.setMessage(etfConfig.enableCustomTextures ? YES : NO), (button) -> {
             etfConfig.enableCustomTextures = !etfConfig.enableCustomTextures;

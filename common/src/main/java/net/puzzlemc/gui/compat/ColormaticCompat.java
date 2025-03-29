@@ -12,7 +12,7 @@ import static net.puzzlemc.gui.PuzzleGui.YES;
 
 public class ColormaticCompat {
     public static void init() {
-        PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Colormatic")));
+        PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("\uD83C\uDF08 Colormatic")));
         ColormaticConfig colormaticConfig = Colormatic.config();
         PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("colormatic.config.option.clearSky"), (button) -> button.setMessage(colormaticConfig.clearSky ? YES : NO), (button) -> {
             colormaticConfig.clearSky = !colormaticConfig.clearSky;

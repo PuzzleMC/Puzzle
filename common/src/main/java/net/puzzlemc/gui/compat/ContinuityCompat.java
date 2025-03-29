@@ -11,7 +11,7 @@ import static net.puzzlemc.gui.PuzzleGui.YES;
 
 public class ContinuityCompat {
     public static void init() {
-        PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("Continuity")));
+        PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("▒ Continuity")));
         ContinuityConfig contConfig = ContinuityConfig.INSTANCE;
         contConfig.getOptionMapView().forEach((s, option) -> {
             if (s.equals("use_manual_culling")) return;

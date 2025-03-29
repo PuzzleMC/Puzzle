@@ -13,7 +13,7 @@ import static net.minecraft.screen.ScreenTexts.YES;
 public class CITRCompat {
     public static void init() {
         if (CITResewnConfig.INSTANCE != null) {
-            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("CIT Resewn")));
+            PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.of("⛏ CIT Resewn")));
             CITResewnConfig citConfig = CITResewnConfig.INSTANCE;
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("config.citresewn.enabled.title"), (button) -> button.setMessage(citConfig.enabled ? YES : NO), (button) -> {
                 citConfig.enabled = !citConfig.enabled;
