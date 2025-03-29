@@ -11,7 +11,7 @@ import static net.puzzlemc.gui.PuzzleGui.YES;
 
 public class BorderlessMiningCompat {
     public static void init() {
-        PuzzleApi.addToMiscOptions(new PuzzleWidget(Text.of("Borderless Mining")));
+        PuzzleApi.addToMiscOptions(new PuzzleWidget(Text.of("\uD83E\uDE9F Borderless Mining")));
         ConfigHandler bmConfig = ConfigHandler.getInstance();
         PuzzleApi.addToMiscOptions(new PuzzleWidget(Text.translatable("config.borderlessmining.general.enabled"), (button) -> button.setMessage(bmConfig.isEnabledOrPending() ? YES : NO), (button) -> {
             bmConfig.setEnabledPending(!bmConfig.isEnabledOrPending());

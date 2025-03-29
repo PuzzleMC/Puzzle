@@ -12,7 +12,7 @@ import net.puzzlemc.gui.screen.widget.PuzzleWidget;
 
 public class IrisCompat {
     public static void init() {
-        PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.of("Iris")));
+        PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.of("\uD83D\uDC41 Iris")));
         PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.translatable("iris.puzzle.option.enableShaders"), (button) -> button.setMessage(IrisApi.getInstance().getConfig().areShadersEnabled() ? PuzzleGui.YES : PuzzleGui.NO), (button) -> {
             IrisApiConfig irisConfig = IrisApi.getInstance().getConfig();
             irisConfig.setShadersEnabledAndApply(!irisConfig.areShadersEnabled());

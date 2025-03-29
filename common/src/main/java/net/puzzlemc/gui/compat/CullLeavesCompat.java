@@ -11,7 +11,7 @@ import static net.puzzlemc.gui.PuzzleGui.YES;
 
 public class CullLeavesCompat {
     public static void init() {
-        PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.of("CullLeaves")));
+        PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.of("\uD83C\uDF43 Cull Leaves")));
         PuzzleApi.addToPerformanceOptions(new PuzzleWidget(Text.translatable("cullleaves.puzzle.option.enabled"), (button) -> button.setMessage(CullLeavesConfig.enabled ? YES : NO), (button) -> {
             CullLeavesConfig.enabled = !CullLeavesConfig.enabled;
             CullLeavesConfig.write("cullleaves");

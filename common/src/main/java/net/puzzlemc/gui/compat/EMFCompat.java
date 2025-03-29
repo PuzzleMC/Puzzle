@@ -13,12 +13,9 @@ import java.util.NavigableSet;
 import java.util.Objects;
 import java.util.TreeSet;
 
-import static net.puzzlemc.gui.PuzzleGui.NO;
-import static net.puzzlemc.gui.PuzzleGui.YES;
-
 public class EMFCompat {
     public static void init() {
-        PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("entity_model_features.title")));
+        PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.literal("\uD83D\uDC37 ").append(Text.translatable("entity_model_features.title"))));
         EMFConfig emfConfig = EMF.config().getConfig();
         if (PlatformFunctions.isModLoaded("physicsmod")) {
             PuzzleApi.addToResourceOptions(new PuzzleWidget(Text.translatable("entity_model_features.config.physics"), (button) -> button.setMessage(emfConfig.attemptPhysicsModPatch_2 != EMFConfig.PhysicsModCompatChoice.OFF ?

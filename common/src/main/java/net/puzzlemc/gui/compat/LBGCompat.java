@@ -12,7 +12,7 @@ import static net.puzzlemc.gui.PuzzleGui.YES;
 public class LBGCompat {
     public static void init() {
         LBGConfig lbgConfig = LambdaBetterGrass.get().config;
-        PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.of("LambdaBetterGrass")));
+        PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.of("\uD83C\uDF31 LambdaBetterGrass")));
         PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.translatable("lambdabettergrass.option.mode"), (button) -> button.setMessage(lbgConfig.getMode().getTranslatedText()), (button) -> lbgConfig.setMode(lbgConfig.getMode().next())));
         PuzzleApi.addToGraphicsOptions(new PuzzleWidget(Text.translatable("lambdabettergrass.option.better_snow"), (button) -> button.setMessage(lbgConfig.hasBetterLayer() ? YES : NO), (button) -> lbgConfig.setBetterLayer(!lbgConfig.hasBetterLayer())));
     }

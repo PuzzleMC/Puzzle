@@ -13,6 +13,7 @@ import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Formatting;
 import net.puzzlemc.gui.screen.PuzzleOptionsScreen;
 
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class PuzzleOptionListWidget extends MidnightConfig.MidnightConfigListWid
         for (PuzzleWidget button : buttons) {
             try {
                 if (button.buttonType == ButtonType.TEXT)
-                    this.addButton(List.of(), Text.literal(" ").append(button.descriptionText).formatted(Formatting.BOLD));
+                    this.addButton(List.of(), Text.literal("").append(button.descriptionText).formatted(Formatting.BOLD));
                 else if (button.buttonType == ButtonType.BUTTON)
                     this.addButton(List.of(new PuzzleButtonWidget(buttonX, 0, 150, 20, button.buttonTextAction, button.onPress)), button.descriptionText);
                 else if (button.buttonType == ButtonType.SLIDER)
@@ -50,8 +51,15 @@ public class PuzzleOptionListWidget extends MidnightConfig.MidnightConfigListWid
         }
     }
     public void addButton(List<ClickableWidget> buttons, Text text) {
-        var entry = new MidnightConfig.ButtonEntry(buttons, text, new MidnightConfig.EntryInfo());
-        entry.centered = buttons.isEmpty();
+        MidnightConfig.EntryInfo info = new MidnightConfig.EntryInfo(null, "puzzle");
+        if (buttons.isEmpty()) info.comment = new MidnightConfig.Comment(){
+            public Class<? extends Annotation> annotationType() {return null;}
+            public boolean centered() {return true;}
+            public String category() {return "";}
+            public String name() {return "";}
+            public String requiredMod() {return "";}
+        };
+        var entry = new MidnightConfig.ButtonEntry(buttons, text, info);
         this.addEntry(entry);
     }
     public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
