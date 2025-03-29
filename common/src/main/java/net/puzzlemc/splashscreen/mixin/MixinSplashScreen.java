@@ -1,6 +1,6 @@
 package net.puzzlemc.splashscreen.mixin;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.opengl.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -16,6 +16,7 @@ import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
 import net.puzzlemc.core.config.PuzzleConfig;
 import net.puzzlemc.splashscreen.PuzzleSplashScreen;
+import net.puzzlemc.splashscreen.util.BlendFactors;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -52,7 +53,7 @@ public abstract class MixinSplashScreen extends Overlay {
             if (PuzzleSplashScreen.BACKGROUND_TEXTURE.toFile().exists()) {
                 try {
                     InputStream input = new FileInputStream(String.valueOf(PuzzleSplashScreen.BACKGROUND_TEXTURE));
-                    textureManager.registerTexture(BACKGROUND, new NativeImageBackedTexture(NativeImage.read(input)));
+                    textureManager.registerTexture(BACKGROUND, new NativeImageBackedTexture(() -> "splash_screen_background", NativeImage.read(input)));
                 } catch (IOException ignored) {}
             }
         }
@@ -65,14 +66,14 @@ public abstract class MixinSplashScreen extends Overlay {
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/ColorHelper;getWhite(F)I", shift = At.Shift.AFTER))
     private void puzzle$betterBlend(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (PuzzleConfig.resourcepackSplashScreen) {
-            if (PuzzleConfig.disableBlend) RenderSystem.disableBlend();
+            if (PuzzleConfig.disableBlend) GlStateManager._disableBlend();
             else if (PuzzleConfig.customBlendFunction.size() == 4) {
                 try {
-                    RenderSystem.blendFuncSeparate(
-                            GlStateManager.SrcFactor.valueOf(PuzzleConfig.customBlendFunction.get(0)),
-                            GlStateManager.DstFactor.valueOf(PuzzleConfig.customBlendFunction.get(1)),
-                            GlStateManager.SrcFactor.valueOf(PuzzleConfig.customBlendFunction.get(2)),
-                            GlStateManager.DstFactor.valueOf(PuzzleConfig.customBlendFunction.get(3)));
+                    GlStateManager._blendFuncSeparate(
+                            BlendFactors.SrcFactor.valueFromString(PuzzleConfig.customBlendFunction.get(0)),
+                            BlendFactors.DstFactor.valueFromString(PuzzleConfig.customBlendFunction.get(1)),
+                            BlendFactors.SrcFactor.valueFromString(PuzzleConfig.customBlendFunction.get(2)),
+                            BlendFactors.DstFactor.valueFromString(PuzzleConfig.customBlendFunction.get(3)));
                 } catch (Exception e) {
                     LOGGER.error("Incorrect blend function defined in color.properties: {}{}", PuzzleConfig.customBlendFunction, e.getMessage());
                 }
@@ -91,13 +92,13 @@ public abstract class MixinSplashScreen extends Overlay {
             if (f >= 1.0F) s = 1.0F - MathHelper.clamp(f - 1.0F, 0.0F, 1.0F);
             else if (reloading) s = MathHelper.clamp(g, 0.0F, 1.0F);
             else s = 1.0F;
-            RenderSystem.enableBlend();
-            RenderSystem.blendEquation(32774);
-            RenderSystem.defaultBlendFunc();
+            //GlStateManager._enableBlend();
+            //GlStateManager.blendEquation(32774);
+            //GlStateManager._defaultBlendFunc();
             context.getMatrices().translate(0, 0, 1f);
             context.drawTexture(RenderLayer::getGuiTextured, BACKGROUND, 0, 0, 0, 0, width, height, width, height, ColorHelper.getWhite(s));
-            RenderSystem.defaultBlendFunc();
-            RenderSystem.disableBlend();
+            //RenderSystem._defaultBlendFunc();
+            //RenderSystem._disableBlend();
         }
     }
     @Inject(method = "renderProgressBar", at = @At("HEAD"))
@@ -107,7 +108,7 @@ public abstract class MixinSplashScreen extends Overlay {
         long l = Util.getMeasuringTimeMs();
         float f = this.reloadCompleteTime > -1L ? (float)(l - this.reloadCompleteTime) / 1000.0F : -1.0F;
         int m = MathHelper.ceil((1.0F - MathHelper.clamp(f - 1.0F, 0.0F, 1.0F)) * 255.0F);
-        RenderSystem.disableBlend();
+        //RenderSystem.disableBlend();
         context.fill(minX, minY, maxX, maxY, withAlpha(PuzzleConfig.progressBarBackgroundColor, m));
     }
 
