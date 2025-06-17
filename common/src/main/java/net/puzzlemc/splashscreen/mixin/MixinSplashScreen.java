@@ -2,11 +2,12 @@ package net.puzzlemc.splashscreen.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.mojang.blaze3d.pipeline.RenderPipeline;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Overlay;
 import net.minecraft.client.gui.screen.SplashOverlay;
-import net.minecraft.client.render.*;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.client.texture.TextureManager;
@@ -26,7 +27,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.util.function.Function;
 import java.util.function.IntSupplier;
 
 import static net.puzzlemc.splashscreen.PuzzleSplashScreen.BACKGROUND;
@@ -63,11 +63,11 @@ public abstract class MixinSplashScreen extends Overlay {
         return (!PuzzleConfig.resourcepackSplashScreen || PuzzleConfig.progressBarBackgroundColor == 15675965) ? instance.getAsInt() : PuzzleConfig.backgroundColor | 255 << 24;
     }
 
-    @WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIFFIIIIIII)V"))
-    private void puzzle$modifyRenderLayer(DrawContext instance, Function<Identifier, RenderLayer> renderLayers, Identifier sprite, int x, int y, float u, float v, int width, int height, int regionWidth, int regionHeight, int textureWidth, int textureHeight, int color, Operation<Void> original) {
+    @WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/util/Identifier;IIFFIIIIIII)V"))
+    private void puzzle$modifyRenderLayer(DrawContext instance, RenderPipeline pipeline, Identifier sprite, int x, int y, float u, float v, int width, int height, int regionWidth, int regionHeight, int textureWidth, int textureHeight, int color, Operation<Void> original) {
         if (PuzzleConfig.resourcepackSplashScreen)
-            instance.drawTexture(id -> PuzzleSplashScreen.getCustomLogoRenderLayer(), sprite, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, color);
-        else instance.drawTexture(renderLayers, sprite, x, y, u, v, width, height, textureWidth, textureHeight, color);
+            instance.drawTexture(PuzzleSplashScreen.getCustomLogoRenderPipeline(), sprite, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, color);
+        else instance.drawTexture(pipeline, sprite, x, y, u, v, width, height, textureWidth, textureHeight, color);
     }
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;getScaledWindowWidth()I", ordinal = 2))
@@ -82,14 +82,12 @@ public abstract class MixinSplashScreen extends Overlay {
             if (f >= 1.0F) s = 1.0F - MathHelper.clamp(f - 1.0F, 0.0F, 1.0F);
             else if (reloading) s = MathHelper.clamp(g, 0.0F, 1.0F);
             else s = 1.0F;
-            context.getMatrices().translate(0, 0, 1f);
-            context.drawTexture(RenderLayer::getGuiTextured, BACKGROUND, 0, 0, 0, 0, width, height, width, height, ColorHelper.getWhite(s));
+            context.drawTexture(RenderPipelines.GUI_TEXTURED, BACKGROUND, 0, 0, 0, 0, width, height, width, height, ColorHelper.getWhite(s));
         }
     }
 
     @Inject(method = "renderProgressBar", at = @At("HEAD"))
     private void puzzle$addProgressBarBackground(DrawContext context, int minX, int minY, int maxX, int maxY, float opacity, CallbackInfo ci) {
-        context.getMatrices().translate(0, 0, 1f);
         if (!PuzzleConfig.resourcepackSplashScreen || PuzzleConfig.progressBarBackgroundColor == 15675965) return;
         long l = Util.getMeasuringTimeMs();
         float f = this.reloadCompleteTime > -1L ? (float)(l - this.reloadCompleteTime) / 1000.0F : -1.0F;

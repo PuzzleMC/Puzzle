@@ -7,13 +7,9 @@ import com.mojang.blaze3d.platform.DestFactor;
 import com.mojang.blaze3d.platform.SourceFactor;
 import eu.midnightdust.lib.util.MidnightColorUtil;
 import eu.midnightdust.lib.util.PlatformFunctions;
-import net.minecraft.client.gui.screen.SplashOverlay;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.RenderPhase;
 import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.client.texture.TextureContents;
 import net.minecraft.resource.*;
-import net.minecraft.util.TriState;
 import net.minecraft.util.Util;
 import net.puzzlemc.core.config.PuzzleConfig;
 import net.minecraft.client.MinecraftClient;
@@ -45,7 +41,7 @@ public class PuzzleSplashScreen {
     public static Path BACKGROUND_TEXTURE = Paths.get(CONFIG_PATH + "/splash_background.png");
     private static MinecraftClient client = MinecraftClient.getInstance();
     private static boolean keepBackground = false;
-    private static RenderLayer CUSTOM_LOGO_LAYER;
+    private static RenderPipeline CUSTOM_LOGO_PIPELINE;
 
     public static void init() {
         if (!CONFIG_PATH.exists()) { // Run when config directory is nonexistent //
@@ -59,8 +55,8 @@ public class PuzzleSplashScreen {
         buildRenderLayer();
     }
 
-    public static RenderLayer getCustomLogoRenderLayer() {
-        return CUSTOM_LOGO_LAYER;
+    public static RenderPipeline getCustomLogoRenderPipeline() {
+        return CUSTOM_LOGO_PIPELINE;
     }
 
     public static void buildRenderLayer() {
@@ -85,10 +81,7 @@ public class PuzzleSplashScreen {
                 .withDepthWrite(false);
             CUSTOM_LOGO_PIPELINE_BUILDER = blendFunction != null ? CUSTOM_LOGO_PIPELINE_BUILDER.withBlend(blendFunction) : CUSTOM_LOGO_PIPELINE_BUILDER.withoutBlend();
 
-            CUSTOM_LOGO_LAYER = RenderLayer.of("mojang_logo_puzzle", 786432, CUSTOM_LOGO_PIPELINE_BUILDER.build(),
-                            RenderLayer.MultiPhaseParameters.builder()
-                            .texture(new RenderPhase.Texture(SplashOverlay.LOGO, TriState.DEFAULT, false))
-                            .build(false));
+            CUSTOM_LOGO_PIPELINE = CUSTOM_LOGO_PIPELINE_BUILDER.build();
         }
     }
 

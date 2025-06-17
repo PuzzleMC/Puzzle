@@ -57,6 +57,7 @@ public class PuzzleOptionListWidget extends MidnightConfig.MidnightConfigListWid
             public boolean centered() {return true;}
             public String category() {return "";}
             public String name() {return "";}
+            public String url() {return "";}
             public String requiredMod() {return "";}
         };
         var entry = new MidnightConfig.ButtonEntry(buttons, text, info);
