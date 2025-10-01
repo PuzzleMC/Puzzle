@@ -21,7 +21,7 @@ public class PuzzleNeoForge {
         ModList.get().getModContainerById(MOD_ID).orElseThrow().registerExtensionPoint(IConfigScreenFactory.class, (client, parent) -> new PuzzleOptionsScreen(parent));
     }
 
-    @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
     public static class MidnightLibBusEvents {
         @SubscribeEvent
         public static void onResourceReload(AddClientReloadListenersEvent event) {

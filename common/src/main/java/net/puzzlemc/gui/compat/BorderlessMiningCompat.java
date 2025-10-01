@@ -1,5 +1,6 @@
 package net.puzzlemc.gui.compat;
 
+import com.mojang.text2speech.OperatingSystem;
 import link.infra.borderlessmining.config.ConfigHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
@@ -17,7 +18,7 @@ public class BorderlessMiningCompat {
             bmConfig.setEnabledPending(!bmConfig.isEnabledOrPending());
             bmConfig.save();
         }));
-        if (MinecraftClient.IS_SYSTEM_MAC) {
+        if (OperatingSystem.get() == OperatingSystem.MAC_OS) {
             PuzzleApi.addToMiscOptions(new PuzzleWidget(Text.translatable("config.borderlessmining.general.enabledmac"), (button) -> button.setMessage(bmConfig.enableMacOS ? YES : NO), (button) -> {
                 bmConfig.enableMacOS = !bmConfig.enableMacOS;
                 bmConfig.setEnabledPending(bmConfig.isEnabled());

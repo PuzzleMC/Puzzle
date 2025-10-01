@@ -26,7 +26,7 @@ dependencies {
     modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
     modImplementation include ("maven.modrinth:midnightlib:${rootProject.midnightlib_version}-fabric")
 
-    modImplementation ("com.terraformersmc:modmenu:${project.modmenu_version}") {
+    modCompileOnlyApi ("com.terraformersmc:modmenu:${project.modmenu_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
 

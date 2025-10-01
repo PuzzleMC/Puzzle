@@ -1,6 +1,9 @@
 package net.puzzlemc.gui.screen.widget;
 
+import eu.midnightdust.lib.config.ButtonEntry;
+import eu.midnightdust.lib.config.EntryInfo;
 import eu.midnightdust.lib.config.MidnightConfig;
+import eu.midnightdust.lib.config.MidnightConfigListWidget;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -19,8 +22,7 @@ import java.util.List;
 
 import static net.puzzlemc.core.PuzzleCore.LOGGER;
 
-@Environment(EnvType.CLIENT)
-public class PuzzleOptionListWidget extends MidnightConfig.MidnightConfigListWidget {
+public class PuzzleOptionListWidget extends MidnightConfigListWidget {
     TextRenderer textRenderer;
 
     public PuzzleOptionListWidget(MinecraftClient minecraftClient, int i, int j, int k, int l) {
@@ -51,7 +53,7 @@ public class PuzzleOptionListWidget extends MidnightConfig.MidnightConfigListWid
         }
     }
     public void addButton(List<ClickableWidget> buttons, Text text) {
-        MidnightConfig.EntryInfo info = new MidnightConfig.EntryInfo(null, "puzzle");
+        EntryInfo info = new EntryInfo(null, "puzzle");
         if (buttons.isEmpty()) info.comment = new MidnightConfig.Comment(){
             public Class<? extends Annotation> annotationType() {return null;}
             public boolean centered() {return true;}
@@ -60,12 +62,12 @@ public class PuzzleOptionListWidget extends MidnightConfig.MidnightConfigListWid
             public String url() {return "";}
             public String requiredMod() {return "";}
         };
-        var entry = new MidnightConfig.ButtonEntry(buttons, text, info);
+        var entry = new ButtonEntry(buttons, text, info);
         this.addEntry(entry);
     }
     public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
         super.renderWidget(context, mouseX, mouseY, delta);
-        MidnightConfig.ButtonEntry e = this.getHoveredEntry();
+        ButtonEntry e = this.getHoveredEntry();
         if (client.currentScreen instanceof PuzzleOptionsScreen page && e != null && !e.buttons.isEmpty() &&
                 e.text.getContent() instanceof TranslatableTextContent content) {
             ClickableWidget button = e.buttons.getFirst();
@@ -92,7 +94,7 @@ public class PuzzleOptionListWidget extends MidnightConfig.MidnightConfigListWid
     }
 
     @Override
-    public MidnightConfig.ButtonEntry getHoveredEntry() {
+    public ButtonEntry getHoveredEntry() {
         return super.getHoveredEntry();
     }
 }

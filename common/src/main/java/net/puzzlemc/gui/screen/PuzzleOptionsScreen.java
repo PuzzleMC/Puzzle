@@ -5,6 +5,7 @@ import net.minecraft.client.gui.tab.GridScreenTab;
 import net.minecraft.client.gui.tab.Tab;
 import net.minecraft.client.gui.tab.TabManager;
 import net.minecraft.client.gui.widget.TabNavigationWidget;
+import net.minecraft.client.input.KeyInput;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 import net.puzzlemc.gui.PuzzleApi;
@@ -75,9 +76,8 @@ public class PuzzleOptionsScreen extends Screen {
         list.addAll(options);
     }
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (this.tabNavigation.trySwitchTabsWithKey(keyCode)) return true;
-        return super.keyPressed(keyCode, scanCode, modifiers);
+    public boolean keyPressed(KeyInput input) {
+        return this.tabNavigation.keyPressed(input) || super.keyPressed(input);
     }
     @Override
     public void tick() {
