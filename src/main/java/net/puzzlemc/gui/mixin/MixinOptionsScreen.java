@@ -46,8 +46,10 @@ public abstract class MixinOptionsScreen extends Screen {
     @Unique
     public void puzzle$setButtonPos() {
         int i = 0;
-        if (PlatformFunctions.isModLoaded("lod")) i = i + 358;
-        if (MidnightLibConfig.config_screen_list.equals(MidnightLibConfig.ConfigButton.FALSE)) i = i - 25;
+        if (PlatformFunctions.isModLoaded("lod")) {
+            i = i + 358;
+            if (MidnightLibConfig.config_screen_list.equals(MidnightLibConfig.ConfigButton.FALSE)) i = i - 25;
+        }
         puzzle$button.setPosition(this.width / 2 - 178 + i, layout.getY() + layout.getFooterHeight() - 4);
     }
 }
