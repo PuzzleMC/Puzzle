@@ -1,7 +1,5 @@
 package net.puzzlemc.core;
 
-
-
 import net.minecraft.resources.ResourceLocation;
 
 import net.puzzlemc.gui.screen.PuzzleOptionsScreen;
@@ -58,8 +56,13 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.event.AddClientReloadListenersEvent;
+
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+//? if >= 1.21.5 {
+import net.neoforged.neoforge.client.event.AddClientReloadListenersEvent;
+//?} else {
+/^import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
+^///?}
 
 @Mod(value = MOD_ID, dist = Dist.CLIENT)
 public class PuzzleClient {
@@ -70,10 +73,17 @@ public class PuzzleClient {
 
     @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT /^? if <= 1.21.5 {^/ /^, bus = EventBusSubscriber.Bus.MOD ^//^?}^/)
     public static class MidnightLibBusEvents {
+        //? if >= 1.21.5 {
         @SubscribeEvent
         public static void onResourceReload(AddClientReloadListenersEvent event) {
             event.addListener(ResourceLocation.fromNamespaceAndPath(MOD_ID, "splash_screen"), PuzzleSplashScreen.ReloadListener.INSTANCE);
         }
+        //?} else {
+        /^@SubscribeEvent
+        public static void onResourceReload(RegisterClientReloadListenersEvent event) {
+            event.registerReloadListener(PuzzleSplashScreen.ReloadListener.INSTANCE);
+        }
+        ^///?}
     }
  }
     *///?}

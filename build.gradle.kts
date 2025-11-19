@@ -250,4 +250,16 @@ stonecutter {
         direction = eval(current.version, ">=1.21.8")
         replace("context.renderComponentTooltip(", "context.setComponentTooltipForNextFrame(")
     }
+    replacements.string {
+        direction = eval(current.version, ">=1.21.5")
+        replace("getTextureImage", "loadContents")
+    }
+    replacements.string {
+        direction = eval(current.version, ">=1.21.5")
+        replace("TextureImage", "TextureContents")
+    }
+    replacements.string {
+        direction = eval(current.version, ">=1.21.5")
+        replace("SimpleTexture", "ReloadableTexture")
+    }
 }

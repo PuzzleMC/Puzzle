@@ -30,7 +30,7 @@ public class PuzzleGui {
             PuzzleConfig.resourcepackSplashScreen = !PuzzleConfig.resourcepackSplashScreen;
             PuzzleSplashScreen.resetColors();
             PuzzleConfig.write(MOD_ID);
-            Minecraft.getInstance().getTextureManager().registerAndLoad(PuzzleSplashScreen.LOGO, new PuzzleSplashScreen.LogoTexture(PuzzleSplashScreen.LOGO));
+            Minecraft.getInstance().getTextureManager()./*? if >= 1.21.5 {*/ registerAndLoad /*?} else {*//*register*//*?}*/(PuzzleSplashScreen.LOGO, new PuzzleSplashScreen.LogoTexture(PuzzleSplashScreen.LOGO));
         }));
         PuzzleApi.addToResourceOptions(new PuzzleWidget(Component.translatable("puzzle.option.unlimited_model_rotations"), (button) -> button.setMessage(PuzzleConfig.unlimitedRotations ? YES : NO), (button) -> {
             PuzzleConfig.unlimitedRotations = !PuzzleConfig.unlimitedRotations;
