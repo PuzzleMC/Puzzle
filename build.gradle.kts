@@ -83,9 +83,6 @@ dependencies {
         modCompileOnly ("dev.lambdaurora.lambdynamiclights:lambdynamiclights-api:${mod.jigsaw("ldl_version")}")
         modCompileOnly ("dev.lambdaurora.lambdynamiclights:lambdynamiclights-runtime:${mod.jigsaw("ldl_version")}")
     }
-    if (loader == "forge") {
-        "forge"("net.minecraftforge:forge:${minecraft}-${mod.dep("forge_loader")}")
-    }
     if (loader == "neoforge") {
         "neoForge"("net.neoforged:neoforge:${mod.dep("neoforge_loader")}")
 
@@ -243,7 +240,7 @@ tasks.build {
 
 stonecutter {
     constants {
-        arrayOf("fabric", "neoforge", "forge").forEach { it -> put(it, loader == it) }
+        arrayOf("fabric", "neoforge").forEach { it -> put(it, loader == it) }
     }
 
     replacements.string {
