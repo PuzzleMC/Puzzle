@@ -7,11 +7,13 @@ import net.minecraft.client.gui.components.tabs.Tab;
 import net.minecraft.client.gui.components.tabs.TabManager;
 import net.minecraft.client.gui.components.tabs.TabNavigationBar;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
 import net.puzzlemc.gui.PuzzleApi;
 import net.puzzlemc.gui.PuzzleGui;
 import net.puzzlemc.gui.screen.widget.*;
+//? if >= 1.21.9
+import net.minecraft.client.input.KeyEvent;
+
 
 import java.util.List;
 import java.util.Objects;
@@ -77,10 +79,6 @@ public class PuzzleOptionsScreen extends Screen {
         list.addAll(options);
     }
     @Override
-    public boolean keyPressed(KeyEvent input) {
-        return this.tabNavigation.keyPressed(input) || super.keyPressed(input);
-    }
-    @Override
     public void tick() {
         super.tick();
         if (prevTab != null && prevTab != tabManager.getCurrentTab()) {
@@ -90,4 +88,15 @@ public class PuzzleOptionsScreen extends Screen {
             list.setScrollAmount(0);
         }
     }
+
+    @Override
+    //? if >= 1.21.9 {
+    public boolean keyPressed(KeyEvent input) {
+        return this.tabNavigation.keyPressed(input) || super.keyPressed(input);
+    }
+    //?} else {
+    /*public boolean keyPressed(int key, int scanCode, int modifiers) {
+        return this.tabNavigation.keyPressed(key) || super.keyPressed(key, scanCode, modifiers);
+    }
+    *///?}
 }

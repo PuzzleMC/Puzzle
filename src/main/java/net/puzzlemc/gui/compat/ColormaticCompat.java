@@ -12,6 +12,7 @@ import static net.puzzlemc.gui.PuzzleGui.YES;
 
 public class ColormaticCompat {
     public static void init() {
+        //? if fabric {
         PuzzleApi.addToResourceOptions(new PuzzleWidget(Component.literal("\uD83C\uDF08 Colormatic")));
         ColormaticConfig colormaticConfig = Colormatic.config();
         PuzzleApi.addToResourceOptions(new PuzzleWidget(Component.translatable("colormatic.config.option.clearSky"), (button) -> button.setMessage(colormaticConfig.clearSky ? YES : NO), (button) -> {
@@ -42,5 +43,6 @@ public class ColormaticCompat {
                     }
                     catch (NumberFormatException ignored) {}
                 }));
+        //?}
     }
 }

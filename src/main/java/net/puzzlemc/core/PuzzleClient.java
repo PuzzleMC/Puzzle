@@ -1,7 +1,9 @@
 package net.puzzlemc.core;
 
 
+
 import net.minecraft.resources.ResourceLocation;
+
 import net.puzzlemc.gui.screen.PuzzleOptionsScreen;
 import net.puzzlemc.splashscreen.PuzzleSplashScreen;
 
@@ -11,8 +13,14 @@ import static net.puzzlemc.core.PuzzleCore.MOD_ID;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.minecraft.server.packs.PackType;
+//? if >= 1.21.9 {
+import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
+//?} else {
+/*import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
+import net.minecraft.server.packs.resources.ResourceManager;
+*///?}
 
 public class PuzzleClient implements ClientModInitializer, ModMenuApi {
 
@@ -26,7 +34,20 @@ public class PuzzleClient implements ClientModInitializer, ModMenuApi {
         PuzzleCore.initModules();
 
         //ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener
+        //? if >= 1.21.9 {
         ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloader(ResourceLocation.fromNamespaceAndPath(MOD_ID, "splash_screen"), PuzzleSplashScreen.ReloadListener.INSTANCE);
+        //?} else {
+        /*ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
+            @Override
+            public ResourceLocation getFabricId() {
+                return ResourceLocation.fromNamespaceAndPath(MOD_ID, "splash_screen");
+            }
+            @Override
+            public void onResourceManagerReload(ResourceManager manager) {
+                PuzzleSplashScreen.ReloadListener.INSTANCE.onResourceManagerReload(manager);
+            }
+        });
+        *///?}
     }
 }
 //?}

@@ -36,9 +36,16 @@ repositories {
     maven("https://maven.shedaniel.me/")
     maven("https://maven.quiltmc.org/repository/release/")
 }
+
+val mappingsAttribute = Attribute.of("net.minecraft.mappings", String::class.java)
+
 dependencies {
+    attributesSchema {
+        attribute(mappingsAttribute)
+    }
     minecraft("com.mojang:minecraft:$minecraft")
 
+    // Jigsaw modules (GUI compat mods)
     modCompileOnlyApi ("maven.modrinth:cull-leaves:${mod.jigsaw("cull_leaves_version")}")
     modCompileOnlyApi ("maven.modrinth:iris:${mod.jigsaw("iris_version")}")
     modCompileOnly ("maven.modrinth:cit-resewn:${mod.jigsaw("cit_resewn_version")}")
@@ -53,20 +60,17 @@ dependencies {
     modCompileOnlyApi ("maven.modrinth:completeconfig:${mod.jigsaw("complete_config_version")}")
     //modImplementation ("maven.modrinth:exordium:${project.exordium_version}")
 
-
-    modCompileOnlyApi ("maven.modrinth:lambdynamiclights:${mod.jigsaw("ldl_version")}")
-    modCompileOnly("dev.lambdaurora.lambdynamiclights:lambdynamiclights-api:${mod.jigsaw("ldl_version")}")
     modCompileOnlyApi ("maven.modrinth:lambdabettergrass:${mod.jigsaw("lbg_version")}")
     modCompileOnlyApi ("dev.lambdaurora:spruceui:${mod.jigsaw("spruceui_version")}")
 
     // Required for Lambda's mods (DO NOT DEPEND ON OTHERWISE)
-    modCompileOnly ("org.quiltmc:quilt-loader:${mod.jigsaw("quilt_loader_version")}")
-    modCompileOnlyApi ("org.quiltmc.quilted-fabric-api:quilted-fabric-api:${mod.jigsaw("quilt_fabric_api_version")}")
+    modCompileOnly ("dev.yumi.mc.core:yumi-mc-foundation:1.0.0-alpha.15+1.21.1")
     modCompileOnlyApi ("org.aperlambda:lambdajcommon:1.8.1") {
         exclude(group = "com.google.code.gson")
         exclude(group = "com.google.guava")
     }
 
+    // MidnightLib
     modImplementation ("eu.midnightdust:midnightlib:${mod.dep("midnightlib_version")}+${minecraft}-${loader}")
 
     if (loader == "fabric") {
@@ -75,12 +79,26 @@ dependencies {
 
         // Fabric API is required to load modded resources
         modImplementation("net.fabricmc.fabric-api:fabric-api:${mod.dep("fabric_version")}")
+
+        modCompileOnly ("dev.lambdaurora.lambdynamiclights:lambdynamiclights-api:${mod.jigsaw("ldl_version")}")
+        modCompileOnly ("dev.lambdaurora.lambdynamiclights:lambdynamiclights-runtime:${mod.jigsaw("ldl_version")}")
     }
     if (loader == "forge") {
         "forge"("net.minecraftforge:forge:${minecraft}-${mod.dep("forge_loader")}")
     }
     if (loader == "neoforge") {
         "neoForge"("net.neoforged:neoforge:${mod.dep("neoforge_loader")}")
+
+        modCompileOnly ("dev.lambdaurora.lambdynamiclights:lambdynamiclights-api:${mod.jigsaw("ldl_version")}") {
+            attributes {
+                attribute(mappingsAttribute, "mojmap")
+            }
+        }
+        modCompileOnly ("dev.lambdaurora.lambdynamiclights:lambdynamiclights-runtime:${mod.jigsaw("ldl_version")}") {
+            attributes {
+                attribute(mappingsAttribute, "mojmap")
+            }
+        }
     }
     mappings (loom.officialMojangMappings())
 }
