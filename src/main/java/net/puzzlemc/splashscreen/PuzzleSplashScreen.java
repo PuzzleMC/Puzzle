@@ -48,8 +48,8 @@ import static net.puzzlemc.core.PuzzleCore.LOGGER;
 import static net.puzzlemc.core.PuzzleCore.MOD_ID;
 
 public class PuzzleSplashScreen {
-    public static final ResourceLocation LOGO = ResourceLocation.withDefaultNamespace("textures/gui/title/mojangstudios.png");
-    public static final ResourceLocation BACKGROUND = ResourceLocation.withDefaultNamespace("puzzle/splash_background.png");
+    public static final ResourceLocation LOGO = ResourceLocation.fromNamespaceAndPath("minecraft", "textures/gui/title/mojangstudios.png");
+    public static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath("minecraft", "puzzle/splash_background.png");
     public static File CONFIG_PATH = new File(String.valueOf(PlatformFunctions.getConfigDirectory().resolve(".puzzle_cache")));
     public static Path LOGO_TEXTURE = Paths.get(CONFIG_PATH + "/mojangstudios.png");
     public static Path BACKGROUND_TEXTURE = Paths.get(CONFIG_PATH + "/splash_background.png");

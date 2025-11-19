@@ -262,4 +262,8 @@ stonecutter {
         direction = eval(current.version, ">=1.21.5")
         replace("SimpleTexture", "ReloadableTexture")
     }
+    replacements.string {
+        direction = eval(current.version, ">=1.21")
+        replace("new ResourceLocation", "ResourceLocation.fromNamespaceAndPath")
+    }
 }
