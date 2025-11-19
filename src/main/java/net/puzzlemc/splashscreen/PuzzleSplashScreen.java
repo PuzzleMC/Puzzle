@@ -34,6 +34,13 @@ import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+//? if <= 1.21.5 {
+/*import net.minecraft.client.gui.screens.LoadingOverlay;
+import net.minecraft.client.renderer.RenderStateShard;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.util.TriState;
+*///?}
+
 import static net.puzzlemc.core.PuzzleCore.LOGGER;
 import static net.puzzlemc.core.PuzzleCore.MOD_ID;
 
@@ -45,7 +52,9 @@ public class PuzzleSplashScreen {
     public static Path BACKGROUND_TEXTURE = Paths.get(CONFIG_PATH + "/splash_background.png");
     private static Minecraft client = Minecraft.getInstance();
     private static boolean keepBackground = false;
-    private static RenderPipeline CUSTOM_LOGO_PIPELINE;
+    public static RenderPipeline CUSTOM_LOGO_PIPELINE;
+    //? if <= 1.21.5
+    /*public static RenderType CUSTOM_LOGO_LAYER;*/
 
     public static void init() {
         if (!CONFIG_PATH.exists()) { // Run when config directory is nonexistent //
@@ -57,10 +66,6 @@ public class PuzzleSplashScreen {
             }
         }
         buildRenderLayer();
-    }
-
-    public static RenderPipeline getCustomLogoRenderPipeline() {
-        return CUSTOM_LOGO_PIPELINE;
     }
 
     public static void buildRenderLayer() {
@@ -86,6 +91,13 @@ public class PuzzleSplashScreen {
             CUSTOM_LOGO_PIPELINE_BUILDER = blendFunction != null ? CUSTOM_LOGO_PIPELINE_BUILDER.withBlend(blendFunction) : CUSTOM_LOGO_PIPELINE_BUILDER.withoutBlend();
 
             CUSTOM_LOGO_PIPELINE = CUSTOM_LOGO_PIPELINE_BUILDER.build();
+
+            //? if <= 1.21.5 {
+            /*CUSTOM_LOGO_LAYER = RenderType.create("mojang_logo_puzzle", 786432, CUSTOM_LOGO_PIPELINE,
+                    RenderType.CompositeState.builder()
+                            .setTextureState(new RenderStateShard.TextureStateShard(LoadingOverlay.MOJANG_STUDIOS_LOGO_LOCATION, TriState.DEFAULT, false))
+                            .createCompositeState(false));
+            *///?}
         }
     }
 

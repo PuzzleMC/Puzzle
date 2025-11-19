@@ -245,4 +245,9 @@ stonecutter {
     constants {
         arrayOf("fabric", "neoforge", "forge").forEach { it -> put(it, loader == it) }
     }
+
+    replacements.string {
+        direction = eval(current.version, ">=1.21.8")
+        replace("context.renderComponentTooltip(", "context.setComponentTooltipForNextFrame(")
+    }
 }

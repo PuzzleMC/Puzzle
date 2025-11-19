@@ -2,14 +2,12 @@ package net.puzzlemc.splashscreen.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.LoadingOverlay;
 import net.minecraft.client.gui.screens.Overlay;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
@@ -27,7 +25,15 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.function.Function;
 import java.util.function.IntSupplier;
+
+//? if >= 1.21.8 {
+import com.mojang.blaze3d.pipeline.RenderPipeline;
+import net.minecraft.client.renderer.RenderPipelines;
+//?} else {
+/*import net.minecraft.client.renderer.RenderType;
+*///?}
 
 import static net.puzzlemc.splashscreen.PuzzleSplashScreen.BACKGROUND;
 
@@ -63,12 +69,21 @@ public abstract class MixinSplashScreen extends Overlay {
         return (!PuzzleConfig.resourcepackSplashScreen || PuzzleConfig.progressBarBackgroundColor == 15675965) ? instance.getAsInt() : PuzzleConfig.backgroundColor | 255 << 24;
     }
 
+    //? if >= 1.21.8 {
     @WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/ResourceLocation;IIFFIIIIIII)V"))
     private void puzzle$modifyRenderLayer(GuiGraphics context, RenderPipeline pipeline, ResourceLocation sprite, int x, int y, float u, float v, int width, int height, int regionWidth, int regionHeight, int textureWidth, int textureHeight, int color, Operation<Void> original) {
         if (PuzzleConfig.resourcepackSplashScreen)
-            context.blit(PuzzleSplashScreen.getCustomLogoRenderPipeline(), sprite, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, color);
+            context.blit(PuzzleSplashScreen.CUSTOM_LOGO_PIPELINE, sprite, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, color);
         else context.blit(pipeline, sprite, x, y, u, v, width, height, textureWidth, textureHeight, color);
     }
+    //?} else {
+    /*@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Ljava/util/function/Function;Lnet/minecraft/resources/ResourceLocation;IIFFIIIIIII)V"))
+    private void puzzle$modifyRenderLayer(GuiGraphics context, Function<ResourceLocation, RenderType> renderType, ResourceLocation sprite, int x, int y, float u, float v, int width, int height, int regionWidth, int regionHeight, int textureWidth, int textureHeight, int color, Operation<Void> original) {
+        if (PuzzleConfig.resourcepackSplashScreen)
+            context.blit(id -> PuzzleSplashScreen.CUSTOM_LOGO_LAYER, sprite, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, color);
+        else context.blit(renderType, sprite, x, y, u, v, width, height, textureWidth, textureHeight, color);
+    }
+    *///?}
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;guiWidth()I", ordinal = 2))
     private void puzzle$renderSplashBackground(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
@@ -82,7 +97,12 @@ public abstract class MixinSplashScreen extends Overlay {
             if (f >= 1.0F) s = 1.0F - Mth.clamp(f - 1.0F, 0.0F, 1.0F);
             else if (fadeIn) s = Mth.clamp(g, 0.0F, 1.0F);
             else s = 1.0F;
-            context.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, 0, 0, 0, 0, width, height, width, height, ARGB.white(s));
+            //? if >= 1.21.8 {
+            context.blit(RenderPipelines.GUI_TEXTURED
+            //?} else {
+            /*context.blit(RenderType::guiTextured
+            *///?}
+            , BACKGROUND, 0, 0, 0, 0, width, height, width, height, ARGB.white(s));
         }
     }
 
