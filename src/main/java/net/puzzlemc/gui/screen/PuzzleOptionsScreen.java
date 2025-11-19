@@ -1,6 +1,7 @@
 package net.puzzlemc.gui.screen;
 
 import com.google.common.collect.Lists;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.tabs.GridLayoutTab;
 import net.minecraft.client.gui.components.tabs.Tab;
@@ -60,7 +61,7 @@ public class PuzzleOptionsScreen extends Screen {
             list.renderHeaderSeparator = false;
         }
 
-        this.addRenderableWidget(list);
+        this.addWidget(list);
 
         super.init();
         this.addRenderableWidget(Button.builder(GUI_DONE, (button) -> Objects.requireNonNull(minecraft).setScreen(parent)).bounds(this.width / 2 - 100, this.height - 26, 200, 20).build());
@@ -99,4 +100,16 @@ public class PuzzleOptionsScreen extends Screen {
         return this.tabNavigation.keyPressed(key) || super.keyPressed(key, scanCode, modifiers);
     }
     *///?}
+
+    @Override
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+        //? if >= 1.21 {
+        super.render(context, mouseX, mouseY, delta);
+        //?} else {
+        /*super.renderBackground(context);
+         *///?}
+        this.list.render(context, mouseX, mouseY, delta);
+        //? if < 1.21
+        /*super.render(context, mouseX, mouseY, delta);*/
+    }
 }
