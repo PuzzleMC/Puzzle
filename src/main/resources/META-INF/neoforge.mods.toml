@@ -32,6 +32,6 @@ side = "CLIENT"
 [[dependencies.puzzle]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.21,)"
+versionRange = "${minecraft}"
 ordering = "NONE"
 side = "CLIENT"

@@ -3,6 +3,7 @@ plugins {
     id("architectury-plugin")
     id("me.modmuss50.mod-publish-plugin")
     id("com.github.johnrengelman.shadow")
+    `maven-publish`
 }
 
 val minecraft = stonecutter.current.version
@@ -22,7 +23,7 @@ repositories {
     maven("https://maven.nucleoid.xyz/")
 
     // MidnightLib
-    maven("https://maven.midnightdust.eu/snapshots/")
+    maven("https://maven.midnightdust.eu/releases/")
 
     // Jigsaw modules
     maven("https://api.modrinth.com/maven")
@@ -123,21 +124,24 @@ publishMods {
     file = project.tasks.remapJar.get().archiveFile
     dryRun = modrinthToken == null || curseforgeToken == null
 
-    displayName = "${mod.name} ${loader.replaceFirstChar { it.uppercase() }} ${property("mod.mc_title")}-${mod.version}"
-    version = mod.version
+    displayName = "${mod.name} ${mod.version} - ${loader.replaceFirstChar { it.uppercase() }} ${property("mod.mc_title")}"
+    version = "${mod.version}+${property("mod.mc_title")}-${loader}"
     changelog = rootProject.file("CHANGELOG.md").readText()
-    type = BETA
+    type = STABLE
 
     modLoaders.add(loader)
+    if (loader == "fabric") {
+        modLoaders.add("quilt")
+    }
 
     val targets = property("mod.mc_targets").toString().split(' ')
     modrinth {
         projectId = property("publish.modrinth").toString()
         accessToken = modrinthToken
         targets.forEach(minecraftVersions::add)
+        requires("midnightlib")
         if (loader == "fabric") {
             requires("fabric-api")
-            optional("modmenu")
         }
     }
 
@@ -145,21 +149,41 @@ publishMods {
         projectId = property("publish.curseforge").toString()
         accessToken = curseforgeToken.toString()
         targets.forEach(minecraftVersions::add)
+        requires("midnightlib")
         if (loader == "fabric") {
             requires("fabric-api")
-            optional("modmenu")
         }
     }
 
-    github {
-        accessToken = githubToken
-        repository = "TeamMidnightDust/MidnightLib"
-        commitish = "multiversion" // This is the branch the release tag will be created from
+//    github {
+//        accessToken = githubToken
+//        repository = "TeamMidnightDust/MidnightLib"
+//        commitish = "multiversion" // This is the branch the release tag will be created from
+//
+//        tagName = "v" + properties["mod.version"]
+//
+//        // Allow the release to be initially created without any files.
+//        allowEmptyFiles = true
+//    }
+}
+publishing {
+    repositories {
+        maven {
+            name = "MidnightDust"
+            url = uri("https://maven.midnightdust.eu/releases")
+            credentials(PasswordCredentials::class)
+        }
+    }
+    publications {
+        create<MavenPublication>("mavenJava") {
+            pom {
+                groupId = "eu.midnightdust"
+                artifactId = project.mod.id
+                version = "${project.version}-${loader}"
 
-        tagName = "v" + properties["mod.version"]
-
-        // Allow the release to be initially created without any files.
-        allowEmptyFiles = true
+                from(components["java"])
+            }
+        }
     }
 }
 

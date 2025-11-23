@@ -37,6 +37,10 @@
 
   "depends": {
     "fabric": "*",
-    "minecraft": ">=1.20"
+    "minecraft": "${minecraft}"
+  },
+  "breaks": {
+    "entity_texture_features": "<7.0.0",
+    "entity_model_features": "<3.0.0"
   }
 }
