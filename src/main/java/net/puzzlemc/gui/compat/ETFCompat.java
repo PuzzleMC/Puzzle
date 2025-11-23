@@ -1,10 +1,12 @@
 package net.puzzlemc.gui.compat;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.puzzlemc.gui.PuzzleApi;
 import net.puzzlemc.gui.screen.widget.PuzzleWidget;
 import traben.entity_texture_features.ETFApi;
 import traben.entity_texture_features.config.ETFConfig;
+import traben.entity_texture_features.config.screens.ETFConfigScreenMain;
 
 import java.util.EnumSet;
 import java.util.NavigableSet;
@@ -43,5 +45,6 @@ public class ETFCompat {
             etfConfig.skinFeaturesEnabled = !etfConfig.skinFeaturesEnabled;
             ETFApi.saveETFConfigChangesAndResetETF();
         }));
+        PuzzleApi.addToResourceOptions(new PuzzleWidget(Component.translatable("puzzle.action.open_config_screen"), (button) -> button.setMessage(Component.nullToEmpty("OPEN")), button -> Minecraft.getInstance().setScreen(new ETFConfigScreenMain(Minecraft.getInstance().screen))));
     }
 }

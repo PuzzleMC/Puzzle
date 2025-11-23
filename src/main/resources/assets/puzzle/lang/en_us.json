@@ -5,6 +5,7 @@
 	"puzzle.page.resources":"Resource",
 	"puzzle.page.performance":"Performance",
 	"puzzle.page.misc":"Miscellaneous",
+    "puzzle.action.open_config_screen":"Open config screen",
 	"puzzle.option.check_for_updates":"Check for Updates",
 	"puzzle.option.check_for_updates.tooltip":"Enables Puzzle's built-in update checker",
 	"puzzle.option.show_version_info":"Show Puzzle version info",

@@ -71,7 +71,9 @@ dependencies {
     }
 
     // MidnightLib
-    modImplementation ("eu.midnightdust:midnightlib:${mod.dep("midnightlib_version")}+${minecraft}-${loader}")
+    val midnightlib = "eu.midnightdust:midnightlib:${mod.dep("midnightlib_version")}+${minecraft}-${loader}"
+    modImplementation(midnightlib)
+    include(midnightlib)
 
     if (loader == "fabric") {
         modImplementation("net.fabricmc:fabric-loader:${mod.dep("fabric_loader")}")

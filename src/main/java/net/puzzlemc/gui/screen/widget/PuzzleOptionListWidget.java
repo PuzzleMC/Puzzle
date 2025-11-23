@@ -68,7 +68,7 @@ public class PuzzleOptionListWidget extends MidnightConfigListWidget {
         ButtonEntry e = this.getHovered();
         if (minecraft.screen instanceof PuzzleOptionsScreen page && e != null && !e.buttons.isEmpty() &&
                 e.text.getContents() instanceof TranslatableContents content) {
-            AbstractWidget button = e.buttons.getFirst();
+            AbstractWidget button = e.buttons.get(0);
             String key = null;
             if (I18n.exists(content.getKey() + ".tooltip")) key = content.getKey() + ".tooltip";
             else if (I18n.exists(content.getKey() + ".desc")) key = content.getKey() + ".desc";

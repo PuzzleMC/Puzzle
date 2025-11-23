@@ -53,7 +53,7 @@ public class PuzzleGui {
         if (isActive("lambdabettergrass")) LBGCompat.init();
         if (isActive("continuity")) ContinuityCompat.init();
         try {
-            if (isActive("entity_Componenture_features")) ETFCompat.init();
+            if (isActive("entity_texture_features")) ETFCompat.init();
             if (isActive("entity_model_features")) EMFCompat.init();
         } catch (Exception e) {
             LOGGER.error("ETF/EMF config structure changed. Again...", e);
