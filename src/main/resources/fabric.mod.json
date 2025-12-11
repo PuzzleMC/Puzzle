@@ -25,7 +25,7 @@
       "net.puzzlemc.core.PuzzleClient"
     ],
     "modmenu": [
-      "net.puzzlemc.core.PuzzleClient"
+      "net.puzzlemc.core.PuzzleModMenu"
     ]
   },
 

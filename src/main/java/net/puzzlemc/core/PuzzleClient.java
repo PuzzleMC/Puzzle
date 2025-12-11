@@ -2,14 +2,11 @@ package net.puzzlemc.core;
 
 import net.minecraft.resources.Identifier;
 
-import net.puzzlemc.gui.screen.PuzzleOptionsScreen;
 import net.puzzlemc.splashscreen.PuzzleSplashScreen;
 
 import static net.puzzlemc.core.PuzzleCore.MOD_ID;
 
 //? fabric {
-import com.terraformersmc.modmenu.api.ConfigScreenFactory;
-import com.terraformersmc.modmenu.api.ModMenuApi;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.server.packs.PackType;
 //? if >= 1.21.9 {
@@ -20,13 +17,7 @@ import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
 *///?}
 
-public class PuzzleClient implements ClientModInitializer, ModMenuApi {
-
-    @Override
-    public ConfigScreenFactory<?> getModConfigScreenFactory() {
-        return PuzzleOptionsScreen::new;
-    }
-
+public class PuzzleClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         PuzzleCore.initModules();
@@ -56,7 +47,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
-
+import net.puzzlemc.gui.screen.PuzzleOptionsScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 //? if >= 1.21.5 {
 import net.neoforged.neoforge.client.event.AddClientReloadListenersEvent;
