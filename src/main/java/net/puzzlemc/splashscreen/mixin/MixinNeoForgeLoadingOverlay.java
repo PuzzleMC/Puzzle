@@ -5,6 +5,7 @@ package net.puzzlemc.splashscreen.mixin;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.LoadingOverlay;
 import net.minecraft.server.packs.resources.ReloadInstance;
+import net.neoforged.fml.earlydisplay.DisplayWindow;
 import net.neoforged.neoforge.client.loading.NeoForgeLoadingOverlay;
 import net.puzzlemc.core.config.PuzzleConfig;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,8 +22,13 @@ public class MixinNeoForgeLoadingOverlay extends LoadingOverlay {
         super(arg, arg2, consumer, bl);
     }
 
+    @Inject(method = "<init>", at = @At("TAIL"))
+    private void puzzle$initTexturesNeoforge(Minecraft mc, ReloadInstance reloader, Consumer<Optional<Throwable>> errorConsumer, DisplayWindow displayWindow, CallbackInfo ci) {
+        LoadingOverlay.registerTextures(/^? if >= 1.21.4 {^/ mc.getTextureManager() /^?} else {^/ /^mc ^//^?}^/);
+    }
+
     @Inject(method = "render", at = @At("HEAD"), cancellable = true) // Replaces the NeoForge loading screen in later stages with the (customized) vanilla version
-    private void redirectNeoForgeLoading(GuiGraphics context, int mouseX, int mouseY, float tickDelta, CallbackInfo ci) {
+    private void puzzle$redirectNeoForgeLoading(GuiGraphics context, int mouseX, int mouseY, float tickDelta, CallbackInfo ci) {
         if (PuzzleConfig.resourcepackSplashScreen && PuzzleConfig.hasCustomSplashScreen) {
             super.render(context, mouseX, mouseY, tickDelta);
             ci.cancel();

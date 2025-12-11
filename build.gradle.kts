@@ -72,8 +72,12 @@ dependencies {
     }
 
     // MidnightLib
-    val midnightlib = "eu.midnightdust:midnightlib:${mod.dep("midnightlib_version")}+${minecraft}-${loader}"
-    modImplementation(midnightlib)
+    val midnightlib = if (mod.dep("midnightlib_version").contains("+")) "eu.midnightdust:midnightlib:${mod.dep("midnightlib_version")}"
+                      else "eu.midnightdust:midnightlib:${mod.dep("midnightlib_version")}+${minecraft}-${loader}"
+    modImplementation(midnightlib) {
+        exclude(group = "net.fabricmc.fabric-api")
+        exclude(group = "com.terraformersmc")
+    }
     include(midnightlib)
 
     if (loader == "fabric") {
@@ -274,15 +278,15 @@ stonecutter {
         replace("context.renderComponentTooltip(", "context.setComponentTooltipForNextFrame(")
     }
     replacements.string {
-        direction = eval(current.version, ">=1.21.5")
+        direction = eval(current.version, ">=1.21.4")
         replace("getTextureImage", "loadContents")
     }
     replacements.string {
-        direction = eval(current.version, ">=1.21.5")
+        direction = eval(current.version, ">=1.21.4")
         replace("TextureImage", "TextureContents")
     }
     replacements.string {
-        direction = eval(current.version, ">=1.21.5")
+        direction = eval(current.version, ">=1.21.4")
         replace("SimpleTexture", "ReloadableTexture")
     }
     replacements.string {

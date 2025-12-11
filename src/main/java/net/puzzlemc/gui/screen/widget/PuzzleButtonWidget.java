@@ -23,8 +23,8 @@ public class PuzzleButtonWidget extends Button {
         } catch (Exception e) {e.fillInStackTrace(); this.visible = false;}
 
         //? if < 1.21.11 {
-        /*super.renderWidget(context, mouseX, mouseY, delta);*/
-        //?} else {
+        /*super.renderWidget(context, mouseX, mouseY, delta);
+        *///?} else {
         this.renderDefaultSprite(context);
         this.renderDefaultLabel(context.textRendererForWidget(this, GuiGraphics.HoveredTextEffects.NONE));
         //?}

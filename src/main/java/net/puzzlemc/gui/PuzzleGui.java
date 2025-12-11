@@ -33,11 +33,11 @@ public class PuzzleGui {
             Minecraft.getInstance().getTextureManager()./*? if >= 1.21.5 {*/ registerAndLoad /*?} else {*//*register*//*?}*/(PuzzleSplashScreen.LOGO, new PuzzleSplashScreen.LogoTexture(PuzzleSplashScreen.LOGO));
         }));
         //? if < 1.21.11 {
-//        PuzzleApi.addToResourceOptions(new PuzzleWidget(Component.translatable("puzzle.option.unlimited_model_rotations"), (button) -> button.setMessage(PuzzleConfig.unlimitedRotations ? YES : NO), (button) -> {
-//            PuzzleConfig.unlimitedRotations = !PuzzleConfig.unlimitedRotations;
-//            PuzzleConfig.write(MOD_ID);
-//        }));
-        //?}
+        /*PuzzleApi.addToResourceOptions(new PuzzleWidget(Component.translatable("puzzle.option.unlimited_model_rotations"), (button) -> button.setMessage(PuzzleConfig.unlimitedRotations ? YES : NO), (button) -> {
+            PuzzleConfig.unlimitedRotations = !PuzzleConfig.unlimitedRotations;
+            PuzzleConfig.write(MOD_ID);
+        }));
+        *///?}
         PuzzleApi.addToResourceOptions(new PuzzleWidget(Component.translatable("puzzle.option.bigger_custom_models"), (button) -> button.setMessage(PuzzleConfig.biggerModels ? YES : NO), (button) -> {
             PuzzleConfig.biggerModels = !PuzzleConfig.biggerModels;
             PuzzleConfig.write(MOD_ID);

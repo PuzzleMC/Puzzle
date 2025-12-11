@@ -30,7 +30,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import net.minecraft.client.renderer.RenderPipelines;
-//?} else if >= 1.21.5 {
+//?} else if >= 1.21.4 {
 /*import net.minecraft.util.ARGB;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -45,7 +45,7 @@ import static net.puzzlemc.core.PuzzleCore.LOGGER;
 *///?}
 
 import static net.puzzlemc.splashscreen.PuzzleSplashScreen.BACKGROUND;
-//? if >= 1.21.5
+//? if >= 1.21.4
 import static net.minecraft.client.gui.screens.LoadingOverlay.MOJANG_STUDIOS_LOGO_LOCATION;
 
 @Mixin(value = LoadingOverlay.class, priority = 2000)
@@ -58,11 +58,11 @@ public abstract class MixinSplashScreen extends Overlay {
     private static int replaceAlpha(int color, int alpha) {
         return 0;
     }
-    //? if < 1.21.5
+    //? if < 1.21.4
     /*@Shadow @Final static Identifier MOJANG_STUDIOS_LOGO_LOCATION;*/
 
     @Inject(method = "registerTextures", at = @At("TAIL")) // Load our custom textures at game start //
-    //? if >= 1.21.5 {
+    //? if >= 1.21.4 {
     private static void puzzle$initSplashscreen(TextureManager textureManager, CallbackInfo ci) {
     //?} else {
     /*private static void puzzle$initSplashscreen(Minecraft client, CallbackInfo ci) {
@@ -70,12 +70,12 @@ public abstract class MixinSplashScreen extends Overlay {
         *///?}
         if (PuzzleConfig.resourcepackSplashScreen) {
             if (PuzzleSplashScreen.LOGO_TEXTURE.toFile().exists()) {
-                textureManager./*? if >= 1.21.5 {*/ registerAndLoad /*?} else {*//*register*//*?}*/(MOJANG_STUDIOS_LOGO_LOCATION, new PuzzleSplashScreen.DynamicLogoTexture());
+                textureManager./*? if >= 1.21.4 {*/ registerAndLoad /*?} else {*//*register*//*?}*/(MOJANG_STUDIOS_LOGO_LOCATION, new PuzzleSplashScreen.DynamicLogoTexture());
             }
             if (PuzzleSplashScreen.BACKGROUND_TEXTURE.toFile().exists()) {
                 try {
                     InputStream input = new FileInputStream(String.valueOf(PuzzleSplashScreen.BACKGROUND_TEXTURE));
-                    textureManager.register(BACKGROUND, new DynamicTexture(/*? if >= 1.21.5 {*/ () -> "splash_screen_background", /*?}*/ NativeImage.read(input)));
+                    textureManager.register(BACKGROUND, new DynamicTexture(/*? if >= 1.21.5 {*/   () ->"splash_screen_background", /*?}*/ NativeImage.read(input)));
                 } catch (IOException ignored) {}
             }
         }
@@ -93,7 +93,7 @@ public abstract class MixinSplashScreen extends Overlay {
             context.blit(PuzzleSplashScreen.CUSTOM_LOGO_PIPELINE, sprite, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, color);
         else context.blit(pipeline, sprite, x, y, u, v, width, height, textureWidth, textureHeight, color);
     }
-    //?} else if >= 1.21.5 {
+    //?} else if >= 1.21.4 {
     /*@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Ljava/util/function/Function;Lnet/minecraft/resources/Identifier;IIFFIIIIIII)V"))
     private void puzzle$modifyRenderLayer(GuiGraphics context, Function<Identifier, RenderType> renderType, Identifier sprite, int x, int y, float u, float v, int width, int height, int regionWidth, int regionHeight, int textureWidth, int textureHeight, int color, Operation<Void> original) {
         if (PuzzleConfig.resourcepackSplashScreen)
@@ -135,7 +135,7 @@ public abstract class MixinSplashScreen extends Overlay {
 
             //? if >= 1.21.8 {
             context.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, 0, 0, 0, 0, width, height, width, height, ARGB.white(s));
-            //?} else if >= 1.21.5 {
+            //?} else if >= 1.21.4 {
             /*context.blit(RenderType::guiTextured, BACKGROUND, 0, 0, 0, 0, width, height, width, height, ARGB.white(s));
             *///?} else {
             /*RenderSystem.enableBlend();

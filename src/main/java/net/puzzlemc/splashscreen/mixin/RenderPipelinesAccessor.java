@@ -1,6 +1,6 @@
 package net.puzzlemc.splashscreen.mixin;
 
-//? if > 1.21.1 {
+//? if >= 1.21.5 {
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import net.minecraft.client.renderer.RenderPipelines;
 import org.spongepowered.asm.mixin.Mixin;
