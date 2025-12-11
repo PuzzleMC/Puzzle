@@ -4,12 +4,12 @@ import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.NativeImage;
 import eu.midnightdust.lib.util.MidnightColorUtil;
 import eu.midnightdust.lib.util.PlatformFunctions;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.ReloadableTexture;
 import net.minecraft.client.resources.metadata.texture.TextureMetadataSection;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.VanillaPackResources;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -44,12 +44,15 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.TriState;
 *///?}
 
+//? if >= 1.21.11
+import net.minecraft.client.renderer.texture.MipmapStrategy;
+
 import static net.puzzlemc.core.PuzzleCore.LOGGER;
 import static net.puzzlemc.core.PuzzleCore.MOD_ID;
 
 public class PuzzleSplashScreen {
-    public static final ResourceLocation LOGO = ResourceLocation.fromNamespaceAndPath("minecraft", "textures/gui/title/mojangstudios.png");
-    public static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath("minecraft", "puzzle/splash_background.png");
+    public static final Identifier LOGO = Identifier.fromNamespaceAndPath("minecraft", "textures/gui/title/mojangstudios.png");
+    public static final Identifier BACKGROUND = Identifier.fromNamespaceAndPath("minecraft", "puzzle/splash_background.png");
     public static File CONFIG_PATH = new File(String.valueOf(PlatformFunctions.getConfigDirectory().resolve(".puzzle_cache")));
     public static Path LOGO_TEXTURE = Paths.get(CONFIG_PATH + "/mojangstudios.png");
     public static Path BACKGROUND_TEXTURE = Paths.get(CONFIG_PATH + "/splash_background.png");
@@ -199,7 +202,7 @@ public class PuzzleSplashScreen {
 
 
     public static class LogoTexture extends ReloadableTexture {
-        public LogoTexture(ResourceLocation logo) {
+        public LogoTexture(Identifier logo) {
             super(logo);
         }
 
@@ -208,7 +211,7 @@ public class PuzzleSplashScreen {
             Minecraft client = Minecraft.getInstance();
             VanillaPackResources defaultResourcePack = client.getVanillaPackResources();
             try (InputStream input = Objects.requireNonNull(defaultResourcePack.getResource(PackType.CLIENT_RESOURCES, LOGO)).get()) {
-                return  /*? if >= 1.21.5 {*/ new TextureContents(NativeImage.read(input), new TextureMetadataSection(true, true)) /*?} else {*/ /*new TextureContents(new TextureMetadataSection(true, true), NativeImage.read(input))  *//*?}*/;
+                return  /*? if >= 1.21.5 {*/ new TextureContents(NativeImage.read(input), new TextureMetadataSection(true, true /*? if >= 1.21.11 {*/, MipmapStrategy.AUTO, 0 /*?}*/)) /*?} else {*/ /*new TextureContents(new TextureMetadataSection(true, true), NativeImage.read(input))  *//*?}*/;
             } catch (IOException ex) {
                 return /*? if >= 1.21.5 {*/ TextureContents.createMissing() /*?} else {*/ /*new TextureContents(ex) *//*?}*/;
             }
@@ -222,7 +225,7 @@ public class PuzzleSplashScreen {
         @Override
         public @NotNull TextureContents loadContents(ResourceManager resourceManager) {
             try (InputStream input = new FileInputStream(String.valueOf(PuzzleSplashScreen.LOGO_TEXTURE))) {
-                return  /*? if >= 1.21.5 {*/ new TextureContents(NativeImage.read(input), new TextureMetadataSection(true, true)) /*?} else {*/ /*new TextureContents(new TextureMetadataSection(true, true), NativeImage.read(input))  *//*?}*/;
+                return  /*? if >= 1.21.5 {*/ new TextureContents(NativeImage.read(input), new TextureMetadataSection(true, true/*? if >= 1.21.11 {*/, MipmapStrategy.AUTO, 0 /*?}*/)) /*?} else {*/ /*new TextureContents(new TextureMetadataSection(true, true), NativeImage.read(input))  *//*?}*/;
             } catch (IOException e) {
                 LOGGER.error("Encountered an error during logo loading: ", e);
                 //? if >= 1.21.5 {

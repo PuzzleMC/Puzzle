@@ -27,7 +27,7 @@ import net.puzzlemc.gui.PuzzleGui;
 //?} else {
 /*import net.minecraft.client.gui.screens.OptionsScreen;
 import net.minecraft.client.gui.components.TextAndImageButton;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import static net.puzzlemc.core.PuzzleCore.MOD_ID;
 *///?}
@@ -66,7 +66,7 @@ public abstract class MixinOptionsScreen extends Screen {
         puzzle$button.setPosition(this.width / 2 - 178 + i, layout.getY() + layout.getFooterHeight() - 4);
     }
     //?} else {
-    /*@Unique TextAndImageButton puzzle$button = TextAndImageButton.builder(Component.translatable("midnightlib.overview.title"), ResourceLocation.fromNamespaceAndPath(MOD_ID, "icon/button.png"),
+    /*@Unique TextAndImageButton puzzle$button = TextAndImageButton.builder(Component.translatable("midnightlib.overview.title"), Identifier.fromNamespaceAndPath(MOD_ID, "icon/button.png"),
             button -> Objects.requireNonNull(minecraft).setScreen(new PuzzleOptionsScreen(this))).textureSize(19, 19).usedTextureSize(16, 16).offset(-2, 0).build();
 
     @Inject(at = @At("HEAD"), method = "init")

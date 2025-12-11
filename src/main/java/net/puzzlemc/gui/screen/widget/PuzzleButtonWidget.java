@@ -14,9 +14,19 @@ public class PuzzleButtonWidget extends Button {
         this.title = title;
     }
     @Override
-    public void renderWidget(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    //? if < 1.21.11 {
+    /*public void renderWidget(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    *///?} else {
+    public void renderContents(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    //?}
         try { title.setTitle(this);
         } catch (Exception e) {e.fillInStackTrace(); this.visible = false;}
-        super.renderWidget(context, mouseX, mouseY, delta);
+
+        //? if < 1.21.11 {
+        /*super.renderWidget(context, mouseX, mouseY, delta);*/
+        //?} else {
+        this.renderDefaultSprite(context);
+        this.renderDefaultLabel(context.textRendererForWidget(this, GuiGraphics.HoveredTextEffects.NONE));
+        //?}
     }
 }

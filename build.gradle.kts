@@ -286,7 +286,15 @@ stonecutter {
         replace("SimpleTexture", "ReloadableTexture")
     }
     replacements.string {
+        direction = eval(current.version, ">=1.21.11")
+        replace("ResourceLocation", "Identifier")
+    }
+    replacements.string {
         direction = eval(current.version, ">=1.21")
         replace("new ResourceLocation", "ResourceLocation.fromNamespaceAndPath")
+    }
+    replacements.string {
+        direction = eval(current.version, ">=1.21.11")
+        replace("net.minecraft.Util", "net.minecraft.util.Util")
     }
 }

@@ -1,6 +1,6 @@
 package net.puzzlemc.core;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import net.puzzlemc.gui.screen.PuzzleOptionsScreen;
 import net.puzzlemc.splashscreen.PuzzleSplashScreen;
@@ -33,12 +33,12 @@ public class PuzzleClient implements ClientModInitializer, ModMenuApi {
 
         //ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener
         //? if >= 1.21.9 {
-        ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloader(ResourceLocation.fromNamespaceAndPath(MOD_ID, "splash_screen"), PuzzleSplashScreen.ReloadListener.INSTANCE);
+        ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloader(Identifier.fromNamespaceAndPath(MOD_ID, "splash_screen"), PuzzleSplashScreen.ReloadListener.INSTANCE);
         //?} else {
         /*ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
             @Override
-            public ResourceLocation getFabricId() {
-                return ResourceLocation.fromNamespaceAndPath(MOD_ID, "splash_screen");
+            public Identifier getFabricId() {
+                return Identifier.fromNamespaceAndPath(MOD_ID, "splash_screen");
             }
             @Override
             public void onResourceManagerReload(ResourceManager manager) {
@@ -76,7 +76,7 @@ public class PuzzleClient {
         //? if >= 1.21.5 {
         @SubscribeEvent
         public static void onResourceReload(AddClientReloadListenersEvent event) {
-            event.addListener(ResourceLocation.fromNamespaceAndPath(MOD_ID, "splash_screen"), PuzzleSplashScreen.ReloadListener.INSTANCE);
+            event.addListener(Identifier.fromNamespaceAndPath(MOD_ID, "splash_screen"), PuzzleSplashScreen.ReloadListener.INSTANCE);
         }
         //?} else {
         /^@SubscribeEvent
