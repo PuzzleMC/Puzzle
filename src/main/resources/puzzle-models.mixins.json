@@ -3,6 +3,8 @@
   "package": "net.puzzlemc.models.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "MixinBlockElementRotation",
+    "MixinFaceBakery",
     "MixinModelElementDeserializer"
   ],
   "injectors": {

@@ -10,13 +10,37 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-//? if < 1.21.11
-/*import net.minecraft.util.GsonHelper;*/
+//? if < 1.21.11 {
+/*import net.minecraft.util.GsonHelper;
+import com.llamalad7.mixinextras.sugar.Local;
+import net.minecraft.client.renderer.block.model.BlockElementRotation;
+import net.minecraft.core.Direction;
+import net.puzzlemc.models.MultiAxisRotation;
+*///?}
 
 @Mixin(BlockElement.Deserializer.class)
 public abstract class MixinModelElementDeserializer {
     //? if < 1.21.11 {
     /*@Shadow protected abstract Vector3f getVector3f(JsonObject jsonObject, String string);
+
+    @Inject(method = "getRotation", at = @At(value = "INVOKE", target = "Lorg/joml/Vector3f;mul(F)Lorg/joml/Vector3f;", shift = At.Shift.AFTER), cancellable = true)
+    private void getRotation(JsonObject jsonObject, CallbackInfoReturnable<BlockElementRotation> cir, @Local Vector3f vector3f) {
+        JsonObject rotationData = GsonHelper.getAsJsonObject(jsonObject, "rotation");
+        if (PuzzleConfig.unlimitedRotations && !rotationData.has("angle") && !rotationData.has("axis")) {
+            if (!rotationData.has("x") && !rotationData.has("y") && !rotationData.has("z")) {
+                throw new JsonParseException("Missing rotation value, expected either 'axis' and 'angle' or 'x', 'y' and 'z'");
+            }
+
+            float xRot = GsonHelper.getAsFloat(rotationData, "x", 0.0F);
+            float yRot = GsonHelper.getAsFloat(rotationData, "y", 0.0F);
+            float zRot = GsonHelper.getAsFloat(rotationData, "z", 0.0F);
+
+            boolean shouldRescale = GsonHelper.getAsBoolean(rotationData, "rescale", false);
+            BlockElementRotation rotation = new BlockElementRotation(vector3f, Direction.Axis.Z, 0.0F, shouldRescale);
+            ((MultiAxisRotation) (Object) rotation).puzzle$setMultiAxisRotation(new Vector3f(xRot, yRot, zRot)); // Adds the per-axis rotation values to the BlockElementRotation object
+            cir.setReturnValue(rotation);
+        }
+    }
 
     @Inject(at = @At("HEAD"),method = "getAngle", cancellable = true)
     private void puzzle$deserializeRotationAngle(JsonObject object, CallbackInfoReturnable<Float> cir) {
