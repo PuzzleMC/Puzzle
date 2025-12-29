@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(FaceBakery.class)
 public abstract class MixinFaceBakery {
     @Inject(method = "applyElementRotation", at = @At("HEAD"), cancellable = true)
-    private void puzzle$applyMultiAxisRotation(Vector3f vector3f, BlockElementRotation rotationInfo, CallbackInfo ci) {
+    private /^? if >= 1.21.4 {^/ static /^?}^/ void puzzle$applyMultiAxisRotation(Vector3f vector3f, BlockElementRotation rotationInfo, CallbackInfo ci) {
        //noinspection ConstantValue
        if (rotationInfo != null && ((MultiAxisRotation) (Object) rotationInfo).puzzle$getMultiAxisRotation() != null) {
            puzzle$rotateVertexBy(vector3f, rotationInfo.origin(), puzzle$calcRotationMatrix(rotationInfo));
@@ -28,7 +28,7 @@ public abstract class MixinFaceBakery {
     }
 
     @Unique
-    private Matrix4f puzzle$calcRotationMatrix(BlockElementRotation arg) {
+    private static Matrix4f puzzle$calcRotationMatrix(BlockElementRotation arg) {
         Matrix4f matrix4f = puzzle$getTransformation(arg);
         if (arg.rescale() && !puzzle$isIdentityMatrix(matrix4f))
             matrix4f.scale(puzzle$calcRescale(matrix4f));
@@ -63,7 +63,7 @@ public abstract class MixinFaceBakery {
     }
 
     @Unique
-    public Matrix4f puzzle$getTransformation(BlockElementRotation rotation) {
+    private static Matrix4f puzzle$getTransformation(BlockElementRotation rotation) {
         Vector3f perAxisRotation = ((MultiAxisRotation)(Object)rotation).puzzle$getMultiAxisRotation();
         assert perAxisRotation != null;
         return (new Matrix4f()).rotationZYX(perAxisRotation.z * ((float)Math.PI / 180F),
@@ -91,6 +91,7 @@ public abstract class MixinFaceBakery {
     }
 }
 *///?} else {
+import org.spongepowered.asm.mixin.Mixin;
 import eu.midnightdust.core.MidnightLib;
 
 @Mixin(MidnightLib.class)

@@ -27,8 +27,9 @@ public class MixinBlockElementRotation implements MultiAxisRotation {
     }
 }
 *///?} else {
+import org.spongepowered.asm.mixin.Mixin;
 import eu.midnightdust.core.MidnightLib;
 
 @Mixin(MidnightLib.class)
-public abstract class MixinFaceBakery {}
+public abstract class MixinBlockElementRotation {}
 //?}
