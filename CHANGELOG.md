@@ -1,3 +1,6 @@
+# Puzzle v2.3.0
+- Backported Minecraft 1.21.11's new multi-axis-rotation system for models to MC 1.20.1 - 1.21.10
+
 ## Puzzle v2.2.1
 - Add support for 1.21.11 (Mounts of Mayhem)
 - Fix crash when ModMenu is missing
