@@ -7,7 +7,7 @@ import net.minecraft.commands.arguments.blocks.BlockPredicateArgument;
 import net.minecraft.commands.arguments.blocks.BlockStateParser;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
@@ -22,7 +22,7 @@ public class IsBlockState extends BlockModelPredicate {
     }
 
     @Override
-    public boolean meetsCondition(BlockGetter world, BlockPos pos, BlockState state, ResourceLocation renderContext) {
+    public boolean meetsCondition(BlockGetter world, BlockPos pos, BlockState state, Identifier renderContext) {
         if (blockStatePredicate == null) return true;
         return blockStatePredicate.test(new BlockInWorld(Minecraft.getInstance().level, pos, false));
     }
@@ -49,7 +49,7 @@ public class IsBlockState extends BlockModelPredicate {
         public BlockPredicateImpl(String stateString) throws CommandSyntaxException {
             this.stateString = stateString;
             fuzzy = !stateString.contains("[");
-            res = BlockStateParser.parseForBlock(BuiltInRegistries.BLOCK.asLookup(), stateString, false);
+            res = BlockStateParser.parseForBlock(BuiltInRegistries.BLOCK/*? if < 1.21.4 {*/ /*.asLookup()*/ /*?}*/, stateString, false);
         }
 
         @Override

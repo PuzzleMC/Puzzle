@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import net.puzzlemc.predicates.client.PuzzlePredicates;
+import net.puzzlemc.predicates.PuzzlePredicates;
 import net.puzzlemc.predicates.data.conditions.*;
 import net.puzzlemc.predicates.data.logic.Not;
 import net.puzzlemc.predicates.data.logic.Or;

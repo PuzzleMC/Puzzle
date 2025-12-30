@@ -11,17 +11,17 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 //? if < 1.21.11 {
-import net.minecraft.util.GsonHelper;
+/*import net.minecraft.util.GsonHelper;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.renderer.block.model.BlockElementRotation;
 import net.minecraft.core.Direction;
 import net.puzzlemc.models.MultiAxisRotation;
-//?}
+*///?}
 
 @Mixin(BlockElement.Deserializer.class)
 public abstract class MixinModelElementDeserializer {
     //? if < 1.21.11 {
-    @Shadow protected abstract Vector3f getVector3f(JsonObject jsonObject, String string);
+    /*@Shadow protected abstract Vector3f getVector3f(JsonObject jsonObject, String string);
 
     @Inject(method = "getRotation", at = @At(value = "INVOKE", target = "Lorg/joml/Vector3f;mul(F)Lorg/joml/Vector3f;", shift = At.Shift.AFTER), cancellable = true)
     private void getRotation(JsonObject jsonObject, CallbackInfoReturnable<BlockElementRotation> cir, @Local Vector3f vector3f) {
@@ -71,8 +71,8 @@ public abstract class MixinModelElementDeserializer {
             }
         }
     }
-    //?} else {
-    /*@Shadow
+    *///?} else {
+    @Shadow
     private static Vector3f getVector3f(JsonObject jsonObject, String string) {
         throw new RuntimeException("MixinModelElementDeserializer from Puzzle could not be loaded properly");
     }
@@ -88,5 +88,5 @@ public abstract class MixinModelElementDeserializer {
             }
         }
     }
-    *///?}
+    //?}
 }

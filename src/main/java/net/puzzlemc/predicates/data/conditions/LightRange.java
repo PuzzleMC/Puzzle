@@ -3,7 +3,7 @@ package net.puzzlemc.predicates.data.conditions;
 import com.google.gson.JsonElement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.InclusiveRange;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -20,7 +20,7 @@ public class LightRange extends BlockModelPredicate {
     }
 
     @Override
-    public boolean meetsCondition(BlockGetter _unused, BlockPos pos, BlockState state, ResourceLocation renderContext) {
+    public boolean meetsCondition(BlockGetter _unused, BlockPos pos, BlockState state, Identifier renderContext) {
         Level world = Minecraft.getInstance().level;
 
         // ;-;

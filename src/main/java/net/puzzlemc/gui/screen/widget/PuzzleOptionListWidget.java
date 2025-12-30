@@ -63,8 +63,8 @@ public class PuzzleOptionListWidget extends MidnightConfigListWidget {
         var entry = new ButtonEntry(buttons, text, info);
         this.addEntry(entry);
     }
-    public void /*? if >= 1.21 {*/ /*renderWidget *//*?} else {*/ renderList /*?}*/(GuiGraphics context, int mouseX, int mouseY, float delta) {
-        super./*? if >= 1.21 {*/ /*renderWidget *//*?} else {*/ renderList /*?}*/(context, mouseX, mouseY, delta);
+    public void /*? if >= 1.21 {*/ renderWidget /*?} else {*/ /*renderList *//*?}*/(GuiGraphics context, int mouseX, int mouseY, float delta) {
+        super./*? if >= 1.21 {*/ renderWidget /*?} else {*/ /*renderList *//*?}*/(context, mouseX, mouseY, delta);
         ButtonEntry e = this.getHovered();
         if (minecraft.screen instanceof PuzzleOptionsScreen page && e != null && !e.buttons.isEmpty() &&
                 e.text.getContents() instanceof TranslatableContents content) {
@@ -84,9 +84,9 @@ public class PuzzleOptionListWidget extends MidnightConfigListWidget {
                     list.add(Component.literal(str));
                 page.tooltip = list;
                 if (!button.isMouseOver(mouseX, mouseY)) {
-                    context.renderComponentTooltip(textRenderer, list, button.getX(), button.getY() + (button.getHeight() * 2));
+                    context.setComponentTooltipForNextFrame(textRenderer, list, button.getX(), button.getY() + (button.getHeight() * 2));
                 }
-                else context.renderComponentTooltip(textRenderer, list, mouseX, mouseY);
+                else context.setComponentTooltipForNextFrame(textRenderer, list, mouseX, mouseY);
             }
         }
     }

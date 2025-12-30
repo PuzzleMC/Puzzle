@@ -1,7 +1,5 @@
 package net.puzzlemc.predicates;
 
-import net.fabricmc.loader.api.FabricLoader;
-import net.puzzlemc.predicates.client.PuzzlePredicates;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -15,8 +13,8 @@ public class MBPMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public void onLoad(String mixinPackage) {
-        HAS_SODIUM = FabricLoader.getInstance().isModLoaded("sodium");
-        HAS_WORLDMESHER = FabricLoader.getInstance().isModLoaded("worldmesher");
+        HAS_SODIUM = false;//PlatformFunctions.isModLoaded("sodium");
+        HAS_WORLDMESHER = false;//PlatformFunctions.isModLoaded("worldmesher");
         StringBuilder builder = new StringBuilder();
         if (HAS_SODIUM) {
             builder.append("sodium, ");

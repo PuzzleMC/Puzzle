@@ -3,7 +3,7 @@ package net.puzzlemc.predicates.data.logic;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.puzzlemc.predicates.data.BlockModelPredicate;
@@ -16,18 +16,18 @@ import java.util.List;
 public class When implements WorldViewCondition {
 
     final And conditions;
-    private final List<ResourceLocation> applyModelList;
+    private final List<Identifier> applyModelList;
 
-    public When(And conditions, List<ResourceLocation> applyModelList) {
+    public When(And conditions, List<Identifier> applyModelList) {
         this.conditions = conditions;
         this.applyModelList = Collections.unmodifiableList(applyModelList);
     }
 
-    public ResourceLocation getModel(long seed) {
+    public Identifier getModel(long seed) {
         return applyModelList.get((int) (Math.abs(seed) % applyModelList.size()));
     }
 
-    public List<ResourceLocation> getModels() {
+    public List<Identifier> getModels() {
         return applyModelList;
     }
 
@@ -35,7 +35,7 @@ public class When implements WorldViewCondition {
         JsonObject object = arg.getAsJsonObject();
         List<BlockModelPredicate> conditions = BlockModelPredicate.parseFromJson(object.get("when"));
 
-        List<ResourceLocation> applyModelList;
+        List<Identifier> applyModelList;
         JsonElement apply = object.get("apply");
         if (apply.isJsonArray()) {
             applyModelList = new ArrayList<>();
@@ -51,21 +51,21 @@ public class When implements WorldViewCondition {
                 }
 
                 String[] id = applyId.split(":");
-                ResourceLocation currentModelID = new ResourceLocation(id[0], "block/" + id[1]);
+                Identifier currentModelID = Identifier.fromNamespaceAndPath(id[0], "block/" + id[1]);
                 for (int i = 0; i < weight; i++) {
                     applyModelList.add(currentModelID);
                 }
             }
         } else {
             String[] id = apply.getAsString().split(":");
-            applyModelList = List.of(new ResourceLocation(id[0], "block/" + id[1]));
+            applyModelList = List.of(Identifier.fromNamespaceAndPath(id[0], "block/" + id[1]));
         }
 
         return new When(new And(conditions), applyModelList);
     }
 
     @Override
-    public boolean meetsCondition(BlockGetter world, BlockPos pos, BlockState state, ResourceLocation renderContext) {
+    public boolean meetsCondition(BlockGetter world, BlockPos pos, BlockState state, Identifier renderContext) {
         return conditions.meetsCondition(world, pos, state, renderContext);
     }
 }

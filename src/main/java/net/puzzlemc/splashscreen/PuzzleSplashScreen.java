@@ -3,12 +3,12 @@ package net.puzzlemc.splashscreen;
 import com.mojang.blaze3d.platform.NativeImage;
 import eu.midnightdust.lib.util.MidnightColorUtil;
 import eu.midnightdust.lib.util.PlatformFunctions;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.client.renderer.texture.SimpleTexture;
+import net.minecraft.client.renderer.texture.ReloadableTexture;
 import net.minecraft.client.resources.metadata.texture.TextureMetadataSection;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.VanillaPackResources;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -28,21 +28,21 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 //? if >= 1.21.5 {
-/*import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.platform.DepthTestFunction;
 import com.mojang.blaze3d.platform.DestFactor;
 import com.mojang.blaze3d.platform.SourceFactor;
-import net.minecraft.client.renderer.texture.TextureImage;
+import net.minecraft.client.renderer.texture.TextureContents;
 import net.puzzlemc.splashscreen.mixin.RenderPipelinesAccessor;
-*///?}
+//?}
 
 //? if = 1.21.4 || = 1.21.5 {
 /*import net.minecraft.client.gui.screens.LoadingOverlay;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.TriState;
-import net.minecraft.client.renderer.texture.TextureImage;
+import net.minecraft.client.renderer.texture.TextureContents;
 *///?}
 
 //? if = 1.21.4 {
@@ -54,21 +54,21 @@ import static net.minecraft.client.renderer.RenderStateShard.*;
 *///?}
 
 //? if >= 1.21.11
-/*import net.minecraft.client.renderer.texture.MipmapStrategy;*/
+import net.minecraft.client.renderer.texture.MipmapStrategy;
 
 import static net.puzzlemc.core.PuzzleCore.LOGGER;
 import static net.puzzlemc.core.PuzzleCore.MOD_ID;
 
 public class PuzzleSplashScreen {
-    public static final ResourceLocation LOGO = new ResourceLocation("minecraft", "textures/gui/title/mojangstudios.png");
-    public static final ResourceLocation BACKGROUND = new ResourceLocation("minecraft", "puzzle/splash_background.png");
+    public static final Identifier LOGO = Identifier.fromNamespaceAndPath("minecraft", "textures/gui/title/mojangstudios.png");
+    public static final Identifier BACKGROUND = Identifier.fromNamespaceAndPath("minecraft", "puzzle/splash_background.png");
     public static File CONFIG_PATH = new File(String.valueOf(PlatformFunctions.getConfigDirectory().resolve(".puzzle_cache")));
     public static Path LOGO_TEXTURE = Paths.get(CONFIG_PATH + "/mojangstudios.png");
     public static Path BACKGROUND_TEXTURE = Paths.get(CONFIG_PATH + "/splash_background.png");
     private static Minecraft client = Minecraft.getInstance();
     private static boolean keepBackground = false;
     //? if >= 1.21.5
-    /*public static RenderPipeline CUSTOM_LOGO_PIPELINE;*/
+    public static RenderPipeline CUSTOM_LOGO_PIPELINE;
     //? if = 1.21.5 || = 1.21.4
     /*public static RenderType CUSTOM_LOGO_LAYER;*/
 
@@ -82,14 +82,14 @@ public class PuzzleSplashScreen {
             }
         }
         //? if >= 1.21.4
-        /*buildRenderLayer();*/
+        buildRenderLayer();
     }
 
     //? if >= 1.21.4 {
-    /*public static void buildRenderLayer() {
+    public static void buildRenderLayer() {
         if (PuzzleConfig.resourcepackSplashScreen) {
             //? if >= 1.21.5 {
-            /^BlendFunction blendFunction = new BlendFunction(SourceFactor.SRC_ALPHA, DestFactor.ONE);
+            BlendFunction blendFunction = new BlendFunction(SourceFactor.SRC_ALPHA, DestFactor.ONE);
             if (PuzzleConfig.disableBlend) blendFunction = null;
             else if (PuzzleConfig.customBlendFunction.size() == 4) {
                 try {
@@ -110,15 +110,15 @@ public class PuzzleSplashScreen {
             CUSTOM_LOGO_PIPELINE_BUILDER = blendFunction != null ? CUSTOM_LOGO_PIPELINE_BUILDER.withBlend(blendFunction) : CUSTOM_LOGO_PIPELINE_BUILDER.withoutBlend();
 
             CUSTOM_LOGO_PIPELINE = CUSTOM_LOGO_PIPELINE_BUILDER.build();
-            ^///?}
+            //?}
 
             //? if = 1.21.5 {
-            /^CUSTOM_LOGO_LAYER = RenderType.create("mojang_logo_puzzle", 786432, CUSTOM_LOGO_PIPELINE,
+            /*CUSTOM_LOGO_LAYER = RenderType.create("mojang_logo_puzzle", 786432, CUSTOM_LOGO_PIPELINE,
                     RenderType.CompositeState.builder()
                             .setTextureState(new RenderStateShard.TextureStateShard(LoadingOverlay.MOJANG_STUDIOS_LOGO_LOCATION, TriState.DEFAULT, false))
                             .createCompositeState(false));
-            ^///?} else if = 1.21.4 {
-            /^RenderStateShard.TransparencyStateShard transparency = new RenderStateShard.TransparencyStateShard("puzzle_logo_transparency", () -> {
+            *///?} else if = 1.21.4 {
+            /*RenderStateShard.TransparencyStateShard transparency = new RenderStateShard.TransparencyStateShard("puzzle_logo_transparency", () -> {
                 RenderSystem.enableBlend();
                 if (PuzzleConfig.disableBlend) RenderSystem.disableBlend();
                 else if (PuzzleConfig.customBlendFunction.size() == 4) {
@@ -142,10 +142,10 @@ public class PuzzleSplashScreen {
                     .setDepthTestState(NO_DEPTH_TEST)
                     .setWriteMaskState(COLOR_WRITE)
                     .createCompositeState(false));
-            ^///?}
+            *///?}
         }
     }
-    *///?}
+    //?}
 
     public static class ReloadListener implements ResourceManagerReloadListener {
         public static final ReloadListener INSTANCE = new ReloadListener();
@@ -157,8 +157,8 @@ public class PuzzleSplashScreen {
             client = Minecraft.getInstance();
             if (PuzzleConfig.resourcepackSplashScreen) {
                 PuzzleSplashScreen.resetColors();
-                client.getTextureManager()./*? if >= 1.21.4 {*/ /*registerAndLoad *//*?} else {*/register/*?}*/(LOGO, new LogoTexture(LOGO));
-                client.getTextureManager()./*? if >= 1.21.4 {*/ /*registerAndLoad *//*?} else {*/register/*?}*/(BACKGROUND, new LogoTexture(BACKGROUND));
+                client.getTextureManager()./*? if >= 1.21.4 {*/ registerAndLoad /*?} else {*//*register*//*?}*/(LOGO, new LogoTexture(LOGO));
+                client.getTextureManager()./*? if >= 1.21.4 {*/ registerAndLoad /*?} else {*//*register*//*?}*/(BACKGROUND, new LogoTexture(BACKGROUND));
 
                 manager.listResources("optifine", path -> path.getPath().contains("color.properties")).forEach((id, resource) -> {
                     try (InputStream stream = resource.open()) {
@@ -196,7 +196,7 @@ public class PuzzleSplashScreen {
                 manager.listResources("textures", path -> path.getPath().contains("mojangstudios.png")).forEach((id, resource) -> {
                     try (InputStream stream = resource.open()) {
                         Files.copy(stream, LOGO_TEXTURE, StandardCopyOption.REPLACE_EXISTING);
-                        client.getTextureManager()./*? if >= 1.21.4 {*/ /*registerAndLoad *//*?} else {*/register/*?}*/(LOGO, new DynamicLogoTexture());
+                        client.getTextureManager()./*? if >= 1.21.4 {*/ registerAndLoad /*?} else {*//*register*//*?}*/(LOGO, new DynamicLogoTexture());
                         if (logoCount.get() > 0) PuzzleConfig.hasCustomSplashScreen = true;
                         logoCount.getAndIncrement();
                     } catch (Exception e) {
@@ -207,7 +207,7 @@ public class PuzzleSplashScreen {
                     try (InputStream stream = resource.open()) {
                         Files.copy(stream, BACKGROUND_TEXTURE, StandardCopyOption.REPLACE_EXISTING);
                         InputStream input = new FileInputStream(String.valueOf(PuzzleSplashScreen.BACKGROUND_TEXTURE));
-                        client.getTextureManager().register(BACKGROUND, new DynamicTexture(/*? if >= 1.21.5 {*/ /*() -> "splash_screen_background", *//*?}*/ NativeImage.read(input)));
+                        client.getTextureManager().register(BACKGROUND, new DynamicTexture(/*? if >= 1.21.5 {*/ () -> "splash_screen_background", /*?}*/ NativeImage.read(input)));
                         keepBackground = true;
                         PuzzleConfig.hasCustomSplashScreen = true;
                     } catch (Exception e) {
@@ -222,7 +222,7 @@ public class PuzzleSplashScreen {
                 keepBackground = false;
                 PuzzleConfig.write(MOD_ID);
                 //? if >= 1.21.5
-                /*buildRenderLayer();*/
+                buildRenderLayer();
             }
         }
     }
@@ -238,42 +238,42 @@ public class PuzzleSplashScreen {
     }
 
 
-    public static class LogoTexture extends SimpleTexture {
-        public LogoTexture(ResourceLocation logo) {
+    public static class LogoTexture extends ReloadableTexture {
+        public LogoTexture(Identifier logo) {
             super(logo);
         }
 
         @Override
-        public @NotNull TextureImage getTextureImage(ResourceManager resourceManager) {
+        public @NotNull TextureContents loadContents(ResourceManager resourceManager) {
             Minecraft client = Minecraft.getInstance();
             VanillaPackResources defaultResourcePack = client.getVanillaPackResources();
             try (InputStream input = Objects.requireNonNull(defaultResourcePack.getResource(PackType.CLIENT_RESOURCES, LOGO)).get()) {
-                return  /*? if >= 1.21.4 {*/ /*new TextureImage(NativeImage.read(input), new TextureMetadataSection(true, true /^? if >= 1.21.11 {^//^, MipmapStrategy.AUTO, 0 ^//^?}^/)) *//*?} else {*/ new TextureImage(new TextureMetadataSection(true, true), NativeImage.read(input))  /*?}*/;
+                return  /*? if >= 1.21.4 {*/ new TextureContents(NativeImage.read(input), new TextureMetadataSection(true, true /*? if >= 1.21.11 {*/, MipmapStrategy.AUTO, 0 /*?}*/)) /*?} else {*/ /*new TextureContents(new TextureMetadataSection(true, true), NativeImage.read(input))  *//*?}*/;
             } catch (IOException ex) {
-                return /*? if >= 1.21.4 {*/ /*TextureImage.createMissing() *//*?} else {*/ new TextureImage(ex) /*?}*/;
+                return /*? if >= 1.21.4 {*/ TextureContents.createMissing() /*?} else {*/ /*new TextureContents(ex) *//*?}*/;
             }
         }
     }
 
-    public static class DynamicLogoTexture extends SimpleTexture {
+    public static class DynamicLogoTexture extends ReloadableTexture {
         public DynamicLogoTexture() {
             super(LOGO);
         }
         @Override
-        public @NotNull TextureImage getTextureImage(ResourceManager resourceManager) {
+        public @NotNull TextureContents loadContents(ResourceManager resourceManager) {
             try (InputStream input = new FileInputStream(String.valueOf(PuzzleSplashScreen.LOGO_TEXTURE))) {
-                return  /*? if >= 1.21.4 {*/ /*new TextureImage(NativeImage.read(input), new TextureMetadataSection(true, true/^? if >= 1.21.11 {^//^, MipmapStrategy.AUTO, 0 ^//^?}^/)) *//*?} else {*/ new TextureImage(new TextureMetadataSection(true, true), NativeImage.read(input))  /*?}*/;
+                return  /*? if >= 1.21.4 {*/ new TextureContents(NativeImage.read(input), new TextureMetadataSection(true, true/*? if >= 1.21.11 {*/, MipmapStrategy.AUTO, 0 /*?}*/)) /*?} else {*/ /*new TextureContents(new TextureMetadataSection(true, true), NativeImage.read(input))  *//*?}*/;
             } catch (IOException e) {
                 LOGGER.error("Encountered an error during logo loading: ", e);
                 //? if >= 1.21.4 {
-                /*try {
-                    return TextureImage.load(resourceManager, LOGO);
+                try {
+                    return TextureContents.load(resourceManager, LOGO);
                 } catch (IOException ex) {
-                    return TextureImage.createMissing();
+                    return TextureContents.createMissing();
                 }
-                *///?} else {
-                return TextureImage.load(resourceManager, LOGO);
-                //?}
+                //?} else {
+                /*return TextureContents.load(resourceManager, LOGO);
+                *///?}
             }
         }
     }

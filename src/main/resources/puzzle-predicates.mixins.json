@@ -14,7 +14,9 @@
     "ItemFrameEntityRendererMixin",
     "ItemRendererMixin",
     "PistonBlockEntityRendererMixin",
-    "compat.sodium.ChunkBuilderMeshingTaskMixin"
+    "compat.sodium.ChunkBuilderMeshingTaskMixin",
+    "fabric.MixinTerrainRenderContext",
+    "fabric.AbstractTerrainRenderContextAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

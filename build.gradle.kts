@@ -301,4 +301,8 @@ stonecutter {
         direction = eval(current.version, ">=1.21.11")
         replace("net.minecraft.Util", "net.minecraft.util.Util")
     }
+    replacements.string {
+        direction = eval(current.version, ">=1.21")
+        replace(".getDeltaFrameTime()", ".getTimer().getGameTimeDeltaTicks()")
+    }
 }

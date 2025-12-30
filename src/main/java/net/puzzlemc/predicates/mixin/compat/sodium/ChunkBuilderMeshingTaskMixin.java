@@ -30,7 +30,7 @@ package net.puzzlemc.predicates.mixin.compat.sodium;
 //
 //    @Redirect(method = "execute(Lme/jellysquid/mods/sodium/client/render/chunk/compile/ChunkBuildContext;Lme/jellysquid/mods/sodium/client/util/task/CancellationToken;)Lme/jellysquid/mods/sodium/client/render/chunk/compile/ChunkBuildOutput;", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/block/BlockModels;getModel(Lnet/minecraft/block/BlockState;)Lnet/minecraft/client/render/model/BakedModel;"))
 //    public BakedModel getModelRedirect(BlockModels models, BlockState state) {
-//        BakedModel newModel = BlockRendering.tryModelOverride(models, Minecraft.getInstance().level, state, new BlockPos(x, y, z), ContextResourceLocations.CHUNK_MESH);
+//        BakedModel newModel = BlockRendering.tryModelOverride(models, Minecraft.getInstance().level, state, new BlockPos(x, y, z), ContextIDs.CHUNK_MESH);
 //        if (newModel != null)
 //            return newModel;
 //

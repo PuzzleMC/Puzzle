@@ -1,7 +1,7 @@
 package net.puzzlemc.predicates;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -15,7 +15,7 @@ import java.util.Optional;
 public class MBPData {
     public static final HashMap<Block, List<When>> PREDICATES = new HashMap<>();
 
-    public static Optional<ResourceLocation> meetsPredicate(BlockGetter world, BlockPos pos, BlockState state, ResourceLocation renderContext) {
+    public static Optional<Identifier> meetsPredicate(BlockGetter world, BlockPos pos, BlockState state, Identifier renderContext) {
         if (PREDICATES.containsKey(state.getBlock())) {
             for (When when : PREDICATES.get(state.getBlock())) {
                 if (when.meetsCondition(world, pos, state, renderContext)) {

@@ -3,7 +3,7 @@ package net.puzzlemc.predicates.data.conditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.puzzlemc.predicates.data.BlockModelPredicate;
@@ -25,7 +25,7 @@ public class AdjacentBlock extends BlockModelPredicate {
     }
 
     @Override
-    public boolean meetsCondition(BlockGetter world, BlockPos pos, BlockState state, ResourceLocation renderContext) {
+    public boolean meetsCondition(BlockGetter world, BlockPos pos, BlockState state, Identifier renderContext) {
         BlockState block = world.getBlockState(pos);
         boolean b = true;
         if (checkFullCube) b = block.isViewBlocking(world, pos); //TODO

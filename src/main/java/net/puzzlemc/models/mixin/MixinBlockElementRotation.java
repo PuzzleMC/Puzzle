@@ -1,7 +1,7 @@
 package net.puzzlemc.models.mixin;
 
 //? if < 1.21.11 {
-import net.minecraft.client.renderer.block.model.BlockElementRotation;
+/*import net.minecraft.client.renderer.block.model.BlockElementRotation;
 import net.puzzlemc.models.MultiAxisRotation;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -26,10 +26,10 @@ public class MixinBlockElementRotation implements MultiAxisRotation {
         return this.multiAxisRotation;
     }
 }
-//?} else {
-/*import org.spongepowered.asm.mixin.Mixin;
+*///?} else {
+import org.spongepowered.asm.mixin.Mixin;
 import eu.midnightdust.core.MidnightLib;
 
 @Mixin(MidnightLib.class)
 public abstract class MixinBlockElementRotation {}
-*///?}
+//?}
