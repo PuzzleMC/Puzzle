@@ -1,7 +1,8 @@
 package net.puzzlemc.core;
 
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
+import net.puzzlemc.predicates.client.PuzzlePredicates;
 import net.puzzlemc.splashscreen.PuzzleSplashScreen;
 
 import static net.puzzlemc.core.PuzzleCore.MOD_ID;
@@ -10,12 +11,12 @@ import static net.puzzlemc.core.PuzzleCore.MOD_ID;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.server.packs.PackType;
 //? if >= 1.21.9 {
-import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
-//?} else {
-/*import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+/*import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
+*///?} else {
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
-*///?}
+//?}
 
 public class PuzzleClient implements ClientModInitializer {
     @Override
@@ -24,19 +25,29 @@ public class PuzzleClient implements ClientModInitializer {
 
         //ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener
         //? if >= 1.21.9 {
-        ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloader(Identifier.fromNamespaceAndPath(MOD_ID, "splash_screen"), PuzzleSplashScreen.ReloadListener.INSTANCE);
-        //?} else {
-        /*ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
+        /*ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloader(new ResourceLocation(MOD_ID, "splash_screen"), PuzzleSplashScreen.ReloadListener.INSTANCE);
+        *///?} else {
+        ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
             @Override
-            public Identifier getFabricId() {
-                return Identifier.fromNamespaceAndPath(MOD_ID, "splash_screen");
+            public ResourceLocation getFabricId() {
+                return new ResourceLocation(MOD_ID, "splash_screen");
             }
             @Override
             public void onResourceManagerReload(ResourceManager manager) {
                 PuzzleSplashScreen.ReloadListener.INSTANCE.onResourceManagerReload(manager);
             }
         });
-        *///?}
+        ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
+            @Override
+            public ResourceLocation getFabricId() {
+                return new ResourceLocation(MOD_ID, "predicates");
+            }
+            @Override
+            public void onResourceManagerReload(ResourceManager manager) {
+                PuzzlePredicates.ReloadListener.INSTANCE.onResourceManagerReload(manager);
+            }
+        });
+        //?}
     }
 }
 //?}
@@ -67,7 +78,7 @@ public class PuzzleClient {
         //? if >= 1.21.5 {
         @SubscribeEvent
         public static void onResourceReload(AddClientReloadListenersEvent event) {
-            event.addListener(Identifier.fromNamespaceAndPath(MOD_ID, "splash_screen"), PuzzleSplashScreen.ReloadListener.INSTANCE);
+            event.addListener(new ResourceLocation(MOD_ID, "splash_screen"), PuzzleSplashScreen.ReloadListener.INSTANCE);
         }
         //?} else {
         /^@SubscribeEvent

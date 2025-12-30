@@ -18,26 +18,26 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Objects;
 
 //? if >= 1.21 {
-import org.spongepowered.asm.mixin.Final;
+/*import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Shadow;
 import net.minecraft.client.gui.screens.options.OptionsScreen;
 import net.minecraft.client.gui.components.SpriteIconButton;
 import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
 import net.puzzlemc.gui.PuzzleGui;
-//?} else {
-/*import net.minecraft.client.gui.screens.OptionsScreen;
+*///?} else {
+import net.minecraft.client.gui.screens.OptionsScreen;
 import net.minecraft.client.gui.components.TextAndImageButton;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import static net.puzzlemc.core.PuzzleCore.MOD_ID;
-*///?}
+//?}
 
 @Mixin(OptionsScreen.class)
 public abstract class MixinOptionsScreen extends Screen {
     private MixinOptionsScreen(Component title) {super(title);}
 
     //? if >= 1.21 {
-    @Shadow @Final private HeaderAndFooterLayout layout;
+    /*@Shadow @Final private HeaderAndFooterLayout layout;
     @Unique
     SpriteIconButton puzzle$button = SpriteIconButton.builder(Component.translatable("puzzle.screen.title"), (buttonWidget) ->
                     (Objects.requireNonNull(this.minecraft)).setScreen(new PuzzleOptionsScreen(this)), true)
@@ -65,8 +65,8 @@ public abstract class MixinOptionsScreen extends Screen {
         }
         puzzle$button.setPosition(this.width / 2 - 178 + i, layout.getY() + layout.getFooterHeight() - 4);
     }
-    //?} else {
-    /*@Unique TextAndImageButton puzzle$button = TextAndImageButton.builder(Component.translatable("midnightlib.overview.title"), Identifier.fromNamespaceAndPath(MOD_ID, "icon/button.png"),
+    *///?} else {
+    @Unique TextAndImageButton puzzle$button = TextAndImageButton.builder(Component.translatable("midnightlib.overview.title"), new ResourceLocation(MOD_ID, "icon/button.png"),
             button -> Objects.requireNonNull(minecraft).setScreen(new PuzzleOptionsScreen(this))).textureSize(19, 19).usedTextureSize(16, 16).offset(-2, 0).build();
 
     @Inject(at = @At("HEAD"), method = "init")
@@ -82,5 +82,5 @@ public abstract class MixinOptionsScreen extends Screen {
             this.addRenderableWidget(puzzle$button);
         }
     }
-    *///?}
+    //?}
 }

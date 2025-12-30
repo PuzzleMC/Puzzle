@@ -4,7 +4,7 @@ import eu.midnightdust.core.MidnightLib;
 import eu.midnightdust.lib.util.PlatformFunctions;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.puzzlemc.core.config.PuzzleConfig;
 import net.puzzlemc.gui.compat.*;
 import net.puzzlemc.gui.screen.widget.PuzzleWidget;
@@ -17,7 +17,7 @@ import static net.puzzlemc.core.PuzzleCore.MOD_ID;
 public class PuzzleGui {
     public static final Component YES = Component.translatable("gui.yes").withStyle(ChatFormatting.GREEN);
     public static final Component NO = Component.translatable("gui.no").withStyle(ChatFormatting.RED);
-    public static final Identifier PUZZLE_BUTTON = Identifier.fromNamespaceAndPath(MOD_ID, "icon/button");
+    public static final ResourceLocation PUZZLE_BUTTON = new ResourceLocation(MOD_ID, "icon/button");
 
     public static void init() {
         MidnightLib.hiddenMods.add(MOD_ID);
@@ -30,14 +30,14 @@ public class PuzzleGui {
             PuzzleConfig.resourcepackSplashScreen = !PuzzleConfig.resourcepackSplashScreen;
             PuzzleSplashScreen.resetColors();
             PuzzleConfig.write(MOD_ID);
-            Minecraft.getInstance().getTextureManager()./*? if >= 1.21.5 {*/ registerAndLoad /*?} else {*//*register*//*?}*/(PuzzleSplashScreen.LOGO, new PuzzleSplashScreen.LogoTexture(PuzzleSplashScreen.LOGO));
+            Minecraft.getInstance().getTextureManager()./*? if >= 1.21.5 {*/ /*registerAndLoad *//*?} else {*/register/*?}*/(PuzzleSplashScreen.LOGO, new PuzzleSplashScreen.LogoTexture(PuzzleSplashScreen.LOGO));
         }));
         //? if < 1.21.11 {
-        /*PuzzleApi.addToResourceOptions(new PuzzleWidget(Component.translatable("puzzle.option.unlimited_model_rotations"), (button) -> button.setMessage(PuzzleConfig.unlimitedRotations ? YES : NO), (button) -> {
+        PuzzleApi.addToResourceOptions(new PuzzleWidget(Component.translatable("puzzle.option.unlimited_model_rotations"), (button) -> button.setMessage(PuzzleConfig.unlimitedRotations ? YES : NO), (button) -> {
             PuzzleConfig.unlimitedRotations = !PuzzleConfig.unlimitedRotations;
             PuzzleConfig.write(MOD_ID);
         }));
-        *///?}
+        //?}
         PuzzleApi.addToResourceOptions(new PuzzleWidget(Component.translatable("puzzle.option.bigger_custom_models"), (button) -> button.setMessage(PuzzleConfig.biggerModels ? YES : NO), (button) -> {
             PuzzleConfig.biggerModels = !PuzzleConfig.biggerModels;
             PuzzleConfig.write(MOD_ID);

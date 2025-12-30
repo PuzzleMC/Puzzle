@@ -1,7 +1,7 @@
 package net.puzzlemc.models.mixin;
 
 //? if < 1.21.11 {
-/*import net.minecraft.client.renderer.block.model.BlockElementRotation;
+import net.minecraft.client.renderer.block.model.BlockElementRotation;
 import net.minecraft.client.renderer.block.model.FaceBakery;
 import net.minecraft.core.Direction;
 import net.puzzlemc.models.MultiAxisRotation;
@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(FaceBakery.class)
 public abstract class MixinFaceBakery {
     @Inject(method = "applyElementRotation", at = @At("HEAD"), cancellable = true)
-    private /^? if >= 1.21.4 {^/ static /^?}^/ void puzzle$applyMultiAxisRotation(Vector3f vector3f, BlockElementRotation rotationInfo, CallbackInfo ci) {
+    private /*? if >= 1.21.4 {*/ /*static *//*?}*/ void puzzle$applyMultiAxisRotation(Vector3f vector3f, BlockElementRotation rotationInfo, CallbackInfo ci) {
        //noinspection ConstantValue
        if (rotationInfo != null && ((MultiAxisRotation) (Object) rotationInfo).puzzle$getMultiAxisRotation() != null) {
            puzzle$rotateVertexBy(vector3f, rotationInfo.origin(), puzzle$calcRotationMatrix(rotationInfo));
@@ -90,10 +90,10 @@ public abstract class MixinFaceBakery {
         return false;
     }
 }
-*///?} else {
-import org.spongepowered.asm.mixin.Mixin;
+//?} else {
+/*import org.spongepowered.asm.mixin.Mixin;
 import eu.midnightdust.core.MidnightLib;
 
 @Mixin(MidnightLib.class)
 public abstract class MixinFaceBakery {}
-//?}
+*///?}

@@ -1,0 +1,22 @@
+{
+  "required": true,
+  "package": "net.puzzlemc.predicates.mixin",
+  "plugin": "net.puzzlemc.predicates.MBPMixinPlugin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "BakedModelManagerMixin",
+    "BlockDisplayEntityRendererMixin",
+    "BlockDustParticleMixin",
+    "BlockMarkerParticleMixin",
+    "BlockRenderManagerMixin",
+    "FallingBlockEntityRendererMixin",
+    "ItemEntityRendererMixin",
+    "ItemFrameEntityRendererMixin",
+    "ItemRendererMixin",
+    "PistonBlockEntityRendererMixin",
+    "compat.sodium.ChunkBuilderMeshingTaskMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

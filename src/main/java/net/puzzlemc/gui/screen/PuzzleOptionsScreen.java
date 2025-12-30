@@ -13,7 +13,7 @@ import net.puzzlemc.gui.PuzzleApi;
 import net.puzzlemc.gui.PuzzleGui;
 import net.puzzlemc.gui.screen.widget.*;
 //? if >= 1.21.9
-import net.minecraft.client.input.KeyEvent;
+/*import net.minecraft.client.input.KeyEvent;*/
 
 
 import java.util.List;
@@ -92,24 +92,24 @@ public class PuzzleOptionsScreen extends Screen {
 
     @Override
     //? if >= 1.21.9 {
-    public boolean keyPressed(KeyEvent input) {
+    /*public boolean keyPressed(KeyEvent input) {
         return this.tabNavigation.keyPressed(input) || super.keyPressed(input);
     }
-    //?} else {
-    /*public boolean keyPressed(int key, int scanCode, int modifiers) {
+    *///?} else {
+    public boolean keyPressed(int key, int scanCode, int modifiers) {
         return this.tabNavigation.keyPressed(key) || super.keyPressed(key, scanCode, modifiers);
     }
-    *///?}
+    //?}
 
     @Override
     public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         //? if >= 1.21 {
-        super.render(context, mouseX, mouseY, delta);
-        //?} else {
-        /*super.renderBackground(context);
-         *///?}
+        /*super.render(context, mouseX, mouseY, delta);
+        *///?} else {
+        super.renderBackground(context);
+         //?}
         this.list.render(context, mouseX, mouseY, delta);
         //? if < 1.21
-        /*super.render(context, mouseX, mouseY, delta);*/
+        super.render(context, mouseX, mouseY, delta);
     }
 }

@@ -15,18 +15,18 @@ public class PuzzleButtonWidget extends Button {
     }
     @Override
     //? if < 1.21.11 {
-    /*public void renderWidget(GuiGraphics context, int mouseX, int mouseY, float delta) {
-    *///?} else {
-    public void renderContents(GuiGraphics context, int mouseX, int mouseY, float delta) {
-    //?}
+    public void renderWidget(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    //?} else {
+    /*public void renderContents(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    *///?}
         try { title.setTitle(this);
         } catch (Exception e) {e.fillInStackTrace(); this.visible = false;}
 
         //? if < 1.21.11 {
-        /*super.renderWidget(context, mouseX, mouseY, delta);
-        *///?} else {
-        this.renderDefaultSprite(context);
+        super.renderWidget(context, mouseX, mouseY, delta);
+        //?} else {
+        /*this.renderDefaultSprite(context);
         this.renderDefaultLabel(context.textRendererForWidget(this, GuiGraphics.HoveredTextEffects.NONE));
-        //?}
+        *///?}
     }
 }

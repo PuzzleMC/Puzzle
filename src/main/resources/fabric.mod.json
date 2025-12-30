@@ -32,7 +32,8 @@
   "mixins": [
     "puzzle-gui.mixins.json",
     "puzzle-models.mixins.json",
-    "puzzle-splashscreen.mixins.json"
+    "puzzle-splashscreen.mixins.json",
+    "puzzle-predicates.mixins.json"
   ],
 
   "depends": {
