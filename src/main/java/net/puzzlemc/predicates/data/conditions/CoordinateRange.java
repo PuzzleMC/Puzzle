@@ -10,13 +10,14 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.puzzlemc.predicates.data.BlockModelPredicate;
 import net.puzzlemc.predicates.data.DataHelper;
+import org.jetbrains.annotations.NotNull;
 
 public class CoordinateRange extends BlockModelPredicate {
 
-    public final InclusiveRange<Integer> range;
+    public final InclusiveRange<@NotNull Integer> range;
     public final Direction.Axis axis;
 
-    public CoordinateRange(InclusiveRange<Integer> range, Direction.Axis axis) {
+    public CoordinateRange(InclusiveRange<@NotNull Integer> range, Direction.Axis axis) {
         this.range = range;
         this.axis = axis;
     }

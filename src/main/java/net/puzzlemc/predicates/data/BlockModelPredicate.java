@@ -47,11 +47,10 @@ public abstract class BlockModelPredicate implements WorldViewCondition {
                     try {
                         predicates.add(HANDLERS.get(entries.getKey()).apply(entries.getValue()));
                     } catch (JsonParseException e) {
-                        PuzzlePredicates.LOGGER.warn(String.format("Failed to load predicate \"%s\"! Reason: %s", entries.getKey(), e.getMessage()));
+                        PuzzlePredicates.LOGGER.warn("Failed to load predicate \"{}\"! Reason: {}", entries.getKey(), e.getMessage());
                     }
                 } else {
-
-                    PuzzlePredicates.LOGGER.warn(String.format("Unhandled predicate \"%s\"!", entries.getKey()));
+                    PuzzlePredicates.LOGGER.warn("Unhandled predicate \"{}\"!", entries.getKey());
                 }
             }
         }

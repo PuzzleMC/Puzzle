@@ -28,8 +28,8 @@ public class AdjacentBlock extends BlockModelPredicate {
     public boolean meetsCondition(BlockGetter world, BlockPos pos, BlockState state, Identifier renderContext) {
         BlockState block = world.getBlockState(pos);
         boolean b = true;
-        if (checkFullCube) b = block.isViewBlocking(world, pos); //TODO
-        if (checkTransparent) b &= block.hasPostProcess(world, pos); //TODO verify I mapped this correctly
+        if (checkFullCube) b = block.isCollisionShapeFullBlock(world, pos);
+        if (checkTransparent) b &= block.propagatesSkylightDown();
         if (stateCondition != null) b &= stateCondition.meetsCondition(world, pos.offset(offset), state, renderContext);
         return b;
     }

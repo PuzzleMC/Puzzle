@@ -10,12 +10,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.puzzlemc.predicates.data.BlockModelPredicate;
 import net.puzzlemc.predicates.data.DataHelper;
+import org.jetbrains.annotations.NotNull;
 
 public class LightRange extends BlockModelPredicate {
 
-    public final InclusiveRange<Integer> range;
+    public final InclusiveRange<@NotNull Integer> range;
 
-    public LightRange(InclusiveRange<Integer> range) {
+    public LightRange(InclusiveRange<@NotNull Integer> range) {
         this.range = range;
     }
 

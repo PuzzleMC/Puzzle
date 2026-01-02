@@ -16,6 +16,7 @@ public class PuzzleConfig extends MidnightConfig {
     @Entry(category = FEATURES, name = "puzzle.option.resourcepack_splash_screen") public static boolean resourcepackSplashScreen = true;
     @Entry(category = FEATURES, name = "puzzle.option.unlimited_model_rotations") public static boolean unlimitedRotations = true;
     @Entry(category = FEATURES, name = "puzzle.option.bigger_custom_models") public static boolean biggerModels = true;
+    @Entry(category = FEATURES, name = "puzzle.option.more_block_predicates") public static boolean blockPredicates = true;
 
     @Entry(category = INTERNAL, name = "Enable debug messages") public static boolean debugMessages = false;
     @Entry(category = INTERNAL, name = "Has custom splash screen") public static boolean hasCustomSplashScreen = false;

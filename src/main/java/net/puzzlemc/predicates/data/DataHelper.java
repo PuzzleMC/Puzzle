@@ -5,10 +5,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.InclusiveRange;
+import org.jetbrains.annotations.NotNull;
 
 public final class DataHelper {
 
-    public static InclusiveRange<Integer> parseIntRange(JsonElement arg) {
+    public static InclusiveRange<@NotNull Integer> parseIntRange(JsonElement arg) {
         JsonObject object = arg.getAsJsonObject();
 
         boolean hasMin = object.has("min"), hasMax = object.has("max");
