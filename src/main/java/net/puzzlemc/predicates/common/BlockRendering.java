@@ -7,7 +7,6 @@ import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.puzzlemc.predicates.MBPData;
-import net.puzzlemc.predicates.accessor.BakedModelManagerAccess;
 import net.puzzlemc.predicates.util.PredicateModel;
 import net.puzzlemc.predicates.util.PredicateStore;
 

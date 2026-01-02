@@ -26,7 +26,7 @@ public class RegistryUtils {
     public static final Supplier<Optional<Registry<@NotNull Biome>>> BIOME_REGISTRY = () -> {
         RegistryAccess drm = getRegistryManager();
         if (drm != null) {
-            return drm. /*? if < 1.21.4 {*/ /*registry*/ /*?} else {*/ lookup /*?}*/(Registries.BIOME);
+            return drm. /*? if < 1.21.4 {*/ /*registry *//*?} else {*/ lookup /*?}*/(Registries.BIOME);
         }
         return Optional.empty();
     };

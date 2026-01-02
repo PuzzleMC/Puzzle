@@ -29,7 +29,7 @@ public class AdjacentBlock extends BlockModelPredicate {
         BlockState block = world.getBlockState(pos);
         boolean b = true;
         if (checkFullCube) b = block.isCollisionShapeFullBlock(world, pos);
-        if (checkTransparent) b &= block.propagatesSkylightDown();
+        if (checkTransparent) b &= block.propagatesSkylightDown(/*? if < 1.21.4 {*/ /*world, pos *//*?}*/);
         if (stateCondition != null) b &= stateCondition.meetsCondition(world, pos.offset(offset), state, renderContext);
         return b;
     }

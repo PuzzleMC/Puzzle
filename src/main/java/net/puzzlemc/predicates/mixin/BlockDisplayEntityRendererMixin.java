@@ -18,10 +18,10 @@ public class BlockDisplayEntityRendererMixin {
 
     //@Shadow @Final private BlockRenderDispatcher blockRenderer;
 
-    //? if < 1.21.4 {
+//    //? if < 1.21.4 {
 //    @Inject(method = "renderInner(Lnet/minecraft/world/entity/Display$BlockDisplay;Lnet/minecraft/world/entity/Display$BlockDisplay$BlockRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IF)V", at = @At("HEAD"))
 //    public void getContext(Display.BlockDisplay blockDisplay, Display.BlockDisplay.BlockRenderState blockRenderState, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, float f, CallbackInfo ci) {
 //        BlockRenderManagerAccess.of(blockRenderer).moreBlockPredicates$setContextEntity(blockDisplay);
 //    }
-    //?}
+//    //?}
 }

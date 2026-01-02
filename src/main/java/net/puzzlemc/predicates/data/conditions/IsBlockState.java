@@ -49,7 +49,7 @@ public class IsBlockState extends BlockModelPredicate {
         public BlockPredicateImpl(String stateString) throws CommandSyntaxException {
             this.stateString = stateString;
             fuzzy = !stateString.contains("[");
-            res = BlockStateParser.parseForBlock(BuiltInRegistries.BLOCK/*? if < 1.21.4 {*/ /*.asLookup()*/ /*?}*/, stateString, false);
+            res = BlockStateParser.parseForBlock(BuiltInRegistries.BLOCK/*? if < 1.21.4 {*/ /*.asLookup() *//*?}*/, stateString, false);
         }
 
         @Override

@@ -3,9 +3,8 @@ package net.puzzlemc.predicates.mixin.fabric;
 //? fabric {
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import eu.midnightdust.core.MidnightLib;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.fabric.impl.client.indigo.renderer.render.TerrainRenderContext;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.RenderShape;
@@ -17,8 +16,18 @@ import org.spongepowered.asm.mixin.Mixin;
 
 import java.util.Optional;
 
+//? if > 1.21.4 {
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+//?} else {
+//import net.minecraft.client.resources.model.BakedModel;
+//import net.fabricmc.fabric.impl.client.indigo.renderer.render.ChunkRenderInfo;
+//import org.spongepowered.asm.mixin.Final;
+//import org.spongepowered.asm.mixin.Shadow;
+//?}
+
 @Mixin(TerrainRenderContext.class)
 public class MixinTerrainRenderContext { // Makes sure our blocks will also be visible with Fabric's indigo renderer
+    //? if > 1.21.4 {
     @WrapMethod(method = "bufferModel(Lnet/minecraft/client/renderer/block/model/BlockStateModel;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)V")
     private void redirect(BlockStateModel model, BlockState state, BlockPos pos, Operation<Void> original) {
         if (state.getRenderShape() == RenderShape.MODEL) {
@@ -32,6 +41,25 @@ public class MixinTerrainRenderContext { // Makes sure our blocks will also be v
         }
         original.call(model, state, pos);
     }
+    //?} else {
+//    @Shadow @Final private ChunkRenderInfo chunkInfo;
+//
+//    @WrapMethod(method = "tessellateBlock")
+//    private void redirect(BlockState state, BlockPos pos, BakedModel model, PoseStack matrixStack, Operation<Void> original) {
+//        if (state.getRenderShape() == RenderShape.MODEL) {
+//            BlockAndTintGetter world = ((AbstractTerrainRenderContextAccessor) chunkInfo).getBlockView();
+//            if (world == null) return;
+//            Optional<PredicateModel> newModel = BlockRendering.tryModelOverride(null, world, state, pos, ContextIDs.MISC);
+//            if (newModel.isPresent()) {
+//                original.call(state, pos, newModel.get().raw(), matrixStack);
+//                return;
+//            }
+//        }
+//        original.call(state, pos, model, matrixStack);
+//    }
+    //?}
+
+
 }
 //?} else {
 /*import eu.midnightdust.core.MidnightLib;

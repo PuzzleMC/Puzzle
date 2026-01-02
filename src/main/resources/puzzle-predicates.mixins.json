@@ -4,7 +4,6 @@
   "plugin": "net.puzzlemc.predicates.MBPMixinPlugin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "BakedModelManagerMixin",
     "BlockDisplayEntityRendererMixin",
     "BlockDustParticleMixin",
     "BlockMarkerParticleMixin",

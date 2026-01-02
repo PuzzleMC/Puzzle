@@ -299,6 +299,10 @@ stonecutter {
     }
     replacements.string {
         direction = eval(current.version, ">=1.21.11")
+        replace("new Identifier", "Identifier.fromNamespaceAndPath")
+    }
+    replacements.string {
+        direction = eval(current.version, ">=1.21.11")
         replace("net.minecraft.Util", "net.minecraft.util.Util")
     }
     replacements.string {

@@ -5,7 +5,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -20,22 +19,25 @@ import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 
 //? fabric {
-import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
-import net.fabricmc.fabric.api.client.model.loading.v1.SimpleUnbakedExtraModel;
-import net.minecraft.server.packs.resources.PreparableReloadListener;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+//? if > 1.21.4 {
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
+import net.fabricmc.fabric.api.client.model.loading.v1.SimpleUnbakedExtraModel;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
+//?}
 
 public class MBPModelLoadingPlugin implements PreparableModelLoadingPlugin<@NotNull HashSet<Identifier>> {
 
-
-//    @Override
-//    public void onInitializeModelLoader(HashSet<Identifier> data, ModelLoadingPlugin.Context pluginContext) {
-//        pluginContext.addModels(data);
-//    }
-
+    //? if < 1.21.5 {
+    /*@Override
+    public void /^? if = 1.21.4 {^/ /^initialize ^//^?} else {^/ onInitializeModelLoader /^?}^/ (HashSet<Identifier> data, ModelLoadingPlugin.Context pluginContext) {
+        pluginContext.addModels(data);
+    }
+    *///?} else {
     @Override
     public void initialize(HashSet<Identifier> data, ModelLoadingPlugin.@NotNull Context pluginContext) {
         data.forEach(id -> {
@@ -44,14 +46,15 @@ public class MBPModelLoadingPlugin implements PreparableModelLoadingPlugin<@NotN
             pluginContext.addModel(modelKey, SimpleUnbakedExtraModel.blockStateModel(id));
         });
     }
+    //?}
 
     public static class ModelIdLoader implements PreparableModelLoadingPlugin.DataLoader<@NotNull HashSet<Identifier>> {
         //? if < 1.21.10 {
-//        @Override
-//        public CompletableFuture<HashSet<Identifier>> load(ResourceManager manager, Executor executor) {
-//            return CompletableFuture.supplyAsync(() -> collectModels(manager), executor);
-//        }
-        //?} else {
+        /*@Override
+        public CompletableFuture<HashSet<Identifier>> load(ResourceManager manager, Executor executor) {
+            return CompletableFuture.supplyAsync(() -> collectModels(manager), executor);
+        }
+        *///?} else {
         @Override
         public @NotNull CompletableFuture<HashSet<Identifier>> load(PreparableReloadListener.@NotNull SharedState sharedState, @NotNull Executor executor) {
             return CompletableFuture.supplyAsync(() -> collectModels(sharedState.resourceManager()), executor);
@@ -64,12 +67,18 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ModelEvent;
-import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
-//? if < 1.21.6 {
-/^import net.neoforged.neoforge.client.model.standalone.StandaloneModelBaker;
-^///?} else {
+
+//? if > 1.21.5 {
 import net.neoforged.neoforge.client.model.standalone.SimpleUnbakedStandaloneModel;
-//?}
+import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+//?} else if = 1.21.5 {
+//import net.neoforged.neoforge.client.model.standalone.StandaloneModelBaker;
+//import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
+//import net.minecraft.client.renderer.block.model.BlockStateModel;
+//?} else {
+/^import net.minecraft.client.resources.model.ModelIdentifier;
+^///?}
 
 import static net.puzzlemc.core.PuzzleCore.MOD_ID;
 
@@ -78,11 +87,11 @@ public class MBPModelLoadingPlugin {
 *///?}
 
     //? neoforge && < 1.21.5 {
-//    @SubscribeEvent
-//    private static void load(ModelEvent.RegisterAdditional event) {
-//        //MBPModelLoadingPlugin.collectModels(Minecraft.getInstance().getResourceManager()).forEach(id -> event.register(new ModelIdentifier(id, "standalone")));
-//    }
-    //?} else if neoforge {
+    /*@SubscribeEvent
+    private static void load(ModelEvent.RegisterAdditional event) {
+        MBPModelLoadingPlugin.collectModels(Minecraft.getInstance().getResourceManager()).forEach(id -> event.register(/^? if > 1.21.1 {^/ /^id^/ /^?} else {^/ new ModelIdentifier(id, "standalone") /^?}^/));
+    }
+    *///?} else if neoforge {
     /*@SubscribeEvent
     private static void load(ModelEvent.RegisterStandalone event) {
         MBPModelLoadingPlugin.collectModels(Minecraft.getInstance().getResourceManager()).forEach(id -> {
