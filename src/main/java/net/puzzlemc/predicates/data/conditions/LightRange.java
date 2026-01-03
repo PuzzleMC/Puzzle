@@ -3,6 +3,7 @@ package net.puzzlemc.predicates.data.conditions;
 import com.google.gson.JsonElement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.InclusiveRange;
 import net.minecraft.world.level.BlockGetter;
@@ -12,6 +13,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.puzzlemc.predicates.data.BlockModelPredicate;
 import net.puzzlemc.predicates.data.DataHelper;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
 
 public class LightRange extends BlockModelPredicate {
 
@@ -27,14 +30,10 @@ public class LightRange extends BlockModelPredicate {
 
         // ;-;
         assert world != null;
-        return range.isValueInRange(world.getRawBrightness(pos, 0)) //TODO: Skip solid neighbouring blocks
-//             || range.isValueInRange(world.getRawBrightness(pos.above(), 0))
-//             || range.isValueInRange(world.getRawBrightness(pos.below(), 0))
-//             || range.isValueInRange(world.getRawBrightness(pos.north(), 0))
-//             || range.isValueInRange(world.getRawBrightness(pos.south(), 0))
-//             || range.isValueInRange(world.getRawBrightness(pos.east(), 0))
-//             || range.isValueInRange(world.getRawBrightness(pos.west(), 0))
-                ;
+        return range.isValueInRange(world.getRawBrightness(pos, 0))
+                  || Arrays.stream(Direction.values()).anyMatch(
+                          dir -> !world.getBlockState(pos.relative(dir)).isCollisionShapeFullBlock(world, pos.relative(dir))
+                                  && range.isValueInRange(world.getRawBrightness(pos.relative(dir), 0)));
     }
 
     public static LightRange parse(JsonElement arg) {
