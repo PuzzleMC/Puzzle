@@ -26,6 +26,7 @@ public abstract class BlockModelPredicate implements WorldViewCondition {
         put("adjacent_block", AdjacentBlock::parse);
         put("coordinate_range", CoordinateRange::parse);
         put("biome", InBiome::parse);
+        put("dimension", InDimension::parse);
         put("state", IsBlockState::parse);
         put("light_range", LightRange::parse);
         put("is_context", IsContext::parse);
