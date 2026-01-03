@@ -1,5 +1,6 @@
 package net.puzzlemc.predicates.mixin;
 
+//? if >= 1.21.10 {
 import net.minecraft.client.renderer.block.MovingBlockRenderState;
 import net.minecraft.resources.Identifier;
 import net.puzzlemc.predicates.accessor.MovingBlockRenderStateContext;
@@ -21,3 +22,10 @@ public class MixinMovingBlockRenderState implements MovingBlockRenderStateContex
         return puzzle$contextId != null ? puzzle$contextId : ContextIDs.MISC;
     }
 }
+//?} else {
+/*import eu.midnightdust.core.MidnightLib;
+import org.spongepowered.asm.mixin.Mixin;
+
+@Mixin(MidnightLib.class)
+public class MixinMovingBlockRenderState {}
+*///?}

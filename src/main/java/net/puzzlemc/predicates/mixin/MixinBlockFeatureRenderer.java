@@ -1,5 +1,6 @@
 package net.puzzlemc.predicates.mixin;
 
+//? if >= 1.21.10 {
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -30,3 +31,10 @@ public class MixinBlockFeatureRenderer {
                 .orElseGet(() -> original.call(instance, state));
     }
 }
+//?} else {
+/*import eu.midnightdust.core.MidnightLib;
+import org.spongepowered.asm.mixin.Mixin;
+
+@Mixin(MidnightLib.class)
+public class MixinBlockFeatureRenderer {}
+*///?}

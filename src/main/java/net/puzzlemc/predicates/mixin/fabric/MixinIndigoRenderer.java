@@ -1,5 +1,6 @@
 package net.puzzlemc.predicates.mixin.fabric;
 
+//? if fabric && >= 1.21.10 {
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -36,3 +37,10 @@ public class MixinIndigoRenderer {
         original.call(modelRenderer, blockView, model, state, pos, matrices, vertexConsumers, cull, seed, overlay);
     }
 }
+//?} else {
+/*import eu.midnightdust.core.MidnightLib;
+import org.spongepowered.asm.mixin.Mixin;
+
+@Mixin(MidnightLib.class)
+public class MixinIndigoRenderer {}
+*///?}
