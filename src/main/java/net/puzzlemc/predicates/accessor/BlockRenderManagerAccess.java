@@ -1,10 +1,10 @@
 package net.puzzlemc.predicates.accessor;
 
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.core.BlockPos;
 
 public interface BlockRenderManagerAccess {
-    void moreBlockPredicates$setContextEntity(Entity entity);
+    void moreBlockPredicates$setContextPos(BlockPos pos);
 
     static BlockRenderManagerAccess of(BlockRenderDispatcher manager) {
         return (BlockRenderManagerAccess) manager;

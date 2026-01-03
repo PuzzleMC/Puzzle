@@ -13,7 +13,6 @@ import net.puzzlemc.predicates.util.PredicateStore;
 import java.util.Optional;
 
 public class BlockRendering {
-
     public static Optional<PredicateModel> tryModelOverride(BlockModelShaper models, BlockAndTintGetter world, BlockState state, BlockPos pos, Identifier renderContext) {
         RenderShape blockRenderType = state.getRenderShape();
         if (blockRenderType == RenderShape.MODEL) {

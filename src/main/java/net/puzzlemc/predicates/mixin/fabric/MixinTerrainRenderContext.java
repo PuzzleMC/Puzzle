@@ -19,11 +19,11 @@ import java.util.Optional;
 //? if > 1.21.4 {
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 //?} else {
-//import net.minecraft.client.resources.model.BakedModel;
-//import net.fabricmc.fabric.impl.client.indigo.renderer.render.ChunkRenderInfo;
-//import org.spongepowered.asm.mixin.Final;
-//import org.spongepowered.asm.mixin.Shadow;
-//?}
+/*import net.minecraft.client.resources.model.BakedModel;
+import net.fabricmc.fabric.impl.client.indigo.renderer.render.ChunkRenderInfo;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Shadow;
+*///?}
 
 @Mixin(TerrainRenderContext.class)
 public class MixinTerrainRenderContext { // Makes sure our blocks will also be visible with Fabric's indigo renderer
@@ -42,22 +42,22 @@ public class MixinTerrainRenderContext { // Makes sure our blocks will also be v
         original.call(model, state, pos);
     }
     //?} else {
-//    @Shadow @Final private ChunkRenderInfo chunkInfo;
-//
-//    @WrapMethod(method = "tessellateBlock")
-//    private void redirect(BlockState state, BlockPos pos, BakedModel model, PoseStack matrixStack, Operation<Void> original) {
-//        if (state.getRenderShape() == RenderShape.MODEL) {
-//            BlockAndTintGetter world = ((AbstractTerrainRenderContextAccessor) chunkInfo).getBlockView();
-//            if (world == null) return;
-//            Optional<PredicateModel> newModel = BlockRendering.tryModelOverride(null, world, state, pos, ContextIDs.MISC);
-//            if (newModel.isPresent()) {
-//                original.call(state, pos, newModel.get().raw(), matrixStack);
-//                return;
-//            }
-//        }
-//        original.call(state, pos, model, matrixStack);
-//    }
-    //?}
+    /*@Shadow @Final private ChunkRenderInfo chunkInfo;
+
+    @WrapMethod(method = "tessellateBlock")
+    private void redirect(BlockState state, BlockPos pos, BakedModel model, PoseStack matrixStack, Operation<Void> original) {
+        if (state.getRenderShape() == RenderShape.MODEL) {
+            BlockAndTintGetter world = ((AbstractTerrainRenderContextAccessor) chunkInfo).getBlockView();
+            if (world == null) return;
+            Optional<PredicateModel> newModel = BlockRendering.tryModelOverride(null, world, state, pos, ContextIDs.MISC);
+            if (newModel.isPresent()) {
+                original.call(state, pos, newModel.get().raw(), matrixStack);
+                return;
+            }
+        }
+        original.call(state, pos, model, matrixStack);
+    }
+    *///?}
 
 
 }

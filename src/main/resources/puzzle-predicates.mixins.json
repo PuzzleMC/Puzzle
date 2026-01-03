@@ -12,10 +12,12 @@
     "ItemEntityRendererMixin",
     "ItemFrameEntityRendererMixin",
     "ItemRendererMixin",
+    "MixinBlockFeatureRenderer",
+    "MixinMovingBlockRenderState",
     "PistonBlockEntityRendererMixin",
     "compat.sodium.ChunkBuilderMeshingTaskMixin",
-    "fabric.MixinTerrainRenderContext",
-    "fabric.AbstractTerrainRenderContextAccessor"
+    "fabric.AbstractTerrainRenderContextAccessor",
+    "fabric.MixinTerrainRenderContext"
   ],
   "injectors": {
     "defaultRequire": 1

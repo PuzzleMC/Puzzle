@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -25,7 +26,7 @@ import net.fabricmc.fabric.impl.client.model.loading.ModelLoadingPluginManager;
 //?}
 public class PuzzlePredicates {
     public static final Logger LOGGER = LoggerFactory.getLogger("mbp");
-    public static Entity currentEntity;
+    public static BlockPos contextPos;
 
     public static void init() {
         //? fabric
