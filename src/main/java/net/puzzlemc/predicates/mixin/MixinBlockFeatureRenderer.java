@@ -19,8 +19,11 @@ import java.util.Optional;
 
 @Mixin(BlockFeatureRenderer.class)
 public class MixinBlockFeatureRenderer {
+    /**
+     * For Fabric, this is implemented in {@link net.puzzlemc.predicates.mixin.fabric.MixinIndigoRenderer}
+     */
     @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/block/BlockRenderDispatcher;getBlockModel(Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/client/renderer/block/model/BlockStateModel;"), method = "render")
-    public BlockStateModel render(BlockRenderDispatcher instance, BlockState state, Operation<BlockStateModel> original, @Local MovingBlockRenderState movingBlock) {
+    public BlockStateModel puzzle$renderCustomMovingBlock(BlockRenderDispatcher instance, BlockState state, Operation<BlockStateModel> original, @Local MovingBlockRenderState movingBlock) {
         Optional<Identifier> identifier = MBPData.meetsPredicate(movingBlock.level, movingBlock.blockPos, state, MovingBlockRenderStateContext.of(movingBlock).puzzle$getContextId());
 
         return identifier.map(resourceLocation -> PredicateStore.reallyGetModel(resourceLocation).raw())

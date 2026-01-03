@@ -25,14 +25,16 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Shadow;
 *///?}
 
+/**
+ * Ensures our block model overrides will also be visible with Fabric's indigo renderer
+ */
 @Mixin(TerrainRenderContext.class)
-public class MixinTerrainRenderContext { // Makes sure our blocks will also be visible with Fabric's indigo renderer
+public class MixinTerrainRenderContext {
     //? if > 1.21.4 {
     @WrapMethod(method = "bufferModel(Lnet/minecraft/client/renderer/block/model/BlockStateModel;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)V")
-    private void redirect(BlockStateModel model, BlockState state, BlockPos pos, Operation<Void> original) {
+    private void puzzle$renderCustomTerrainBlockIndigo(BlockStateModel model, BlockState state, BlockPos pos, Operation<Void> original) {
         if (state.getRenderShape() == RenderShape.MODEL) {
             BlockAndTintGetter world = ((AbstractTerrainRenderContextAccessor)this).getBlockInfo().blockView;
-            if (world == null) return;
             Optional<PredicateModel> newModel = BlockRendering.tryModelOverride(null, world, state, pos, ContextIDs.MISC);
             if (newModel.isPresent()) {
                 original.call(newModel.get().raw(), state, pos);
@@ -45,7 +47,7 @@ public class MixinTerrainRenderContext { // Makes sure our blocks will also be v
     /*@Shadow @Final private ChunkRenderInfo chunkInfo;
 
     @WrapMethod(method = "tessellateBlock")
-    private void redirect(BlockState state, BlockPos pos, BakedModel model, PoseStack matrixStack, Operation<Void> original) {
+    private void puzzle$renderCustomTerrainBlockIndigo(BlockState state, BlockPos pos, BakedModel model, PoseStack matrixStack, Operation<Void> original) {
         if (state.getRenderShape() == RenderShape.MODEL) {
             BlockAndTintGetter world = ((AbstractTerrainRenderContextAccessor) chunkInfo).getBlockView();
             if (world == null) return;
@@ -58,8 +60,6 @@ public class MixinTerrainRenderContext { // Makes sure our blocks will also be v
         original.call(state, pos, model, matrixStack);
     }
     *///?}
-
-
 }
 //?} else {
 /*import eu.midnightdust.core.MidnightLib;

@@ -94,42 +94,42 @@ public class BlockRenderManagerMixin implements BlockRenderManagerAccess {
         }
     }
 
-    //? if fabric {
-    @Inject(at = @At("HEAD"), method = "renderSingleBlock", cancellable = true)
-    public void renderBlockAsEntity(BlockState state, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay, CallbackInfo ci) {
-    //?} else {
-    /*@Inject(at = @At("HEAD"), method = "Lnet/minecraft/client/renderer/block/BlockRenderDispatcher;renderSingleBlock(Lnet/minecraft/world/level/block/state/BlockState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/neoforged/neoforge/client/model/data/ModelData;Lnet/minecraft/client/renderer/RenderType;)V", cancellable = true)
-    public void renderBlockAsEntity(BlockState state, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay, ModelData modelData, RenderType renderType, CallbackInfo ci) {
-    *///?}
-        if (state.getRenderShape() == RenderShape.MODEL) {
-            BlockPos pos = puzzle$contextPos == null ? BlockPos.ZERO : puzzle$contextPos;
-            puzzle$contextPos = null;
-            Optional<Identifier> id = MBPData.meetsPredicate(Minecraft.getInstance().level, pos, state, ContextIDs.ENTITY);
-            if (id.isEmpty()) return;
-
-            PredicateModel predicateModel = PredicateStore.reallyGetModel(id.get());
-            int i = this.blockColors.getColor(state, null, null, 0);
-            float f = (float) (i >> 16 & 0xFF) / 255.0F;
-            float g = (float) (i >> 8 & 0xFF) / 255.0F;
-            float h = (float) (i & 0xFF) / 255.0F;
-            this.modelRenderer
-                    .renderModel(
-                            matrices.last(),
-                            vertexConsumers.getBuffer(ItemBlockRenderTypes.getRenderType(state /*? if < 1.21.4 {*/ /*, false *//*?}*/)),
-                            //? if < 1.21.5
-                            //state,
-                            predicateModel.raw(),
-                            f,
-                            g,
-                            h,
-                            light,
-                            overlay
-                            //? if neoforge
-                            /*, modelData, renderType*/
-                    );
-            ci.cancel();
-        }
-    }
+//    //? if fabric {
+//    /*@Inject(at = @At("HEAD"), method = "renderSingleBlock", cancellable = true)
+//    public void renderBlockAsEntity(BlockState state, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay, CallbackInfo ci) {
+//    *///?} else {
+//    @Inject(at = @At("HEAD"), method = "Lnet/minecraft/client/renderer/block/BlockRenderDispatcher;renderSingleBlock(Lnet/minecraft/world/level/block/state/BlockState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/neoforged/neoforge/client/model/data/ModelData;Lnet/minecraft/client/renderer/RenderType;)V", cancellable = true)
+//    public void renderBlockAsEntity(BlockState state, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay, ModelData modelData, RenderType renderType, CallbackInfo ci) {
+//    //?}
+//        if (state.getRenderShape() == RenderShape.MODEL) {
+//            BlockPos pos = puzzle$contextPos == null ? BlockPos.ZERO : puzzle$contextPos;
+//            puzzle$contextPos = null;
+//            Optional<Identifier> id = MBPData.meetsPredicate(Minecraft.getInstance().level, pos, state, ContextIDs.ENTITY);
+//            if (id.isEmpty()) return;
+//
+//            PredicateModel predicateModel = PredicateStore.reallyGetModel(id.get());
+//            int i = this.blockColors.getColor(state, null, null, 0);
+//            float f = (float) (i >> 16 & 0xFF) / 255.0F;
+//            float g = (float) (i >> 8 & 0xFF) / 255.0F;
+//            float h = (float) (i & 0xFF) / 255.0F;
+//            this.modelRenderer
+//                    .renderModel(
+//                            matrices.last(),
+//                            vertexConsumers.getBuffer(ItemBlockRenderTypes.getRenderType(state /*? if < 1.21.4 {*/ /*, false *//*?}*/)),
+//                            //? if < 1.21.5
+//                            //state,
+//                            predicateModel.raw(),
+//                            f,
+//                            g,
+//                            h,
+//                            light,
+//                            overlay
+//                            //? if neoforge
+//                            , modelData, renderType
+//                    );
+//            ci.cancel();
+//        }
+//    }
 
     @Override
     public void moreBlockPredicates$setContextPos(BlockPos pos) {

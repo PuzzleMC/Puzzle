@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.puzzlemc.predicates.PuzzlePredicates;
 import net.puzzlemc.predicates.data.conditions.*;
+import net.puzzlemc.predicates.data.logic.And;
 import net.puzzlemc.predicates.data.logic.Not;
 import net.puzzlemc.predicates.data.logic.Or;
 
@@ -18,6 +19,7 @@ public abstract class BlockModelPredicate implements WorldViewCondition {
     private static final HashMap<String, Function<JsonElement, BlockModelPredicate>> HANDLERS = new HashMap<>() {{
         // Logical operators
         put("or", Or::parse);
+        put("and", And::parse);
         put("not", Not::parse);
 
         // Actual conditions

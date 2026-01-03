@@ -7,6 +7,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.InclusiveRange;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.state.BlockState;
 import net.puzzlemc.predicates.data.BlockModelPredicate;
 import net.puzzlemc.predicates.data.DataHelper;
@@ -26,13 +27,14 @@ public class LightRange extends BlockModelPredicate {
 
         // ;-;
         assert world != null;
-        return range.isValueInRange(world.getLightEmission(pos))
-             || range.isValueInRange(world.getLightEmission(pos.above()))
-             || range.isValueInRange(world.getLightEmission(pos.below()))
-             || range.isValueInRange(world.getLightEmission(pos.north()))
-             || range.isValueInRange(world.getLightEmission(pos.south()))
-             || range.isValueInRange(world.getLightEmission(pos.east()))
-             || range.isValueInRange(world.getLightEmission(pos.west()));
+        return range.isValueInRange(world.getRawBrightness(pos, 0)) //TODO: Skip solid neighbouring blocks
+//             || range.isValueInRange(world.getRawBrightness(pos.above(), 0))
+//             || range.isValueInRange(world.getRawBrightness(pos.below(), 0))
+//             || range.isValueInRange(world.getRawBrightness(pos.north(), 0))
+//             || range.isValueInRange(world.getRawBrightness(pos.south(), 0))
+//             || range.isValueInRange(world.getRawBrightness(pos.east(), 0))
+//             || range.isValueInRange(world.getRawBrightness(pos.west(), 0))
+                ;
     }
 
     public static LightRange parse(JsonElement arg) {

@@ -17,6 +17,7 @@
     "PistonBlockEntityRendererMixin",
     "compat.sodium.ChunkBuilderMeshingTaskMixin",
     "fabric.AbstractTerrainRenderContextAccessor",
+    "fabric.MixinIndigoRenderer",
     "fabric.MixinTerrainRenderContext"
   ],
   "injectors": {

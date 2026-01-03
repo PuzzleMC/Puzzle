@@ -27,7 +27,7 @@ public class PredicateStore {
     //? if fabric && > 1.21.4 {
     public static Map<Identifier, ExtraModelKey<@NotNull BlockStateModel>> predicates = new HashMap<>();
     //?} else if neoforge && > 1.21.4 {
-    /*public static Map<Identifier, StandaloneModelKey<BlockStateModel>> predicates = new HashMap<>();
+    /*public static Map<Identifier, StandaloneModelKey<@NotNull BlockStateModel>> predicates = new HashMap<>();
     *///?}
 
     @Unique
