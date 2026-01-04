@@ -5,11 +5,10 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.particle.TerrainParticle;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.state.BlockState;
 import net.puzzlemc.predicates.MBPData;
 import net.puzzlemc.predicates.common.ContextIDs;
-import net.puzzlemc.predicates.util.PredicateStore;
+import net.puzzlemc.predicates.util.ModelData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -33,11 +32,11 @@ public abstract class BlockDustParticleMixin extends /*? if < 1.21.10 {*/  /*Tex
 
     @Inject(at = @At(value = "TAIL"), method = "<init>(Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)V")
     public void init(ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, BlockState state, BlockPos blockPos, CallbackInfo ci) {
-        Optional<Identifier> identifier = MBPData.meetsPredicate(world, blockPos, state, ContextIDs.FALLING_BLOCK);
+        Optional<ModelData> override = MBPData.meetsPredicate(world, blockPos, state, ContextIDs.FALLING_BLOCK);
 
         Minecraft client = Minecraft.getInstance();
-        if (identifier.isPresent()) {
-            this.setSprite(PredicateStore.reallyGetModel(identifier.get()).raw()./*? if < 1.21.5 {*/ /*getParticleIcon()*/ /*?} else {*/ particleIcon() /*?}*/);
+        if (override.isPresent()) {
+            this.setSprite(override.get().getOverrideModel().raw()./*? if < 1.21.5 {*/ /*getParticleIcon()*/ /*?} else {*/ particleIcon() /*?}*/);
         } else {
             this.setSprite(client.getBlockRenderer().getBlockModelShaper().getParticleIcon(state));
         }

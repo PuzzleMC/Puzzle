@@ -20,7 +20,6 @@ import net.puzzlemc.predicates.MBPData;
 import net.puzzlemc.predicates.PuzzlePredicates;
 import net.puzzlemc.predicates.common.ContextIDs;
 import net.puzzlemc.predicates.util.PredicateModel;
-import net.puzzlemc.predicates.util.PredicateStore;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

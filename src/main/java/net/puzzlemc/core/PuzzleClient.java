@@ -2,7 +2,6 @@ package net.puzzlemc.core;
 
 import net.minecraft.resources.Identifier;
 
-import net.puzzlemc.predicates.PuzzlePredicates;
 import net.puzzlemc.splashscreen.PuzzleSplashScreen;
 
 import static net.puzzlemc.core.PuzzleCore.MOD_ID;
@@ -25,7 +24,6 @@ public class PuzzleClient implements ClientModInitializer {
 
         //? if >= 1.21.9 {
         ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloader(Identifier.fromNamespaceAndPath(MOD_ID, "splash_screen"), PuzzleSplashScreen.ReloadListener.INSTANCE);
-        ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloader(Identifier.fromNamespaceAndPath(MOD_ID, "predicates"), PuzzlePredicates.ReloadListener.INSTANCE);
         //?} else {
         /*ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
             @Override
@@ -35,16 +33,6 @@ public class PuzzleClient implements ClientModInitializer {
             @Override
             public void onResourceManagerReload(ResourceManager manager) {
                 PuzzleSplashScreen.ReloadListener.INSTANCE.onResourceManagerReload(manager);
-            }
-        });
-        ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
-            @Override
-            public Identifier getFabricId() {
-                return Identifier.fromNamespaceAndPath(MOD_ID, "predicates");
-            }
-            @Override
-            public void onResourceManagerReload(ResourceManager manager) {
-                PuzzlePredicates.ReloadListener.INSTANCE.onResourceManagerReload(manager);
             }
         });
         *///?}
@@ -79,13 +67,11 @@ public class PuzzleClient {
         @SubscribeEvent
         public static void onResourceReload(AddClientReloadListenersEvent event) {
             event.addListener(Identifier.fromNamespaceAndPath(MOD_ID, "splash_screen"), PuzzleSplashScreen.ReloadListener.INSTANCE);
-            event.addListener(Identifier.fromNamespaceAndPath(MOD_ID, "predicates"), PuzzlePredicates.ReloadListener.INSTANCE);
         }
         //?} else {
         /^@SubscribeEvent
         public static void onResourceReload(RegisterClientReloadListenersEvent event) {
             event.registerReloadListener(PuzzleSplashScreen.ReloadListener.INSTANCE);
-            event.registerReloadListener(PuzzlePredicates.ReloadListener.INSTANCE);
         }
         ^///?}
     }

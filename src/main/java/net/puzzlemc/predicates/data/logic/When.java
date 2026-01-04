@@ -8,6 +8,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.puzzlemc.predicates.data.BlockModelPredicate;
 import net.puzzlemc.predicates.data.WorldViewCondition;
+import net.puzzlemc.predicates.util.ModelData;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,18 +17,18 @@ import java.util.List;
 public class When implements WorldViewCondition {
 
     final And conditions;
-    private final List<Identifier> applyModelList;
+    private final List<ModelData> applyModelList;
 
-    public When(And conditions, List<Identifier> applyModelList) {
+    public When(And conditions, List<ModelData> applyModelList) {
         this.conditions = conditions;
         this.applyModelList = Collections.unmodifiableList(applyModelList);
     }
 
-    public Identifier getModel(long seed) {
+    public ModelData getModel(long seed) {
         return applyModelList.get((int) (Math.abs(seed) % applyModelList.size()));
     }
 
-    public List<Identifier> getModels() {
+    public List<ModelData> getModels() {
         return applyModelList;
     }
 
@@ -35,30 +36,31 @@ public class When implements WorldViewCondition {
         JsonObject object = arg.getAsJsonObject();
         List<BlockModelPredicate> conditions = BlockModelPredicate.parseFromJson(object.get("when"));
 
-        List<Identifier> applyModelList;
+        List<ModelData> applyModelList;
         JsonElement apply = object.get("apply");
         if (apply.isJsonArray()) {
             applyModelList = new ArrayList<>();
             for (JsonElement entry : apply.getAsJsonArray()) {
                 String applyId;
                 int weight = 1;
+                ModelData data;
                 if (entry.isJsonObject()) {
                     JsonObject obj = entry.getAsJsonObject();
                     applyId = obj.get("model").getAsString();
                     if (obj.has("weight")) weight = obj.get("weight").getAsInt();
+                    data = ModelData.parse(obj, applyId);
                 } else {
                     applyId = entry.getAsString();
+                    data = ModelData.none(applyId);
                 }
 
-                String[] id = applyId.split(":");
-                Identifier currentModelID = Identifier.fromNamespaceAndPath(id[0], "block/" + id[1]);
                 for (int i = 0; i < weight; i++) {
-                    applyModelList.add(currentModelID);
+                    applyModelList.add(data);
                 }
             }
         } else {
-            String[] id = apply.getAsString().split(":");
-            applyModelList = List.of(Identifier.fromNamespaceAndPath(id[0], "block/" + id[1]));
+            ModelData data = ModelData.none(apply.getAsString());
+            applyModelList = List.of(data);
         }
 
         return new When(new And(conditions), applyModelList);

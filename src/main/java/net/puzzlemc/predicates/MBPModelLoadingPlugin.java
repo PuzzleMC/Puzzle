@@ -9,13 +9,13 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.level.block.Block;
+import net.puzzlemc.core.config.PuzzleConfig;
 import net.puzzlemc.predicates.data.logic.When;
-import net.puzzlemc.predicates.util.PredicateStore;
+import net.puzzlemc.predicates.util.ModelData;
 import net.puzzlemc.predicates.util.RegistryUtils;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+
 import org.jetbrains.annotations.NotNull;
 
 //? fabric {
@@ -25,30 +25,27 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 //? if > 1.21.4 {
 import net.minecraft.client.renderer.block.model.BlockStateModel;
-import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
 import net.fabricmc.fabric.api.client.model.loading.v1.SimpleUnbakedExtraModel;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 //?}
 
-public class MBPModelLoadingPlugin implements PreparableModelLoadingPlugin<@NotNull HashSet<Identifier>> {
+public class MBPModelLoadingPlugin implements PreparableModelLoadingPlugin<@NotNull HashSet<ModelData>> {
 
     //? if < 1.21.5 {
     /*@Override
-    public void /^? if = 1.21.4 {^/ /^initialize ^//^?} else {^/ onInitializeModelLoader /^?}^/ (HashSet<Identifier> data, ModelLoadingPlugin.Context pluginContext) {
-        pluginContext.addModels(data);
+    public void /^? if = 1.21.4 {^/ /^initialize ^//^?} else {^/ onInitializeModelLoader /^?}^/ (HashSet<Identifier> set, ModelLoadingPlugin.Context pluginContext) {
+        pluginContext.addModels(set);
     }
     *///?} else {
     @Override
-    public void initialize(HashSet<Identifier> data, ModelLoadingPlugin.@NotNull Context pluginContext) {
-        data.forEach(id -> {
-            ExtraModelKey<@NotNull BlockStateModel> modelKey = ExtraModelKey.create(id::toString);
-            PredicateStore.predicates.put(id, modelKey);
-            pluginContext.addModel(modelKey, SimpleUnbakedExtraModel.blockStateModel(id));
+    public void initialize(HashSet<ModelData> set, ModelLoadingPlugin.@NotNull Context pluginContext) {
+        set.forEach(data -> {
+            pluginContext.addModel(data.modelKey, SimpleUnbakedExtraModel.blockStateModel(data.modelLocation(), data.asVanilla())); //TODO: Implement support for rotations or blockstate definition files // SimpleUnbakedExtraModel.blockStateModel(id, BlockModelRotation.get(OctahedralGroup.BLOCK_ROT_X_90))
         });
     }
     //?}
 
-    public static class ModelIdLoader implements PreparableModelLoadingPlugin.DataLoader<@NotNull HashSet<Identifier>> {
+    public static class ModelIdLoader implements PreparableModelLoadingPlugin.DataLoader<@NotNull HashSet<ModelData>> {
         //? if < 1.21.10 {
         /*@Override
         public CompletableFuture<HashSet<Identifier>> load(ResourceManager manager, Executor executor) {
@@ -56,7 +53,7 @@ public class MBPModelLoadingPlugin implements PreparableModelLoadingPlugin<@NotN
         }
         *///?} else {
         @Override
-        public @NotNull CompletableFuture<HashSet<Identifier>> load(PreparableReloadListener.@NotNull SharedState sharedState, @NotNull Executor executor) {
+        public @NotNull CompletableFuture<HashSet<ModelData>> load(PreparableReloadListener.@NotNull SharedState sharedState, @NotNull Executor executor) {
             return CompletableFuture.supplyAsync(() -> collectModels(sharedState.resourceManager()), executor);
         }
         //?}
@@ -104,8 +101,9 @@ public class MBPModelLoadingPlugin {
     }
     *///?}
 
-    public static HashSet<Identifier> collectModels(ResourceManager manager) {
-        HashSet<Identifier> wantedModels = new HashSet<>();
+    public static HashSet<ModelData> collectModels(ResourceManager manager) {
+        HashSet<ModelData> wantedModels = new HashSet<>();
+        MBPData.PREDICATES.clear();
 
         Map<Identifier, Resource> map = manager.listResources("mbp", id -> id.getPath().endsWith(".json"));
         for (Identifier id : map.keySet()) {
@@ -118,15 +116,20 @@ public class MBPModelLoadingPlugin {
 
                 if (block.isPresent()) {
                     JsonArray overrides = asset.getAsJsonArray("overrides");
+                    List<When> whenList = new ArrayList<>();
                     for(JsonElement overrideEntry : overrides) {
                         try {
                             When when = When.parse(overrideEntry);
-
+                            whenList.add(when);
                             wantedModels.addAll(when.getModels());
                         } catch (Exception e) {
                             logError(id, e);
                         }
                     }
+                    MBPData.PREDICATES.put(block.get(), Collections.unmodifiableList(whenList));
+                } else {
+                    if (PuzzleConfig.debugMessages)
+                        PuzzlePredicates.LOGGER.error("Block entry not found in file {}: {}", id, blockTarget);
                 }
 
             } catch (Exception e) {

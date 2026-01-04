@@ -2,27 +2,21 @@ package net.puzzlemc.predicates.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColors;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
 
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
-import net.puzzlemc.predicates.MBPData;
 import net.puzzlemc.predicates.accessor.BlockRenderManagerAccess;
 import net.puzzlemc.predicates.common.BlockRendering;
 import net.puzzlemc.predicates.common.ContextIDs;
 import net.puzzlemc.predicates.util.PredicateModel;
-import net.puzzlemc.predicates.util.PredicateStore;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -34,7 +28,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
 //? neoforge {
 /*//? if < 1.21.5
@@ -49,7 +42,6 @@ import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 
 //? if > 1.21.4 {
 import net.minecraft.client.renderer.block.model.BlockModelPart;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
 //?}
 
 @Mixin(value = BlockRenderDispatcher.class, priority = 2000)

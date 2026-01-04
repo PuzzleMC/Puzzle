@@ -7,6 +7,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.puzzlemc.predicates.data.logic.When;
+import net.puzzlemc.predicates.util.ModelData;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.Optional;
 public class MBPData {
     public static final HashMap<Block, List<When>> PREDICATES = new HashMap<>();
 
-    public static Optional<Identifier> meetsPredicate(BlockGetter world, BlockPos pos, BlockState state, Identifier renderContext) {
+    public static Optional<ModelData> meetsPredicate(BlockGetter world, BlockPos pos, BlockState state, Identifier renderContext) {
         if (PREDICATES.containsKey(state.getBlock())) {
             for (When when : PREDICATES.get(state.getBlock())) {
                 if (when.meetsCondition(world, pos, state, renderContext)) {
