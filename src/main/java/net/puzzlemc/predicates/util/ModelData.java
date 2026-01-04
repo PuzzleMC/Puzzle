@@ -2,37 +2,52 @@ package net.puzzlemc.predicates.util;
 
 import com.google.gson.JsonObject;
 import com.mojang.math.OctahedralGroup;
-import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.resources.model.BlockModelRotation;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
+//? fabric {
+import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
+//?} else {
+/*import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
+*///?}
 
+import java.util.HashMap;
 import java.util.Objects;
 
+/**
+ * This class contains all the relevant data to build and retrieve each unique model
+ */
 public final class ModelData {
     private final int xRot, yRot, zRot;
     private final boolean uvLock;
     private final Identifier modelLocation;
-    public final ExtraModelKey<@NotNull BlockStateModel> modelKey;
+    private final Identifier distinctModelId;
+    public final /*? fabric {*/ ExtraModelKey /*?} else {*/ /*StandaloneModelKey *//*?}*/<@NotNull BlockStateModel> modelKey;
 
-    public ModelData(int xRot, int yRot, int zRot, boolean uvLock, String applyId) {
+    private ModelData(int xRot, int yRot, int zRot, boolean uvLock, String applyId) {
         this(xRot, yRot, zRot, uvLock, Identifier.fromNamespaceAndPath(applyId.split(":")[0], "block/" + applyId.split(":")[1]));
     }
 
-    public ModelData(int xRot, int yRot, int zRot, boolean uvLock, Identifier modelLocation) {
+    private ModelData(int xRot, int yRot, int zRot, boolean uvLock, Identifier modelLocation) {
         this.xRot = xRot;
         this.yRot = yRot;
         this.zRot = zRot;
         this.uvLock = uvLock;
         this.modelLocation = modelLocation;
-        this.modelKey = ExtraModelKey.create(appendedIdentifier()::toString);
+        this.distinctModelId = Identifier.fromNamespaceAndPath(modelLocation.getNamespace(), "%s/x%s_y%s_z%s_uv%s".formatted(modelLocation.getPath(), xRot, yRot, zRot, uvLock));
+        //? if fabric {
+        this.modelKey = ExtraModelKey.create(distinctModelId::toString);
+        //?} else {
+        /*modelKey = new StandaloneModelKey<>(/^? if < 1.21.6 {^/ /^distinctModelId ^//^?} else {^/ distinctModelId::toString /^?}^/
+        );
+        *///?}
     }
 
-    public static ModelData none(String applyId) {
-        return new ModelData(0, 0, 0, false, applyId);
+    public static ModelData basic(String applyId) {
+        return checkCache(new ModelData(0, 0, 0, false, applyId));
     }
 
     public static ModelData parse(JsonObject json, String applyId) {
@@ -49,7 +64,30 @@ public final class ModelData {
         if (json.has("uvlock"))
             uvLock = json.get("uvlock").getAsBoolean();
 
-        return new ModelData(x, y, z, uvLock, applyId);
+        return checkCache(new ModelData(x, y, z, uvLock, applyId));
+    }
+
+    private static final HashMap<Integer, ModelData> existingInstances = new HashMap<>();
+
+    /**
+     * In case a ModelData instance for this model state has already been created, return it.
+     * Otherwise, save the new instance to the cache.
+     */
+    private static ModelData checkCache(ModelData candidate) {
+        int hash = candidate.hashCode();
+        if (existingInstances.containsKey(hash))
+            candidate = existingInstances.get(hash);
+        else
+            existingInstances.put(hash, candidate);
+        return candidate;
+    }
+
+    /**
+     * The cache is needed to ensure that if the same model is requested twice, both will share the same ModelData instance (along with the key).
+     * Once model loading has completed, we can clear this cache.
+     */
+    public static void clearCache() {
+        existingInstances.clear();
     }
 
     public ModelState asVanilla() {
@@ -72,12 +110,11 @@ public final class ModelData {
         return uvLock ? BlockModelRotation.get(group).withUvLock() : BlockModelRotation.get(group);
     }
 
-    public Identifier appendedIdentifier() {
-        return Identifier.fromNamespaceAndPath(modelLocation.getNamespace(), "%s/x%s_y%s_z%s_uv%s".formatted(modelLocation.getPath(), xRot, yRot, zRot, uvLock));
-    }
-
     public Identifier modelLocation() {
         return modelLocation;
+    }
+    public Identifier distinctModelId() {
+        return distinctModelId;
     }
 
     @Override
@@ -111,13 +148,13 @@ public final class ModelData {
         //? if fabric && > 1.21.4 {
         var model = Minecraft.getInstance().getModelManager().getModel(this.modelKey);
         //?} else if fabric {
-        /*var model = Minecraft.getInstance().getModelManager().getModel(modelId);
+        /*var model = Minecraft.getInstance().getModelManager().getModel(distinctModelId());
          *///?} else if > 1.21.4 {
-        /*var model = Minecraft.getInstance().getModelManager().getStandaloneModel(predicates.getOrDefault(modelId, null));
+        /*var model = Minecraft.getInstance().getModelManager().getStandaloneModel(this.modelKey);
          *///?} else if > 1.21.1 {
-        //var model = Minecraft.getInstance().getModelManager().getStandaloneModel(modelId);
+        //var model = Minecraft.getInstance().getModelManager().getStandaloneModel(distinctModelId());
         //?} else {
-        /*var model = Minecraft.getInstance().getModelManager().getModel(new ModelIdentifier(modelId, "standalone"));
+        /*var model = Minecraft.getInstance().getModelManager().getModel(new ModelIdentifier(distinctModelId(), "standalone"));
          *///?}
         return model != null ? new PredicateModel(model) : PredicateModel.MISSING;
     }

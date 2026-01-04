@@ -30,7 +30,8 @@ import java.util.List;
 import java.util.Optional;
 
 //? neoforge {
-/*//? if < 1.21.5
+/*import java.util.function.Function;
+//? if < 1.21.5
 /^import net.neoforged.neoforge.client.model.data.ModelData;^/
 
 //? if <= 1.21.5 {

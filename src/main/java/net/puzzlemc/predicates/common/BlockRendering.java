@@ -18,17 +18,7 @@ public class BlockRendering {
         if (blockRenderType == RenderShape.MODEL) {
             Optional<ModelData> override = MBPData.meetsPredicate(world, pos, state, renderContext);
             if (override.isPresent()) {
-                PredicateModel model;
-//                BakedModelManagerAccess manager = ((BakedModelManagerAccess) models.getModelManager());
-                model = override.get().getOverrideModel();
-//                if (model == PredicateModel.MISSING) {
-//                    var overId = override.get();
-////                    model = models.getModelManager().getModel(new ModelIdentifier(
-//                            /*? if >= 1.21.1 {*/ Identifier.fromNamespaceAndPath(/*?}*/
-//                            overId.getNamespace(), overId.getPath()
-//                            /*? if >= 1.21.1 {*/)/*?}*/
-//                            , "standalone"));
-
+                PredicateModel model = override.get().getOverrideModel();
                 return Optional.ofNullable(model);
             }
         }

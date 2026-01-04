@@ -51,7 +51,7 @@ public class When implements WorldViewCondition {
                     data = ModelData.parse(obj, applyId);
                 } else {
                     applyId = entry.getAsString();
-                    data = ModelData.none(applyId);
+                    data = ModelData.basic(applyId);
                 }
 
                 for (int i = 0; i < weight; i++) {
@@ -59,7 +59,7 @@ public class When implements WorldViewCondition {
                 }
             }
         } else {
-            ModelData data = ModelData.none(apply.getAsString());
+            ModelData data = ModelData.basic(apply.getAsString());
             applyModelList = List.of(data);
         }
 

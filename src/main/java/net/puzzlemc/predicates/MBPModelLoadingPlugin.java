@@ -35,6 +35,7 @@ public class MBPModelLoadingPlugin implements PreparableModelLoadingPlugin<@NotN
     /*@Override
     public void /^? if = 1.21.4 {^/ /^initialize ^//^?} else {^/ onInitializeModelLoader /^?}^/ (HashSet<Identifier> set, ModelLoadingPlugin.Context pluginContext) {
         pluginContext.addModels(set);
+        ModelData.clearCache();
     }
     *///?} else {
     @Override
@@ -42,6 +43,7 @@ public class MBPModelLoadingPlugin implements PreparableModelLoadingPlugin<@NotN
         set.forEach(data -> {
             pluginContext.addModel(data.modelKey, SimpleUnbakedExtraModel.blockStateModel(data.modelLocation(), data.asVanilla())); //TODO: Implement support for rotations or blockstate definition files // SimpleUnbakedExtraModel.blockStateModel(id, BlockModelRotation.get(OctahedralGroup.BLOCK_ROT_X_90))
         });
+        ModelData.clearCache();
     }
     //?}
 
@@ -87,17 +89,15 @@ public class MBPModelLoadingPlugin {
     /*@SubscribeEvent
     private static void load(ModelEvent.RegisterAdditional event) {
         MBPModelLoadingPlugin.collectModels(Minecraft.getInstance().getResourceManager()).forEach(id -> event.register(/^? if > 1.21.1 {^/ /^id^/ /^?} else {^/ new ModelIdentifier(id, "standalone") /^?}^/));
+        ModelData.clearCache();
     }
     *///?} else if neoforge {
     /*@SubscribeEvent
     private static void load(ModelEvent.RegisterStandalone event) {
-        MBPModelLoadingPlugin.collectModels(Minecraft.getInstance().getResourceManager()).forEach(id -> {
-            StandaloneModelKey<@NotNull BlockStateModel> modelKey = new StandaloneModelKey<>(
-                    /^? if < 1.21.6 {^/ /^id ^//^?} else {^/ id::toString /^?}^/
-            );
-            PredicateStore.predicates.put(id, modelKey);
-            event.register(modelKey, /^? if < 1.21.6 {^/ /^StandaloneModelBaker.blockStateModel() ^//^?} else {^/ SimpleUnbakedStandaloneModel.blockStateModel(id)/^?}^/);
+        MBPModelLoadingPlugin.collectModels(Minecraft.getInstance().getResourceManager()).forEach(data -> {
+            event.register(data.modelKey, /^? if < 1.21.6 {^/ /^StandaloneModelBaker.blockStateModel() ^//^?} else {^/ SimpleUnbakedStandaloneModel.blockStateModel(data.modelLocation(), data.asVanilla())/^?}^/);
         });
+        ModelData.clearCache();
     }
     *///?}
 
