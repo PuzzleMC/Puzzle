@@ -13,12 +13,14 @@ import org.jetbrains.annotations.Nullable;
 public class AdjacentBlock extends BlockModelPredicate {
 
     private final @Nullable IsBlockState stateCondition;
+    private final @Nullable InBlockTag tagCondition;
     private final BlockPos offset;
     private final boolean checkFullCube;
     private final boolean checkTransparent;
 
-    public AdjacentBlock(@Nullable IsBlockState stateCondition, BlockPos offset, boolean checkFullCube, boolean checkTransparent) {
+    public AdjacentBlock(@Nullable IsBlockState stateCondition, @Nullable InBlockTag tagCondition, BlockPos offset, boolean checkFullCube, boolean checkTransparent) {
         this.stateCondition = stateCondition;
+        this.tagCondition = tagCondition;
         this.offset = offset;
         this.checkFullCube = checkFullCube;
         this.checkTransparent = checkTransparent;
@@ -31,6 +33,7 @@ public class AdjacentBlock extends BlockModelPredicate {
         if (checkFullCube) b = block.isCollisionShapeFullBlock(world, pos);
         if (checkTransparent) b &= block.propagatesSkylightDown(/*? if < 1.21.4 {*/ /*world, pos *//*?}*/);
         if (stateCondition != null) b &= stateCondition.meetsCondition(world, pos.offset(offset), state, renderContext);
+        if (tagCondition != null) b&= tagCondition.meetsCondition(world, pos.offset(offset), state, renderContext);
         return b;
     }
 
@@ -40,12 +43,16 @@ public class AdjacentBlock extends BlockModelPredicate {
         if (obj.has("state")) {
             stateCondition = IsBlockState.parse(obj.get("state"));
         }
+        InBlockTag tagCondition = null;
+        if (obj.has("tag")) {
+            tagCondition = InBlockTag.parse(obj.get("tag"));
+        }
 
         boolean checkFullCube = false;
         boolean checkTransparent = false;
         if (obj.has("is_full_cube")) checkFullCube = obj.get("is_full_cube").getAsBoolean();
         if (obj.has("is_transparent")) checkTransparent = obj.get("is_transparent").getAsBoolean();
 
-        return new AdjacentBlock(stateCondition, DataHelper.parseBlockPos(obj.getAsJsonObject("offset")), checkFullCube, checkTransparent);
+        return new AdjacentBlock(stateCondition, tagCondition, DataHelper.parseBlockPos(obj.getAsJsonObject("offset")), checkFullCube, checkTransparent);
     }
 }
