@@ -68,7 +68,7 @@ public class BlockRenderManagerMixin implements BlockRenderManagerAccess {
     public void renderBlock(BlockState state, BlockPos pos, BlockAndTintGetter world, PoseStack matrices, VertexConsumer vertexConsumer, boolean cull, RandomSource random, ModelData modelData, RenderType renderType, CallbackInfo ci) {
     *///?} else if neoforge && >= 1.21.5 {
     /*@Inject(at = @At("HEAD"), method = "renderBatched(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/BlockAndTintGetter;Lcom/mojang/blaze3d/vertex/PoseStack;Ljava/util/function/Function;ZLjava/util/List;)V", cancellable = true)
-    public void renderBlock(BlockState state, BlockPos pos, BlockAndTintGetter world, PoseStack matrices, Function</^? if < 1.21.8 {^/ /^RenderType ^//^?} else {^/ ChunkSectionLayer /^?}^/, VertexConsumer> bufferLookup, boolean cull, List<BlockModelPart> list, CallbackInfo ci) {
+    public void renderBlock(BlockState state, BlockPos pos, BlockAndTintGetter world, PoseStack matrices, Function</^? if < 1.21.8 {^/ RenderType /^?} else {^/ /^ChunkSectionLayer ^//^?}^/, VertexConsumer> bufferLookup, boolean cull, List<BlockModelPart> list, CallbackInfo ci) {
     *///?}
         RenderShape blockRenderType = state.getRenderShape();
         if (blockRenderType == RenderShape.MODEL) {

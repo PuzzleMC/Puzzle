@@ -31,8 +31,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Optional;
 
 //? if < 1.21.5 {
-//import net.minecraft.client.resources.model.BakedModel;
-//?}
+/*import net.minecraft.client.resources.model.BakedModel;
+*///?}
 
 @Mixin(ItemRenderer.class)
 public abstract class ItemRendererMixin {

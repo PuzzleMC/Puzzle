@@ -36,7 +36,7 @@ public abstract class BlockMarkerParticleMixin extends /*? if < 1.21.10 {*/  /*T
 
         Minecraft client = Minecraft.getInstance();
         if (modelOverride.isPresent()) {
-            this.setSprite(modelOverride.get().getOverrideModel().raw()./*? if < 1.21.5 {*/ /*getParticleIcon()*/ /*?} else {*/ particleIcon() /*?}*/);
+            this.setSprite(modelOverride.get().getOverrideModel().raw()./*? if < 1.21.5 {*/ /*getParticleIcon() *//*?} else {*/ particleIcon() /*?}*/);
         } else {
             this.setSprite(client.getBlockRenderer().getBlockModelShaper().getParticleIcon(state));
         }

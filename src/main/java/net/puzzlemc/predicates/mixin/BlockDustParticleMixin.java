@@ -36,7 +36,7 @@ public abstract class BlockDustParticleMixin extends /*? if < 1.21.10 {*/  /*Tex
 
         Minecraft client = Minecraft.getInstance();
         if (override.isPresent()) {
-            this.setSprite(override.get().getOverrideModel().raw()./*? if < 1.21.5 {*/ /*getParticleIcon()*/ /*?} else {*/ particleIcon() /*?}*/);
+            this.setSprite(override.get().getOverrideModel().raw()./*? if < 1.21.5 {*/ /*getParticleIcon() *//*?} else {*/ particleIcon() /*?}*/);
         } else {
             this.setSprite(client.getBlockRenderer().getBlockModelShaper().getParticleIcon(state));
         }

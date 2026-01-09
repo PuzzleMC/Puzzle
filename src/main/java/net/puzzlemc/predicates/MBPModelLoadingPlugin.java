@@ -33,8 +33,8 @@ public class MBPModelLoadingPlugin implements PreparableModelLoadingPlugin<@NotN
 
     //? if < 1.21.5 {
     /*@Override
-    public void /^? if = 1.21.4 {^/ /^initialize ^//^?} else {^/ onInitializeModelLoader /^?}^/ (HashSet<Identifier> set, ModelLoadingPlugin.Context pluginContext) {
-        pluginContext.addModels(set);
+    public void /^? if = 1.21.4 {^/ /^initialize ^//^?} else {^/ onInitializeModelLoader /^?}^/ (HashSet<ModelData> set, ModelLoadingPlugin.Context pluginContext) {
+        set.forEach(data -> pluginContext.addModels(data.modelLocation()));
         ModelData.clearCache();
     }
     *///?} else {
@@ -50,7 +50,7 @@ public class MBPModelLoadingPlugin implements PreparableModelLoadingPlugin<@NotN
     public static class ModelIdLoader implements PreparableModelLoadingPlugin.DataLoader<@NotNull HashSet<ModelData>> {
         //? if < 1.21.10 {
         /*@Override
-        public CompletableFuture<HashSet<Identifier>> load(ResourceManager manager, Executor executor) {
+        public CompletableFuture<HashSet<ModelData>> load(ResourceManager manager, Executor executor) {
             return CompletableFuture.supplyAsync(() -> collectModels(manager), executor);
         }
         *///?} else {
@@ -72,10 +72,8 @@ import net.neoforged.neoforge.client.model.standalone.SimpleUnbakedStandaloneMod
 import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 //?} else if = 1.21.5 {
-//import net.neoforged.neoforge.client.model.standalone.StandaloneModelBaker;
-//import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
-//import net.minecraft.client.renderer.block.model.BlockStateModel;
-//?} else {
+/^import net.neoforged.neoforge.client.model.standalone.StandaloneModelBaker;
+^///?} else {
 /^import net.minecraft.client.resources.model.ModelIdentifier;
 ^///?}
 
@@ -88,14 +86,14 @@ public class MBPModelLoadingPlugin {
     //? neoforge && < 1.21.5 {
     /*@SubscribeEvent
     private static void load(ModelEvent.RegisterAdditional event) {
-        MBPModelLoadingPlugin.collectModels(Minecraft.getInstance().getResourceManager()).forEach(id -> event.register(/^? if > 1.21.1 {^/ /^id^/ /^?} else {^/ new ModelIdentifier(id, "standalone") /^?}^/));
+        MBPModelLoadingPlugin.collectModels(Minecraft.getInstance().getResourceManager()).forEach(data -> event.register(/^? if > 1.21.1 {^/ data.modelLocation() /^?} else {^/ /^new ModelIdentifier(data.modelLocation(), "standalone") ^//^?}^/));
         ModelData.clearCache();
     }
     *///?} else if neoforge {
     /*@SubscribeEvent
     private static void load(ModelEvent.RegisterStandalone event) {
         MBPModelLoadingPlugin.collectModels(Minecraft.getInstance().getResourceManager()).forEach(data -> {
-            event.register(data.modelKey, /^? if < 1.21.6 {^/ /^StandaloneModelBaker.blockStateModel() ^//^?} else {^/ SimpleUnbakedStandaloneModel.blockStateModel(data.modelLocation(), data.asVanilla())/^?}^/);
+            event.register(data.modelKey, /^? if < 1.21.6 {^/ StandaloneModelBaker.blockStateModel(data.asVanilla()) /^?} else {^/ /^SimpleUnbakedStandaloneModel.blockStateModel(data.modelLocation(), data.asVanilla())^//^?}^/);
         });
         ModelData.clearCache();
     }

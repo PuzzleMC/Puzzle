@@ -1,19 +1,26 @@
 package net.puzzlemc.predicates.util;
 
 import com.google.gson.JsonObject;
-import com.mojang.math.OctahedralGroup;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
+
 import net.minecraft.client.resources.model.BlockModelRotation;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
-//? fabric {
+//? if fabric && > 1.21.4 {
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
-//?} else {
-/*import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
+//?} else if neoforge && > 1.21.4 {
+/*import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
 *///?}
 
+//? if >= 1.21.10 {
+import com.mojang.math.OctahedralGroup;
+//?} else if > 1.21.4 {
+//import com.mojang.math.Quadrant;
+//import com.mojang.serialization.JavaOps;
+//?}
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -25,6 +32,7 @@ public final class ModelData {
     private final boolean uvLock;
     private final Identifier modelLocation;
     private final Identifier distinctModelId;
+    //? if > 1.21.4
     public final /*? fabric {*/ ExtraModelKey /*?} else {*/ /*StandaloneModelKey *//*?}*/<@NotNull BlockStateModel> modelKey;
 
     private ModelData(int xRot, int yRot, int zRot, boolean uvLock, String applyId) {
@@ -38,10 +46,10 @@ public final class ModelData {
         this.uvLock = uvLock;
         this.modelLocation = modelLocation;
         this.distinctModelId = Identifier.fromNamespaceAndPath(modelLocation.getNamespace(), "%s/x%s_y%s_z%s_uv%s".formatted(modelLocation.getPath(), xRot, yRot, zRot, uvLock));
-        //? if fabric {
+        //? if fabric && > 1.21.4 {
         this.modelKey = ExtraModelKey.create(distinctModelId::toString);
-        //?} else {
-        /*modelKey = new StandaloneModelKey<>(/^? if < 1.21.6 {^/ /^distinctModelId ^//^?} else {^/ distinctModelId::toString /^?}^/
+        //?} else if neoforge && > 1.21.4 {
+        /*modelKey = new StandaloneModelKey<>(/^? if < 1.21.6 {^/ distinctModelId /^?} else {^/ /^distinctModelId::toString ^//^?}^/
         );
         *///?}
     }
@@ -91,6 +99,7 @@ public final class ModelData {
     }
 
     public ModelState asVanilla() {
+        //? if >= 1.21.10 {
         OctahedralGroup group = OctahedralGroup.IDENTITY;
         switch (xRot) {
             case 90 -> group = OctahedralGroup.BLOCK_ROT_X_90;
@@ -108,6 +117,14 @@ public final class ModelData {
             case 270 -> group = OctahedralGroup.BLOCK_ROT_Z_270;
         }
         return uvLock ? BlockModelRotation.get(group).withUvLock() : BlockModelRotation.get(group);
+        //?} else if > 1.21.4 {
+//        Quadrant xQuad = Quadrant.CODEC.parse(JavaOps.INSTANCE, xRot).mapOrElse(q -> q, e -> Quadrant.R0);
+//        Quadrant yQuad = Quadrant.CODEC.parse(JavaOps.INSTANCE, yRot).mapOrElse(q -> q, e -> Quadrant.R0);
+//        BlockModelRotation rotation = BlockModelRotation.by(xQuad, yQuad);
+//        return uvLock ? rotation.withUvLock() : rotation;
+        //?} else {
+        /*return BlockModelRotation.by(xRot, yRot);
+        *///?}
     }
 
     public Identifier modelLocation() {
@@ -148,12 +165,12 @@ public final class ModelData {
         //? if fabric && > 1.21.4 {
         var model = Minecraft.getInstance().getModelManager().getModel(this.modelKey);
         //?} else if fabric {
-        /*var model = Minecraft.getInstance().getModelManager().getModel(distinctModelId());
+        /*var model = Minecraft.getInstance().getModelManager().getModel(modelLocation());
          *///?} else if > 1.21.4 {
         /*var model = Minecraft.getInstance().getModelManager().getStandaloneModel(this.modelKey);
          *///?} else if > 1.21.1 {
-        //var model = Minecraft.getInstance().getModelManager().getStandaloneModel(distinctModelId());
-        //?} else {
+        /*var model = Minecraft.getInstance().getModelManager().getStandaloneModel(modelLocation());
+        *///?} else {
         /*var model = Minecraft.getInstance().getModelManager().getModel(new ModelIdentifier(distinctModelId(), "standalone"));
          *///?}
         return model != null ? new PredicateModel(model) : PredicateModel.MISSING;
