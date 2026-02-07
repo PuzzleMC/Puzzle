@@ -31,7 +31,7 @@ public abstract class BlockDustParticleMixin extends /*? if < 1.21.10 {*/  /*Tex
 
     @Inject(at = @At(value = "TAIL"), method = "<init>(Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)V")
     public void init(ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, BlockState state, BlockPos blockPos, CallbackInfo ci) {
-        Optional<ModelData> override = MBPData.meetsPredicate(world, blockPos, state, ContextIDs.FALLING_BLOCK);
+        Optional<ModelData> override = MBPData.meetsPredicate(world, blockPos, state, ContextIDs.DUST_PARTICLE);
 
         override.ifPresent(modelData -> this.setSprite(modelData.getOverrideModel().raw()./*? if < 1.21.5 {*/ /*getParticleIcon() *//*?} else {*/ particleIcon() /*?}*/));
     }
