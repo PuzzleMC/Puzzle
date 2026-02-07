@@ -1,5 +1,6 @@
 package net.puzzlemc.predicates;
 
+import eu.midnightdust.lib.util.PlatformFunctions;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -13,7 +14,7 @@ public class MBPMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public void onLoad(String mixinPackage) {
-        HAS_SODIUM = false;//PlatformFunctions.isModLoaded("sodium");
+        HAS_SODIUM = true;//PlatformFunctions.isModLoaded("sodium");
         HAS_WORLDMESHER = false;//PlatformFunctions.isModLoaded("worldmesher");
         StringBuilder builder = new StringBuilder();
         if (HAS_SODIUM) {

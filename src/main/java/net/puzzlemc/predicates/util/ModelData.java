@@ -13,14 +13,16 @@ import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
 //?} else if neoforge && > 1.21.4 {
 /*import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
+*///?} else if neoforge {
+/*import net.minecraft.client.resources.model.ModelIdentifier;
 *///?}
 
-//? if >= 1.21.10 {
+//? if > 1.21.10 {
 import com.mojang.math.OctahedralGroup;
 //?} else if > 1.21.4 {
-//import com.mojang.math.Quadrant;
-//import com.mojang.serialization.JavaOps;
-//?}
+/*import com.mojang.math.Quadrant;
+import com.mojang.serialization.JavaOps;
+*///?}
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -32,8 +34,9 @@ public final class ModelData {
     private final boolean uvLock;
     private final Identifier modelLocation;
     private final Identifier distinctModelId;
-    //? if > 1.21.4
+    //? if > 1.21.4 {
     public final /*? fabric {*/ ExtraModelKey /*?} else {*/ /*StandaloneModelKey *//*?}*/<@NotNull BlockStateModel> modelKey;
+    //?}
 
     private ModelData(int xRot, int yRot, int zRot, boolean uvLock, String applyId) {
         this(xRot, yRot, zRot, uvLock, Identifier.fromNamespaceAndPath(applyId.split(":")[0], "block/" + applyId.split(":")[1]));
@@ -99,7 +102,7 @@ public final class ModelData {
     }
 
     public ModelState asVanilla() {
-        //? if >= 1.21.10 {
+        //? if > 1.21.10 {
         OctahedralGroup group = OctahedralGroup.IDENTITY;
         switch (xRot) {
             case 90 -> group = OctahedralGroup.BLOCK_ROT_X_90;
@@ -118,11 +121,11 @@ public final class ModelData {
         }
         return uvLock ? BlockModelRotation.get(group).withUvLock() : BlockModelRotation.get(group);
         //?} else if > 1.21.4 {
-//        Quadrant xQuad = Quadrant.CODEC.parse(JavaOps.INSTANCE, xRot).mapOrElse(q -> q, e -> Quadrant.R0);
-//        Quadrant yQuad = Quadrant.CODEC.parse(JavaOps.INSTANCE, yRot).mapOrElse(q -> q, e -> Quadrant.R0);
-//        BlockModelRotation rotation = BlockModelRotation.by(xQuad, yQuad);
-//        return uvLock ? rotation.withUvLock() : rotation;
-        //?} else {
+        /*Quadrant xQuad = Quadrant.CODEC.parse(JavaOps.INSTANCE, xRot).mapOrElse(q -> q, e -> Quadrant.R0);
+        Quadrant yQuad = Quadrant.CODEC.parse(JavaOps.INSTANCE, yRot).mapOrElse(q -> q, e -> Quadrant.R0);
+        BlockModelRotation rotation = BlockModelRotation.by(xQuad, yQuad);
+        return uvLock ? rotation.withUvLock() : rotation;
+        *///?} else {
         /*return BlockModelRotation.by(xRot, yRot);
         *///?}
     }

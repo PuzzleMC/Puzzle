@@ -5,7 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.blockentity.PistonHeadRenderer;
-import net.minecraft.client.renderer.entity.state.FallingBlockRenderState;
+
 import net.puzzlemc.predicates.accessor.MovingBlockRenderStateContext;
 import net.puzzlemc.predicates.common.ContextIDs;
 
@@ -14,9 +14,13 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
+//? if > 1.21.5 {
+import net.minecraft.client.renderer.entity.state.FallingBlockRenderState;
+//?}
+
 
 //? if < 1.21.5 {
-/*import net.minecraft.client.resources.model.BakedModel;
+/*import net.minecraft.client.renderer.block.model.BlockStateModel;
 *///?} else if < 1.21.10 {
  /*import net.minecraft.client.renderer.block.model.BlockStateModel;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -44,22 +48,16 @@ public class PistonBlockEntityRendererMixin {
     //? if < 1.21.10 {
     /*@WrapOperation(at = @At(value = "INVOKE", target =
             /^? if < 1.21.5 {^/
-            /^"Lnet/minecraft/client/renderer/block/BlockRenderDispatcher;getBlockModel(Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/client/resources/model/BakedModel;"
+            /^"Lnet/minecraft/client/renderer/block/BlockRenderDispatcher;getBlockModel(Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/client/renderer/block/model/BlockStateModel;"
             ^//^?} else {^/
             "Lnet/minecraft/client/renderer/block/BlockRenderDispatcher;getBlockModel(Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/client/renderer/block/model/BlockStateModel;"
             /^?}^/
     ), method = "renderBlock")
-    public /^? if < 1.21.5 {^/ /^BakedModel ^//^?} else {^/ BlockStateModel /^?}^/ render(BlockRenderDispatcher instance, BlockState state, Operation</^? if < 1.21.5 {^/ /^BakedModel ^//^?} else {^/ BlockStateModel /^?}^/> original, @Local(argsOnly = true) BlockPos blockPos, @Local(argsOnly = true) Level level) {
-        Optional<ModelData> override = MBPData.meetsPredicate(
-                //? if < 1.21.4 {
-                //fallingBlock.level(), fallingBlock.blockPosition()
-                //?} else {
-                level, blockPos
-                //?}
-                , state, ContextIDs.PISTON_PUSHING);
+    public /^? if < 1.21.5 {^/ /^BlockStateModel ^//^?} else {^/ BlockStateModel /^?}^/ render(BlockRenderDispatcher instance, BlockState state, Operation</^? if < 1.21.5 {^/ /^BlockStateModel ^//^?} else {^/ BlockStateModel /^?}^/> original, @Local(argsOnly = true) BlockPos blockPos, @Local(argsOnly = true) Level level) {
+        Optional<ModelData> override = MBPData.meetsPredicate(level, blockPos, state, ContextIDs.PISTON_PUSHING);
 
         return override.map(ov -> ov.getOverrideModel().raw())
-                .orElseGet(() -> original.call(instance, state));
+                .orElse(original.call(instance, state));
     }
     *///?} else {
     @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/SubmitNodeCollector;submitMovingBlock(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/block/MovingBlockRenderState;)V"), method = "submit(Lnet/minecraft/client/renderer/blockentity/state/PistonHeadRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/client/renderer/state/CameraRenderState;)V")

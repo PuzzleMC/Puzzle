@@ -10,16 +10,16 @@ import net.puzzlemc.predicates.util.ModelData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 //? if < 1.21.4 {
-//import net.minecraft.world.entity.item.FallingBlockEntity;
-//?} else if < 1.21.10 {
+/*import net.minecraft.world.entity.item.FallingBlockEntity;
+*///?} else if < 1.21.10 {
 /*import net.minecraft.client.renderer.entity.state.FallingBlockRenderState;
 *///?}
 
 //? if < 1.21.5 {
-/*import net.minecraft.client.resources.model.BakedModel;
+/*import net.minecraft.client.renderer.block.model.BlockStateModel;
 *///?} else if < 1.21.10 {
-//import net.minecraft.client.renderer.block.model.BlockStateModel;
-//?}
+/*import net.minecraft.client.renderer.block.model.BlockStateModel;
+*///?}
 
 //? if >= 1.21.10 {
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -35,18 +35,19 @@ import java.util.Optional;
 @Mixin(value = FallingBlockRenderer.class, priority = 1010)
 public class FallingBlockEntityRendererMixin {
     //? if < 1.21.10 {
-    /*@WrapOperation(at = @At(value = "INVOKE", target =
-            /^? if < 1.21.5 {^/
-            /^"Lnet/minecraft/client/renderer/block/BlockRenderDispatcher;getBlockModel(Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/client/resources/model/BakedModel;"
+    /*@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/block/BlockRenderDispatcher;getBlockModel(Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/client/renderer/block/model/BlockStateModel;"),
+            method =
+            /^? if <= 1.21.4 {^/
+            /^"render(Lnet/minecraft/world/entity/item/FallingBlockEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V"
             ^//^?} else {^/
-            "Lnet/minecraft/client/renderer/block/BlockRenderDispatcher;getBlockModel(Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/client/renderer/block/model/BlockStateModel;"
+            "render(Lnet/minecraft/client/renderer/entity/state/FallingBlockRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V"
             /^?}^/
-    ), method = "render(Lnet/minecraft/client/renderer/entity/state/FallingBlockRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V")
-    public /^? if < 1.21.5 {^/ /^BakedModel ^//^?} else {^/ BlockStateModel /^?}^/ render(BlockRenderDispatcher instance, BlockState state, Operation</^? if < 1.21.5 {^/ /^BakedModel ^//^?} else {^/ BlockStateModel /^?}^/> original, @Local(argsOnly = true) FallingBlockRenderState fallingBlock) {
+    )
+    public BlockStateModel render(BlockRenderDispatcher instance, BlockState state, Operation<BlockStateModel> original, /^? if < 1.21.4 {^/ /^@Local(argsOnly = true) FallingBlockEntity fallingBlock ^//^?} else {^/ @Local(argsOnly = true) FallingBlockRenderState fallingBlock  /^?}^/) {
         Optional<ModelData> override = MBPData.meetsPredicate(
                 //? if < 1.21.4 {
-                //fallingBlock.level(), fallingBlock.blockPosition()
-                //?} else {
+                /^fallingBlock.level(), fallingBlock.blockPosition()
+                ^///?} else {
                 fallingBlock.level, fallingBlock.blockPos
                 //?}
                 , state, ContextIDs.FALLING_BLOCK);

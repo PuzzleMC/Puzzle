@@ -21,7 +21,7 @@ public class InDimension extends BlockModelPredicate {
     public boolean meetsCondition(BlockGetter world, BlockPos pos, BlockState state, Identifier renderContext) {
         Level w = Minecraft.getInstance().level;
         assert w != null;
-        return w.dimension()./*? if >= 1.21.10 {*/ identifier() /*?} else {*/ /*location() *//*?}*/.equals(dimensionID);
+        return w.dimension()./*? if > 1.21.10 {*/ identifier() /*?} else {*/ /*location() *//*?}*/.equals(dimensionID);
     }
 
     public static InDimension parse(JsonElement arg) {

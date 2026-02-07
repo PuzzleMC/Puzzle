@@ -36,6 +36,9 @@ repositories {
     maven("https://jitpack.io")
     maven("https://maven.shedaniel.me/")
     maven("https://maven.quiltmc.org/repository/release/")
+
+    // Sodium
+    maven("https://maven.caffeinemc.net/releases")
 }
 
 val mappingsAttribute = Attribute.of("net.minecraft.mappings", String::class.java)
@@ -89,6 +92,7 @@ dependencies {
 
         modCompileOnly ("dev.lambdaurora.lambdynamiclights:lambdynamiclights-api:${mod.jigsaw("ldl_version")}")
         modCompileOnly ("dev.lambdaurora.lambdynamiclights:lambdynamiclights-runtime:${mod.jigsaw("ldl_version")}")
+        modCompileOnly("maven.modrinth:sodium:${mod.dep("sodium_version")}-fabric")
     }
     if (loader == "neoforge") {
         "neoForge"("net.neoforged:neoforge:${mod.dep("neoforge_loader")}")
@@ -103,6 +107,10 @@ dependencies {
                 attribute(mappingsAttribute, "mojmap")
             }
         }
+        if (minecraft == "1.21.10" || minecraft == "1.21.11")
+            modCompileOnly("net.caffeinemc:sodium-neoforge-mod:${mod.dep("sodium_version")}")
+        else
+            modCompileOnly("maven.modrinth:sodium:${mod.dep("sodium_version")}-neoforge")
     }
     mappings (loom.officialMojangMappings())
 }
@@ -308,5 +316,25 @@ stonecutter {
     replacements.string {
         direction = eval(current.version, ">=1.21")
         replace(".getDeltaFrameTime()", ".getTimer().getGameTimeDeltaTicks()")
+    }
+    replacements.string {
+        direction = eval(current.version, ">=1.21")
+        replace("me.jellysquid.mods.sodium", "net.caffeinemc.mods.sodium")
+    }
+    replacements.string {
+        direction = eval(current.version, ">=1.21")
+        replace("me/jellysquid/mods/sodium", "net/caffeinemc/mods/sodium")
+    }
+    replacements.string {
+        direction = eval(current.version, ">=1.21.5")
+        replace("net.minecraft.client.resources.model.BakedModel", "net.minecraft.client.renderer.block.model.BlockStateModel")
+    }
+    replacements.string {
+        direction = eval(current.version, ">=1.21.5")
+        replace("net/minecraft/client/resources/model/BakedModel", "net/minecraft/client/renderer/block/model/BlockStateModel")
+    }
+    replacements.string {
+        direction = eval(current.version, ">=1.21.5")
+        replace("BakedModel", "BlockStateModel")
     }
 }

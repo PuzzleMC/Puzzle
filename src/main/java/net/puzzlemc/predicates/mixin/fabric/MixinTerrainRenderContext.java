@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.fabric.impl.client.indigo.renderer.render.TerrainRenderContext;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.RenderShape;
@@ -16,11 +17,8 @@ import org.spongepowered.asm.mixin.Mixin;
 
 import java.util.Optional;
 
-//? if > 1.21.4 {
-import net.minecraft.client.renderer.block.model.BlockStateModel;
-//?} else {
-/*import net.minecraft.client.resources.model.BakedModel;
-import net.fabricmc.fabric.impl.client.indigo.renderer.render.ChunkRenderInfo;
+//? if <= 1.21.4 {
+/*import net.fabricmc.fabric.impl.client.indigo.renderer.render.ChunkRenderInfo;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Shadow;
 *///?}
@@ -47,7 +45,7 @@ public class MixinTerrainRenderContext {
     /*@Shadow @Final private ChunkRenderInfo chunkInfo;
 
     @WrapMethod(method = "tessellateBlock")
-    private void puzzle$renderCustomTerrainBlockIndigo(BlockState state, BlockPos pos, BakedModel model, PoseStack matrixStack, Operation<Void> original) {
+    private void puzzle$renderCustomTerrainBlockIndigo(BlockState state, BlockPos pos, BlockStateModel model, PoseStack matrixStack, Operation<Void> original) {
         if (state.getRenderShape() == RenderShape.MODEL) {
             BlockAndTintGetter world = ((AbstractTerrainRenderContextAccessor) chunkInfo).getBlockView();
             if (world == null) return;

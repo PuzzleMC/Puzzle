@@ -1,47 +1,28 @@
 package net.puzzlemc.predicates.mixin.compat.sodium;
 
-//import me.jellysquid.mods.sodium.client.render.chunk.compile.tasks.ChunkBuilderMeshingTask;
-//import me.jellysquid.mods.sodium.client.world.WorldSlice;
-//import net.minecraft.client.Minecraft;
-//import net.minecraft.client.resources.model.BakedModel;
-//import net.minecraft.core.BlockPos;
-//import net.minecraft.world.level.block.state.BlockState;
-//import net.puzzlemc.predicates.common.BlockRendering;
-//import org.spongepowered.asm.mixin.Mixin;
-//import org.spongepowered.asm.mixin.Unique;
-//import org.spongepowered.asm.mixin.injection.At;
-//import org.spongepowered.asm.mixin.injection.Redirect;
-//
-//
-//@Mixin(value = ChunkBuilderMeshingTask.class)
-//public class ChunkBuilderMeshingTaskMixin {
-//
-//    @Unique private int x = 0;
-//    @Unique private int y = 0;
-//    @Unique private int z = 0;
-//
-//    @Redirect(method = "execute(Lme/jellysquid/mods/sodium/client/render/chunk/compile/ChunkBuildContext;Lme/jellysquid/mods/sodium/client/util/task/CancellationToken;)Lme/jellysquid/mods/sodium/client/render/chunk/compile/ChunkBuildOutput;", at = @At(value = "INVOKE", target = "Lme/jellysquid/mods/sodium/client/world/WorldSlice;getBlockState(III)Lnet/minecraft/block/BlockState;"))
-//    public BlockState getBlockStateRedirect(WorldSlice worldSlice, int x, int y, int z) {
-//        this.x = x;
-//        this.y = y;
-//        this.z = z;
-//        return worldSlice.getBlockState(x,y,z);
-//    }
-//
-//    @Redirect(method = "execute(Lme/jellysquid/mods/sodium/client/render/chunk/compile/ChunkBuildContext;Lme/jellysquid/mods/sodium/client/util/task/CancellationToken;)Lme/jellysquid/mods/sodium/client/render/chunk/compile/ChunkBuildOutput;", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/block/BlockModels;getModel(Lnet/minecraft/block/BlockState;)Lnet/minecraft/client/render/model/BakedModel;"))
-//    public BakedModel getModelRedirect(BlockModels models, BlockState state) {
-//        BakedModel newModel = BlockRendering.tryModelOverride(models, Minecraft.getInstance().level, state, new BlockPos(x, y, z), ContextIDs.CHUNK_MESH);
-//        if (newModel != null)
-//            return newModel;
-//
-//        // If failed return original method call
-//        return models.getModel(state);
-//    }
-//}
-
-import eu.midnightdust.core.MidnightLib;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
+import net.caffeinemc.mods.sodium.client.render.chunk.compile.tasks.ChunkBuilderMeshingTask;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.BlockModelShaper;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.puzzlemc.predicates.common.BlockRendering;
+import net.puzzlemc.predicates.common.ContextIDs;
+import net.puzzlemc.predicates.util.PredicateModel;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(MidnightLib.class)
+import java.util.Optional;
+
+
+@Mixin(value = ChunkBuilderMeshingTask.class)
 public class ChunkBuilderMeshingTaskMixin {
+    @WrapOperation(method = "execute(Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/ChunkBuildContext;Lnet/caffeinemc/mods/sodium/client/util/task/CancellationToken;)Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/ChunkBuildOutput;", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/block/BlockModelShaper;getBlockModel(Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/client/renderer/block/model/BlockStateModel;"))
+    public BlockStateModel getModelRedirect(BlockModelShaper shaper, BlockState state, Operation<BlockStateModel> original, @Local(ordinal = 0) BlockPos.MutableBlockPos blockPos) {
+        Optional<PredicateModel> newModel = BlockRendering.tryModelOverride(shaper, Minecraft.getInstance().level, state, blockPos, ContextIDs.CHUNK_MESH);
+        return newModel.map(PredicateModel::raw).orElse(original.call(shaper, state));
+    }
 }
