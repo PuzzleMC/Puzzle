@@ -1,6 +1,5 @@
 package net.puzzlemc.predicates.mixin;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.particle.TerrainParticle;
@@ -34,11 +33,6 @@ public abstract class BlockDustParticleMixin extends /*? if < 1.21.10 {*/  /*Tex
     public void init(ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, BlockState state, BlockPos blockPos, CallbackInfo ci) {
         Optional<ModelData> override = MBPData.meetsPredicate(world, blockPos, state, ContextIDs.FALLING_BLOCK);
 
-        Minecraft client = Minecraft.getInstance();
-        if (override.isPresent()) {
-            this.setSprite(override.get().getOverrideModel().raw()./*? if < 1.21.5 {*/ /*getParticleIcon() *//*?} else {*/ particleIcon() /*?}*/);
-        } else {
-            this.setSprite(client.getBlockRenderer().getBlockModelShaper().getParticleIcon(state));
-        }
+        override.ifPresent(modelData -> this.setSprite(modelData.getOverrideModel().raw()./*? if < 1.21.5 {*/ /*getParticleIcon() *//*?} else {*/ particleIcon() /*?}*/));
     }
 }

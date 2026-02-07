@@ -1,6 +1,5 @@
 package net.puzzlemc.predicates.mixin;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.BlockMarker;
 import net.minecraft.client.particle.SingleQuadParticle;
@@ -32,13 +31,8 @@ public abstract class BlockMarkerParticleMixin extends /*? if < 1.21.10 {*/  /*T
 
     @Inject(at = @At(value = "TAIL"), method = "<init>")
     public void init(ClientLevel world, double x, double y, double z, BlockState state, CallbackInfo ci) {
-        Optional<ModelData> modelOverride = MBPData.meetsPredicate(world, new BlockPos((int)x, (int)y, (int)z), state, ContextIDs.MARKER_PARTICLE);
+        Optional<ModelData> override = MBPData.meetsPredicate(world, new BlockPos((int)x, (int)y, (int)z), state, ContextIDs.MARKER_PARTICLE);
 
-        Minecraft client = Minecraft.getInstance();
-        if (modelOverride.isPresent()) {
-            this.setSprite(modelOverride.get().getOverrideModel().raw()./*? if < 1.21.5 {*/ /*getParticleIcon() *//*?} else {*/ particleIcon() /*?}*/);
-        } else {
-            this.setSprite(client.getBlockRenderer().getBlockModelShaper().getParticleIcon(state));
-        }
+        override.ifPresent(modelData -> this.setSprite(modelData.getOverrideModel().raw()./*? if < 1.21.5 {*/ /*getParticleIcon() *//*?} else {*/ particleIcon() /*?}*/));
     }
 }
