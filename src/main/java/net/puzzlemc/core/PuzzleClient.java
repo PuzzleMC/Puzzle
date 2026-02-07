@@ -49,10 +49,10 @@ import net.neoforged.fml.common.Mod;
 import net.puzzlemc.gui.screen.PuzzleOptionsScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 //? if >= 1.21.5 {
-import net.neoforged.neoforge.client.event.AddClientReloadListenersEvent;
-//?} else {
-/^import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
-^///?}
+/^import net.neoforged.neoforge.client.event.AddClientReloadListenersEvent;
+^///?} else {
+import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
+//?}
 
 @Mod(value = MOD_ID, dist = Dist.CLIENT)
 public class PuzzleClient {
@@ -61,19 +61,19 @@ public class PuzzleClient {
         ModList.get().getModContainerById(MOD_ID).orElseThrow().registerExtensionPoint(IConfigScreenFactory.class, (client, parent) -> new PuzzleOptionsScreen(parent));
     }
 
-    @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT /^? if <= 1.21.5 {^/ /^, bus = EventBusSubscriber.Bus.MOD ^//^?}^/)
+    @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT /^? if <= 1.21.5 {^/ , bus = EventBusSubscriber.Bus.MOD /^?}^/)
     public static class MidnightLibBusEvents {
         //? if >= 1.21.5 {
-        @SubscribeEvent
+        /^@SubscribeEvent
         public static void onResourceReload(AddClientReloadListenersEvent event) {
             event.addListener(Identifier.fromNamespaceAndPath(MOD_ID, "splash_screen"), PuzzleSplashScreen.ReloadListener.INSTANCE);
         }
-        //?} else {
-        /^@SubscribeEvent
+        ^///?} else {
+        @SubscribeEvent
         public static void onResourceReload(RegisterClientReloadListenersEvent event) {
             event.registerReloadListener(PuzzleSplashScreen.ReloadListener.INSTANCE);
         }
-        ^///?}
+        //?}
     }
  }
     *///?}

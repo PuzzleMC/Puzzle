@@ -68,25 +68,25 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ModelEvent;
 
 //? if > 1.21.5 {
-import net.neoforged.neoforge.client.model.standalone.SimpleUnbakedStandaloneModel;
+/^import net.neoforged.neoforge.client.model.standalone.SimpleUnbakedStandaloneModel;
 import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
-//?} else if = 1.21.5 {
+^///?} else if = 1.21.5 {
 /^import net.neoforged.neoforge.client.model.standalone.StandaloneModelBaker;
 ^///?} else {
-/^import net.minecraft.client.resources.model.ModelIdentifier;
-^///?}
+import net.minecraft.client.resources.model.ModelIdentifier;
+//?}
 
 import static net.puzzlemc.core.PuzzleCore.MOD_ID;
 
-@EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT /^? if <= 1.21.5 {^/ /^, bus = EventBusSubscriber.Bus.MOD ^//^?}^/)
+@EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT /^? if <= 1.21.5 {^/ , bus = EventBusSubscriber.Bus.MOD /^?}^/)
 public class MBPModelLoadingPlugin {
 *///?}
 
     //? neoforge && < 1.21.5 {
     /*@SubscribeEvent
     private static void load(ModelEvent.RegisterAdditional event) {
-        MBPModelLoadingPlugin.collectModels(Minecraft.getInstance().getResourceManager()).forEach(data -> event.register(/^? if > 1.21.1 {^/ data.modelLocation() /^?} else {^/ /^new ModelIdentifier(data.modelLocation(), "standalone") ^//^?}^/));
+        MBPModelLoadingPlugin.collectModels(Minecraft.getInstance().getResourceManager()).forEach(data -> event.register(/^? if > 1.21.1 {^/ /^data.modelLocation() ^//^?} else {^/ new ModelIdentifier(data.modelLocation(), "standalone") /^?}^/));
         ModelData.clearCache();
     }
     *///?} else if neoforge {

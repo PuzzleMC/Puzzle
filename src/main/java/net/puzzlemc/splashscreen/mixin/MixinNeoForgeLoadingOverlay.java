@@ -24,7 +24,7 @@ public class MixinNeoForgeLoadingOverlay extends LoadingOverlay {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void puzzle$initTexturesNeoforge(Minecraft mc, ReloadInstance reloader, Consumer<Optional<Throwable>> errorConsumer, DisplayWindow displayWindow, CallbackInfo ci) {
-        LoadingOverlay.registerTextures(/^? if >= 1.21.4 {^/ mc.getTextureManager() /^?} else {^/ /^mc ^//^?}^/);
+        LoadingOverlay.registerTextures(/^? if >= 1.21.4 {^/ /^mc.getTextureManager() ^//^?} else {^/ mc /^?}^/);
     }
 
     @Inject(method = "render", at = @At("HEAD"), cancellable = true) // Replaces the NeoForge loading screen in later stages with the (customized) vanilla version
