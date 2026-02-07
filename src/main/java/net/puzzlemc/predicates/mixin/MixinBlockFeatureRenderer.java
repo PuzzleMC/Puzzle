@@ -26,8 +26,7 @@ public class MixinBlockFeatureRenderer {
     public BlockStateModel puzzle$renderCustomMovingBlock(BlockRenderDispatcher instance, BlockState state, Operation<BlockStateModel> original, @Local MovingBlockRenderState movingBlock) {
         Optional<ModelData> override = MBPData.meetsPredicate(movingBlock.level, movingBlock.blockPos, state, MovingBlockRenderStateContext.of(movingBlock).puzzle$getContextId());
 
-        return override.map(resourceLocation -> override.get().getOverrideModel().raw())
-                .orElseGet(() -> original.call(instance, state));
+        return override.map(resourceLocation -> override.get().getOverrideModel()).orElse(original.call(instance, state));
     }
 }
 //?} else {

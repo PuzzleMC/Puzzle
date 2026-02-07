@@ -15,9 +15,7 @@ import org.spongepowered.asm.mixin.injection.At;
 /*import net.minecraft.client.renderer.entity.state.FallingBlockRenderState;
 *///?}
 
-//? if < 1.21.5 {
-/*import net.minecraft.client.renderer.block.model.BlockStateModel;
-*///?} else if < 1.21.10 {
+//? if < 1.21.10 {
 /*import net.minecraft.client.renderer.block.model.BlockStateModel;
 *///?}
 
@@ -37,8 +35,8 @@ public class FallingBlockEntityRendererMixin {
     //? if < 1.21.10 {
     /*@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/block/BlockRenderDispatcher;getBlockModel(Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/client/renderer/block/model/BlockStateModel;"),
             method =
-            /^? if <= 1.21.4 {^/
-            /^"render(Lnet/minecraft/world/entity/item/FallingBlockEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V"
+            /^? if < 1.21.4 {^//^
+            "render(Lnet/minecraft/world/entity/item/FallingBlockEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V"
             ^//^?} else {^/
             "render(Lnet/minecraft/client/renderer/entity/state/FallingBlockRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V"
             /^?}^/
@@ -52,8 +50,7 @@ public class FallingBlockEntityRendererMixin {
                 //?}
                 , state, ContextIDs.FALLING_BLOCK);
 
-        return override.map(ov -> ov.getOverrideModel().raw())
-                .orElseGet(() -> original.call(instance, state));
+        return override.map(ModelData::getOverrideModel).orElse(original.call(instance, state));
     }
     *///?} else {
     @WrapOperation(at = @At(value = "INVOKE",

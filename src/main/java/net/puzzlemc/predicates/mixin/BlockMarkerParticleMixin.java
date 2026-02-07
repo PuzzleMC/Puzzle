@@ -33,6 +33,6 @@ public abstract class BlockMarkerParticleMixin extends /*? if < 1.21.10 {*/  /*T
     public void init(ClientLevel world, double x, double y, double z, BlockState state, CallbackInfo ci) {
         Optional<ModelData> override = MBPData.meetsPredicate(world, new BlockPos((int)x, (int)y, (int)z), state, ContextIDs.MARKER_PARTICLE);
 
-        override.ifPresent(modelData -> this.setSprite(modelData.getOverrideModel().raw()./*? if < 1.21.5 {*/ /*getParticleIcon() *//*?} else {*/ particleIcon() /*?}*/));
+        override.ifPresent(modelData -> this.setSprite(modelData.getOverrideModel()./*? if < 1.21.5 {*/ /*getParticleIcon() *//*?} else {*/ particleIcon() /*?}*/));
     }
 }

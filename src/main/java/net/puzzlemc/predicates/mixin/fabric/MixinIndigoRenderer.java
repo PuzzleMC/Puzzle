@@ -31,7 +31,7 @@ public class MixinIndigoRenderer {
             Optional<ModelData> override = MBPData.meetsPredicate(renderState.level, pos, state, MovingBlockRenderStateContext.of(renderState).puzzle$getContextId());
 
             if (override.isPresent())
-                model = override.get().getOverrideModel().raw();
+                model = override.get().getOverrideModel();
         }
         original.call(modelRenderer, blockView, model, state, pos, matrices, vertexConsumers, cull, seed, overlay);
     }

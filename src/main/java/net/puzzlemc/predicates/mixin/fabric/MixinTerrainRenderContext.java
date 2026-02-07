@@ -12,7 +12,6 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.puzzlemc.predicates.common.BlockRendering;
 import net.puzzlemc.predicates.common.ContextIDs;
-import net.puzzlemc.predicates.util.PredicateModel;
 import org.spongepowered.asm.mixin.Mixin;
 
 import java.util.Optional;
@@ -33,9 +32,9 @@ public class MixinTerrainRenderContext {
     private void puzzle$renderCustomTerrainBlockIndigo(BlockStateModel model, BlockState state, BlockPos pos, Operation<Void> original) {
         if (state.getRenderShape() == RenderShape.MODEL) {
             BlockAndTintGetter world = ((AbstractTerrainRenderContextAccessor)this).getBlockInfo().blockView;
-            Optional<PredicateModel> newModel = BlockRendering.tryModelOverride(null, world, state, pos, ContextIDs.MISC);
+            Optional<BlockStateModel> newModel = BlockRendering.tryModelOverride(world, state, pos, ContextIDs.MISC);
             if (newModel.isPresent()) {
-                original.call(newModel.get().raw(), state, pos);
+                original.call(newModel.get(), state, pos);
                 return;
             }
         }
@@ -49,9 +48,9 @@ public class MixinTerrainRenderContext {
         if (state.getRenderShape() == RenderShape.MODEL) {
             BlockAndTintGetter world = ((AbstractTerrainRenderContextAccessor) chunkInfo).getBlockView();
             if (world == null) return;
-            Optional<PredicateModel> newModel = BlockRendering.tryModelOverride(null, world, state, pos, ContextIDs.MISC);
+            Optional<BlockStateModel> newModel = BlockRendering.tryModelOverride(world, state, pos, ContextIDs.MISC);
             if (newModel.isPresent()) {
-                original.call(state, pos, newModel.get().raw(), matrixStack);
+                original.call(state, pos, newModel.get(), matrixStack);
                 return;
             }
         }

@@ -53,11 +53,10 @@ public class PistonBlockEntityRendererMixin {
             "Lnet/minecraft/client/renderer/block/BlockRenderDispatcher;getBlockModel(Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/client/renderer/block/model/BlockStateModel;"
             /^?}^/
     ), method = "renderBlock")
-    public /^? if < 1.21.5 {^/ /^BlockStateModel ^//^?} else {^/ BlockStateModel /^?}^/ render(BlockRenderDispatcher instance, BlockState state, Operation</^? if < 1.21.5 {^/ /^BlockStateModel ^//^?} else {^/ BlockStateModel /^?}^/> original, @Local(argsOnly = true) BlockPos blockPos, @Local(argsOnly = true) Level level) {
+    public BlockStateModel render(BlockRenderDispatcher instance, BlockState state, Operation<BlockStateModel> original, @Local(argsOnly = true) BlockPos blockPos, @Local(argsOnly = true) Level level) {
         Optional<ModelData> override = MBPData.meetsPredicate(level, blockPos, state, ContextIDs.PISTON_PUSHING);
 
-        return override.map(ov -> ov.getOverrideModel().raw())
-                .orElse(original.call(instance, state));
+        return override.map(ModelData::getOverrideModel).orElse(original.call(instance, state));
     }
     *///?} else {
     @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/SubmitNodeCollector;submitMovingBlock(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/block/MovingBlockRenderState;)V"), method = "submit(Lnet/minecraft/client/renderer/blockentity/state/PistonHeadRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/client/renderer/state/CameraRenderState;)V")

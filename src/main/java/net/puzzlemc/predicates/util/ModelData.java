@@ -3,16 +3,15 @@ package net.puzzlemc.predicates.util;
 import com.google.gson.JsonObject;
 import net.minecraft.client.Minecraft;
 
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.resources.model.BlockModelRotation;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 //? if fabric && > 1.21.4 {
-import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
 //?} else if neoforge && > 1.21.4 {
-/*import net.minecraft.client.renderer.block.model.BlockStateModel;
-import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
+/*import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
 *///?} else if neoforge {
 /*import net.minecraft.client.resources.model.ModelIdentifier;
 *///?}
@@ -164,7 +163,7 @@ public final class ModelData {
                 "modelLocation=" + modelLocation + ']';
     }
 
-    public PredicateModel getOverrideModel() {
+    public BlockStateModel getOverrideModel() {
         //? if fabric && > 1.21.4 {
         var model = Minecraft.getInstance().getModelManager().getModel(this.modelKey);
         //?} else if fabric {
@@ -176,6 +175,6 @@ public final class ModelData {
         *///?} else {
         /*var model = Minecraft.getInstance().getModelManager().getModel(new ModelIdentifier(distinctModelId(), "standalone"));
          *///?}
-        return model != null ? new PredicateModel(model) : PredicateModel.MISSING;
+        return model != null ? model : Minecraft.getInstance().getModelManager()./*? if > 1.21.4 {*/ getMissingBlockStateModel() /*?} else {*/ /*getMissingModel() *//*?}*/;
     }
 }

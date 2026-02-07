@@ -11,7 +11,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.puzzlemc.predicates.common.BlockRendering;
 import net.puzzlemc.predicates.common.ContextIDs;
-import net.puzzlemc.predicates.util.PredicateModel;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -22,7 +21,7 @@ import java.util.Optional;
 public class ChunkBuilderMeshingTaskMixin {
     @WrapOperation(method = "execute(Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/ChunkBuildContext;Lnet/caffeinemc/mods/sodium/client/util/task/CancellationToken;)Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/ChunkBuildOutput;", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/block/BlockModelShaper;getBlockModel(Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/client/renderer/block/model/BlockStateModel;"))
     public BlockStateModel getModelRedirect(BlockModelShaper shaper, BlockState state, Operation<BlockStateModel> original, @Local(ordinal = 0) BlockPos.MutableBlockPos blockPos) {
-        Optional<PredicateModel> newModel = BlockRendering.tryModelOverride(shaper, Minecraft.getInstance().level, state, blockPos, ContextIDs.CHUNK_MESH);
-        return newModel.map(PredicateModel::raw).orElse(original.call(shaper, state));
+        Optional<BlockStateModel> newModel = BlockRendering.tryModelOverride(Minecraft.getInstance().level, state, blockPos, ContextIDs.CHUNK_MESH);
+        return newModel.orElse(original.call(shaper, state));
     }
 }

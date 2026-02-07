@@ -33,6 +33,6 @@ public abstract class BlockDustParticleMixin extends /*? if < 1.21.10 {*/  /*Tex
     public void init(ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, BlockState state, BlockPos blockPos, CallbackInfo ci) {
         Optional<ModelData> override = MBPData.meetsPredicate(world, blockPos, state, ContextIDs.DUST_PARTICLE);
 
-        override.ifPresent(modelData -> this.setSprite(modelData.getOverrideModel().raw()./*? if < 1.21.5 {*/ /*getParticleIcon() *//*?} else {*/ particleIcon() /*?}*/));
+        override.ifPresent(modelData -> this.setSprite(modelData.getOverrideModel()./*? if < 1.21.5 {*/ /*getParticleIcon() *//*?} else {*/ particleIcon() /*?}*/));
     }
 }

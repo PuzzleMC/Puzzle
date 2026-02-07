@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
 
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -16,7 +17,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.puzzlemc.predicates.accessor.BlockRenderManagerAccess;
 import net.puzzlemc.predicates.common.BlockRendering;
 import net.puzzlemc.predicates.common.ContextIDs;
-import net.puzzlemc.predicates.util.PredicateModel;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -51,9 +51,6 @@ public class BlockRenderManagerMixin implements BlockRenderManagerAccess {
     @Shadow @Final private BlockColors blockColors;
     @Shadow
     @Final
-    private BlockModelShaper blockModelShaper;
-    @Shadow
-    @Final
     private ModelBlockRenderer modelRenderer;
     @Unique @Nullable private BlockPos puzzle$contextPos;
 
@@ -72,12 +69,12 @@ public class BlockRenderManagerMixin implements BlockRenderManagerAccess {
     *///?}
         RenderShape blockRenderType = state.getRenderShape();
         if (blockRenderType == RenderShape.MODEL) {
-            Optional<PredicateModel> newModel = BlockRendering.tryModelOverride(this.blockModelShaper, world, state, pos, ContextIDs.MISC);
+            Optional<BlockStateModel> newModel = BlockRendering.tryModelOverride(world, state, pos, ContextIDs.MISC);
             newModel.ifPresent(predicateModel -> {
                 //? if > 1.21.4 {
-                this.modelRenderer.tesselateBlock(world, predicateModel.raw().collectParts(RandomSource.create()), state, pos, matrices, /*? fabric {*/ vertexConsumer /*?} else {*//*bufferLookup *//*?}*/, cull, OverlayTexture.NO_OVERLAY);
+                this.modelRenderer.tesselateBlock(world, predicateModel.collectParts(RandomSource.create()), state, pos, matrices, /*? fabric {*/ vertexConsumer /*?} else {*//*bufferLookup *//*?}*/, cull, OverlayTexture.NO_OVERLAY);
                 //?} else {
-                /*this.modelRenderer.tesselateBlock(world, predicateModel.raw(), state, pos, matrices, vertexConsumer, cull, random, state.getSeed(pos), OverlayTexture.NO_OVERLAY
+                /*this.modelRenderer.tesselateBlock(world, predicateModel, state, pos, matrices, vertexConsumer, cull, random, state.getSeed(pos), OverlayTexture.NO_OVERLAY
                         //? if neoforge
                         /^, modelData, renderType^/
                 );
