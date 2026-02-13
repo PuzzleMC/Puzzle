@@ -3,14 +3,13 @@ package net.puzzlemc.predicates.mixin.fabric;
 //? fabric {
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.fabric.impl.client.indigo.renderer.render.TerrainRenderContext;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
-import net.puzzlemc.predicates.common.BlockRendering;
+import net.puzzlemc.predicates.util.ConditionCheck;
 import net.puzzlemc.predicates.common.ContextIDs;
 import org.spongepowered.asm.mixin.Mixin;
 
@@ -20,6 +19,7 @@ import java.util.Optional;
 /*import net.fabricmc.fabric.impl.client.indigo.renderer.render.ChunkRenderInfo;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Shadow;
+import com.mojang.blaze3d.vertex.PoseStack;
 *///?}
 
 /**
@@ -32,7 +32,7 @@ public class MixinTerrainRenderContext {
     private void puzzle$renderCustomTerrainBlockIndigo(BlockStateModel model, BlockState state, BlockPos pos, Operation<Void> original) {
         if (state.getRenderShape() == RenderShape.MODEL) {
             BlockAndTintGetter world = ((AbstractTerrainRenderContextAccessor)this).getBlockInfo().blockView;
-            Optional<BlockStateModel> newModel = BlockRendering.tryModelOverride(world, state, pos, ContextIDs.MISC);
+            Optional<BlockStateModel> newModel = ConditionCheck.meetsPredicate(world, pos, state, ContextIDs.CHUNK_MESH);
             if (newModel.isPresent()) {
                 original.call(newModel.get(), state, pos);
                 return;
@@ -48,7 +48,7 @@ public class MixinTerrainRenderContext {
         if (state.getRenderShape() == RenderShape.MODEL) {
             BlockAndTintGetter world = ((AbstractTerrainRenderContextAccessor) chunkInfo).getBlockView();
             if (world == null) return;
-            Optional<BlockStateModel> newModel = BlockRendering.tryModelOverride(world, state, pos, ContextIDs.MISC);
+            Optional<BlockStateModel> newModel = ConditionCheck.meetsPredicate(world, pos, state, ContextIDs.CHUNK_MESH);
             if (newModel.isPresent()) {
                 original.call(state, pos, newModel.get(), matrixStack);
                 return;

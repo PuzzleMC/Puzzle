@@ -35,7 +35,7 @@ import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.puzzlemc.predicates.MBPData;
+import net.puzzlemc.predicates.util.ConditionCheck;
 
 import java.util.Optional;
 *///?} else {
@@ -54,9 +54,9 @@ public class PistonBlockEntityRendererMixin {
             /^?}^/
     ), method = "renderBlock")
     public BlockStateModel render(BlockRenderDispatcher instance, BlockState state, Operation<BlockStateModel> original, @Local(argsOnly = true) BlockPos blockPos, @Local(argsOnly = true) Level level) {
-        Optional<ModelData> override = MBPData.meetsPredicate(level, blockPos, state, ContextIDs.PISTON_PUSHING);
+        Optional<BlockStateModel> override = ConditionCheck.meetsPredicate(level, blockPos, state, ContextIDs.PISTON_PUSHING);
 
-        return override.map(ModelData::getOverrideModel).orElse(original.call(instance, state));
+        return override.orElse(original.call(instance, state));
     }
     *///?} else {
     @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/SubmitNodeCollector;submitMovingBlock(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/block/MovingBlockRenderState;)V"), method = "submit(Lnet/minecraft/client/renderer/blockentity/state/PistonHeadRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/client/renderer/state/CameraRenderState;)V")

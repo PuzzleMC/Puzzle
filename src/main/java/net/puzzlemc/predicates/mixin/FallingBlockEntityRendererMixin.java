@@ -26,7 +26,7 @@ import net.minecraft.client.renderer.block.MovingBlockRenderState;
 /*import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.world.level.block.state.BlockState;
-import net.puzzlemc.predicates.MBPData;
+import net.puzzlemc.predicates.util.ConditionCheck;
 import java.util.Optional;
 *///?}
 
@@ -42,7 +42,7 @@ public class FallingBlockEntityRendererMixin {
             /^?}^/
     )
     public BlockStateModel render(BlockRenderDispatcher instance, BlockState state, Operation<BlockStateModel> original, /^? if < 1.21.4 {^/ /^@Local(argsOnly = true) FallingBlockEntity fallingBlock ^//^?} else {^/ @Local(argsOnly = true) FallingBlockRenderState fallingBlock  /^?}^/) {
-        Optional<ModelData> override = MBPData.meetsPredicate(
+        Optional<BlockStateModel> override = ConditionCheck.meetsPredicate(
                 //? if < 1.21.4 {
                 /^fallingBlock.level(), fallingBlock.blockPosition()
                 ^///?} else {
@@ -50,7 +50,7 @@ public class FallingBlockEntityRendererMixin {
                 //?}
                 , state, ContextIDs.FALLING_BLOCK);
 
-        return override.map(ModelData::getOverrideModel).orElse(original.call(instance, state));
+        return override.orElse(original.call(instance, state));
     }
     *///?} else {
     @WrapOperation(at = @At(value = "INVOKE",

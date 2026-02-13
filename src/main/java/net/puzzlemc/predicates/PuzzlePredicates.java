@@ -1,7 +1,5 @@
 package net.puzzlemc.predicates;
 
-import net.minecraft.core.BlockPos;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,7 +8,6 @@ import net.fabricmc.fabric.impl.client.model.loading.ModelLoadingPluginManager;
 //?}
 public class PuzzlePredicates {
     public static final Logger LOGGER = LoggerFactory.getLogger("mbp");
-    public static BlockPos contextPos;
 
     public static void init() {
         //? fabric

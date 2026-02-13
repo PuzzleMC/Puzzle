@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
-import net.puzzlemc.predicates.MBPData;
+import net.puzzlemc.predicates.util.ConditionCheck;
 import net.puzzlemc.predicates.accessor.MovingBlockRenderStateContext;
 import net.puzzlemc.predicates.util.ModelData;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,10 +28,10 @@ public class MixinIndigoRenderer {
     public void puzzle$renderCustomMovingBlockIndigo(ModelBlockRenderer modelRenderer, BlockAndTintGetter blockView, BlockStateModel model, BlockState state, BlockPos pos, PoseStack matrices, BlockVertexConsumerProvider vertexConsumers, boolean cull, long seed, int overlay, Operation<Void> original) {
         // Fabric passes the MovingBlockRenderState as the blockView parameter
         if (blockView instanceof MovingBlockRenderState renderState) {
-            Optional<ModelData> override = MBPData.meetsPredicate(renderState.level, pos, state, MovingBlockRenderStateContext.of(renderState).puzzle$getContextId());
+            Optional<BlockStateModel> override = ConditionCheck.meetsPredicate(renderState.level, pos, state, MovingBlockRenderStateContext.of(renderState).puzzle$getContextId());
 
             if (override.isPresent())
-                model = override.get().getOverrideModel();
+                model = override.get();
         }
         original.call(modelRenderer, blockView, model, state, pos, matrices, vertexConsumers, cull, seed, overlay);
     }

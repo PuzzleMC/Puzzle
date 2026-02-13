@@ -3,11 +3,11 @@ package net.puzzlemc.predicates.mixin;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.particle.TerrainParticle;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
-import net.puzzlemc.predicates.MBPData;
+import net.puzzlemc.predicates.util.ConditionCheck;
 import net.puzzlemc.predicates.common.ContextIDs;
-import net.puzzlemc.predicates.util.ModelData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -31,8 +31,8 @@ public abstract class BlockDustParticleMixin extends /*? if < 1.21.10 {*/  /*Tex
 
     @Inject(at = @At(value = "TAIL"), method = "<init>(Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)V")
     public void init(ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, BlockState state, BlockPos blockPos, CallbackInfo ci) {
-        Optional<ModelData> override = MBPData.meetsPredicate(world, blockPos, state, ContextIDs.DUST_PARTICLE);
+        Optional<BlockStateModel> override = ConditionCheck.meetsPredicate(world, blockPos, state, ContextIDs.DUST_PARTICLE);
 
-        override.ifPresent(modelData -> this.setSprite(modelData.getOverrideModel()./*? if < 1.21.5 {*/ /*getParticleIcon() *//*?} else {*/ particleIcon() /*?}*/));
+        override.ifPresent(modelData -> this.setSprite(modelData./*? if < 1.21.5 {*/ /*getParticleIcon() *//*?} else {*/ particleIcon() /*?}*/));
     }
 }

@@ -100,7 +100,11 @@ public final class ModelData {
         existingInstances.clear();
     }
 
-    public ModelState asVanilla() {
+    /**
+     * Get the block model rotation to bake this model with
+     * @return a representation of the model's associated rotation & uvlock info as {@link ModelState}
+     */
+    public ModelState asModelState() {
         //? if > 1.21.10 {
         OctahedralGroup group = OctahedralGroup.IDENTITY;
         switch (xRot) {
@@ -163,6 +167,9 @@ public final class ModelData {
                 "modelLocation=" + modelLocation + ']';
     }
 
+    /**
+     * @return if present, the vanilla blockstate/baked model to override with, otherwise returns the purple-black missing model
+     */
     public BlockStateModel getOverrideModel() {
         //? if fabric && > 1.21.4 {
         var model = Minecraft.getInstance().getModelManager().getModel(this.modelKey);

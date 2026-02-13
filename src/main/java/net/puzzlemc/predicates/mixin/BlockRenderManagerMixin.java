@@ -16,9 +16,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
-import net.puzzlemc.predicates.MBPData;
+import net.puzzlemc.predicates.util.ConditionCheck;
 import net.puzzlemc.predicates.accessor.BlockRenderManagerAccess;
-import net.puzzlemc.predicates.common.BlockRendering;
 import net.puzzlemc.predicates.common.ContextIDs;
 import net.puzzlemc.predicates.util.ModelData;
 import org.jetbrains.annotations.Nullable;
@@ -71,7 +70,7 @@ public class BlockRenderManagerMixin implements BlockRenderManagerAccess {
     *///?}
         RenderShape blockRenderType = state.getRenderShape();
         if (blockRenderType == RenderShape.MODEL) {
-            Optional<BlockStateModel> newModel = BlockRendering.tryModelOverride(world, state, pos, ContextIDs.CHUNK_MESH);
+            Optional<BlockStateModel> newModel = ConditionCheck.meetsPredicate(world, pos, state, ContextIDs.CHUNK_MESH);
             newModel.ifPresent(predicateModel -> {
                 //? if > 1.21.4 {
                 this.modelRenderer.tesselateBlock(world, predicateModel.collectParts(RandomSource.create()), state, pos, matrices, /*? fabric {*/ vertexConsumer /*?} else {*//*bufferLookup *//*?}*/, cull, OverlayTexture.NO_OVERLAY);
@@ -101,8 +100,8 @@ public class BlockRenderManagerMixin implements BlockRenderManagerAccess {
             BlockPos pos = puzzle$contextPos == null ? BlockPos.ZERO : puzzle$contextPos;
             //?}
             puzzle$contextPos = null;
-            Optional<ModelData> id = MBPData.meetsPredicate(Minecraft.getInstance().level, pos, state, ContextIDs.ENTITY);
-            if (id.isEmpty()) return;
+            Optional<BlockStateModel> model = ConditionCheck.meetsPredicate(Minecraft.getInstance().level, pos, state, ContextIDs.ENTITY);
+            if (model.isEmpty()) return;
 
             int i = this.blockColors.getColor(state, null, null, 0);
             float f = (float) (i >> 16 & 0xFF) / 255.0F;
@@ -118,7 +117,7 @@ public class BlockRenderManagerMixin implements BlockRenderManagerAccess {
                             //?}
                             //? if < 1.21.5
                             /*state,*/
-                            id.get().getOverrideModel(),
+                            model.get(),
                             f,
                             g,
                             h,

@@ -5,18 +5,21 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.level.block.Block;
 import net.puzzlemc.core.config.PuzzleConfig;
 import net.puzzlemc.predicates.data.logic.When;
+import net.puzzlemc.predicates.util.ConditionCheck;
 import net.puzzlemc.predicates.util.ModelData;
-import net.puzzlemc.predicates.util.RegistryUtils;
 
 import java.util.*;
 
 import org.jetbrains.annotations.NotNull;
+
+import static net.puzzlemc.predicates.PuzzlePredicates.LOGGER;
 
 //? fabric {
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
@@ -24,7 +27,6 @@ import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlu
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 //? if > 1.21.4 {
-import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.fabricmc.fabric.api.client.model.loading.v1.SimpleUnbakedExtraModel;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 //?}
@@ -41,7 +43,7 @@ public class MBPModelLoadingPlugin implements PreparableModelLoadingPlugin<@NotN
     @Override
     public void initialize(HashSet<ModelData> set, ModelLoadingPlugin.@NotNull Context pluginContext) {
         set.forEach(data -> {
-            pluginContext.addModel(data.modelKey, SimpleUnbakedExtraModel.blockStateModel(data.modelLocation(), data.asVanilla())); //TODO: Implement support for rotations or blockstate definition files // SimpleUnbakedExtraModel.blockStateModel(id, BlockModelRotation.get(OctahedralGroup.BLOCK_ROT_X_90))
+            pluginContext.addModel(data.modelKey, SimpleUnbakedExtraModel.blockStateModel(data.modelLocation(), data.asModelState()));
         });
         ModelData.clearCache();
     }
@@ -93,7 +95,7 @@ public class MBPModelLoadingPlugin {
     /*@SubscribeEvent
     private static void load(ModelEvent.RegisterStandalone event) {
         MBPModelLoadingPlugin.collectModels(Minecraft.getInstance().getResourceManager()).forEach(data -> {
-            event.register(data.modelKey, /^? if < 1.21.6 {^/ StandaloneModelBaker.blockStateModel(data.asVanilla()) /^?} else {^/ /^SimpleUnbakedStandaloneModel.blockStateModel(data.modelLocation(), data.asVanilla())^//^?}^/);
+            event.register(data.modelKey, /^? if < 1.21.6 {^/ StandaloneModelBaker.blockStateModel(data.asModelState()) /^?} else {^/ /^SimpleUnbakedStandaloneModel.blockStateModel(data.modelLocation(), data.asModelState())^//^?}^/);
         });
         ModelData.clearCache();
     }
@@ -101,16 +103,16 @@ public class MBPModelLoadingPlugin {
 
     public static HashSet<ModelData> collectModels(ResourceManager manager) {
         HashSet<ModelData> wantedModels = new HashSet<>();
-        MBPData.PREDICATES.clear();
+        ConditionCheck.PREDICATES.clear();
 
         Map<Identifier, Resource> map = manager.listResources("mbp", id -> id.getPath().endsWith(".json"));
-        for (Identifier id : map.keySet()) {
 
+        for (Identifier id : map.keySet()) {
             try {
                 Identifier blockTarget = Identifier.tryParse(id.toString().substring(0,id.toString().length()-5).replace("mbp/", ""));
                 JsonObject asset = JsonParser.parseReader(map.get(id).openAsReader()).getAsJsonObject();
 
-                Optional<Block> block = RegistryUtils.getBlock(blockTarget);
+                Optional<Block> block = BuiltInRegistries.BLOCK.getOptional(blockTarget);
 
                 if (block.isPresent()) {
                     JsonArray overrides = asset.getAsJsonArray("overrides");
@@ -124,7 +126,7 @@ public class MBPModelLoadingPlugin {
                             logError(id, e);
                         }
                     }
-                    MBPData.PREDICATES.put(block.get(), Collections.unmodifiableList(whenList));
+                    ConditionCheck.PREDICATES.put(block.get(), Collections.unmodifiableList(whenList));
                 } else {
                     if (PuzzleConfig.debugMessages)
                         PuzzlePredicates.LOGGER.error("Block entry not found in file {}: {}", id, blockTarget);
@@ -134,11 +136,11 @@ public class MBPModelLoadingPlugin {
                 logError(id, e);
             }
         }
+
         return wantedModels;
     }
 
     private static void logError(Identifier id, Exception e) {
-        PuzzlePredicates.LOGGER.error("Error found in file: {}", id);
-        e.printStackTrace();
+        LOGGER.error("Error found in file: {}\n{}", id, e);
     }
 }

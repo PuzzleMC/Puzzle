@@ -7,7 +7,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.world.level.block.state.BlockState;
-import net.puzzlemc.predicates.MBPData;
+import net.puzzlemc.predicates.util.ConditionCheck;
 import net.puzzlemc.predicates.accessor.MovingBlockRenderStateContext;
 import net.puzzlemc.predicates.util.ModelData;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,9 +24,9 @@ public class MixinBlockFeatureRenderer {
      */
     @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/block/BlockRenderDispatcher;getBlockModel(Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/client/renderer/block/model/BlockStateModel;"), method = "render")
     public BlockStateModel puzzle$renderCustomMovingBlock(BlockRenderDispatcher instance, BlockState state, Operation<BlockStateModel> original, @Local MovingBlockRenderState movingBlock) {
-        Optional<ModelData> override = MBPData.meetsPredicate(movingBlock.level, movingBlock.blockPos, state, MovingBlockRenderStateContext.of(movingBlock).puzzle$getContextId());
+        Optional<BlockStateModel> override = ConditionCheck.meetsPredicate(movingBlock.level, movingBlock.blockPos, state, MovingBlockRenderStateContext.of(movingBlock).puzzle$getContextId());
 
-        return override.map(resourceLocation -> override.get().getOverrideModel()).orElse(original.call(instance, state));
+        return override.orElse(original.call(instance, state));
     }
 }
 //?} else {
