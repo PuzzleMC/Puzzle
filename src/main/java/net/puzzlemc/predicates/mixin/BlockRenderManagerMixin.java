@@ -71,7 +71,7 @@ public class BlockRenderManagerMixin implements BlockRenderManagerAccess {
     *///?}
         RenderShape blockRenderType = state.getRenderShape();
         if (blockRenderType == RenderShape.MODEL) {
-            Optional<BlockStateModel> newModel = BlockRendering.tryModelOverride(world, state, pos, ContextIDs.MISC);
+            Optional<BlockStateModel> newModel = BlockRendering.tryModelOverride(world, state, pos, ContextIDs.CHUNK_MESH);
             newModel.ifPresent(predicateModel -> {
                 //? if > 1.21.4 {
                 this.modelRenderer.tesselateBlock(world, predicateModel.collectParts(RandomSource.create()), state, pos, matrices, /*? fabric {*/ vertexConsumer /*?} else {*//*bufferLookup *//*?}*/, cull, OverlayTexture.NO_OVERLAY);
