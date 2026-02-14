@@ -23,6 +23,7 @@ import net.minecraft.core.BlockPos;
 
 //? if >= 1.21.10 {
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.util.ARGB;
 
 import java.util.Optional;
 //?} else {
@@ -52,10 +53,8 @@ public class BlockDisplayEntityRendererMixin {
         Optional<BlockStateModel> model = ConditionCheck.meetsPredicate(Minecraft.getInstance().level, BlockPos.containing(rs.x, rs.y, rs.z), rs.blockRenderState.blockState(), ContextIDs.ENTITY);
         if (model.isPresent()) {
             BlockState state = rs.blockRenderState.blockState();
-            float r = 1.f; //TODO: Get correct biome colors for this block
-            float g = 1.f;
-            float b = 1.f;
-            submitNodeCollector.submitBlockModel(poseStack, ItemBlockRenderTypes.getRenderType(state), model.get(), r, g, b, light, OverlayTexture.NO_OVERLAY, rs.outlineColor);
+            int color = Minecraft.getInstance().getBlockColors().getColor(state, Minecraft.getInstance().level, BlockPos.containing(rs.x, rs.y, rs.z), 0);
+            submitNodeCollector.submitBlockModel(poseStack, ItemBlockRenderTypes.getRenderType(state), model.get(), ARGB.redFloat(color), ARGB.greenFloat(color), ARGB.blueFloat(color), light, OverlayTexture.NO_OVERLAY, rs.outlineColor);
             ci.cancel();
         }
     }

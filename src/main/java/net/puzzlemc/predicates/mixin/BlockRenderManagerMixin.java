@@ -103,10 +103,10 @@ public class BlockRenderManagerMixin implements BlockRenderManagerAccess {
             Optional<BlockStateModel> model = ConditionCheck.meetsPredicate(Minecraft.getInstance().level, pos, state, ContextIDs.ENTITY);
             if (model.isEmpty()) return;
 
-            int i = this.blockColors.getColor(state, null, null, 0);
-            float f = (float) (i >> 16 & 0xFF) / 255.0F;
+            int i = this.blockColors.getColor(state, Minecraft.getInstance().level, pos, 0);
+            float r = (float) (i >> 16 & 0xFF) / 255.0F;
             float g = (float) (i >> 8 & 0xFF) / 255.0F;
-            float h = (float) (i & 0xFF) / 255.0F;
+            float b = (float) (i & 0xFF) / 255.0F;
             /*? if < 1.21.5 {*/ /*this.modelRenderer *//*?} else {*/ ModelBlockRenderer /*?}*/
                     .renderModel(
                             matrices.last(),
@@ -118,9 +118,9 @@ public class BlockRenderManagerMixin implements BlockRenderManagerAccess {
                             //? if < 1.21.5
                             /*state,*/
                             model.get(),
-                            f,
+                            r,
                             g,
-                            h,
+                            b,
                             light,
                             overlay
                             //? if neoforge && < 1.21.5 {
