@@ -27,7 +27,11 @@ import net.minecraft.util.ARGB;
 
 import java.util.Optional;
 //?} else {
+//import org.spongepowered.asm.mixin.Final;
 //import org.spongepowered.asm.mixin.Shadow;
+//import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+//import net.puzzlemc.predicates.accessor.BlockRenderManagerAccess;
+//import net.minecraft.client.renderer.MultiBufferSource;
 //?}
 
 @Mixin(DisplayRenderer.BlockDisplayRenderer.class)
