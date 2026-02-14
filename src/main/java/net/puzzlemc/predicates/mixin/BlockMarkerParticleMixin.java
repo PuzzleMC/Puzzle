@@ -30,7 +30,7 @@ public abstract class BlockMarkerParticleMixin extends /*? if < 1.21.10 {*/  /*T
     *///?}
 
     @Inject(at = @At(value = "TAIL"), method = "<init>")
-    public void init(ClientLevel world, double x, double y, double z, BlockState state, CallbackInfo ci) {
+    public void puzzle$init(ClientLevel world, double x, double y, double z, BlockState state, CallbackInfo ci) {
         Optional<BlockStateModel> override = ConditionCheck.meetsPredicate(world, new BlockPos((int)x, (int)y, (int)z), state, ContextIDs.MARKER_PARTICLE);
 
         override.ifPresent(modelData -> this.setSprite(modelData./*? if < 1.21.5 {*/ /*getParticleIcon() *//*?} else {*/ particleIcon() /*?}*/));

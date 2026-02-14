@@ -57,16 +57,16 @@ public class BlockRenderManagerMixin implements BlockRenderManagerAccess {
 
     //? if fabric && < 1.21.5 {
     /*@Inject(at = @At("HEAD"), method = "renderBatched", cancellable = true)
-    public void renderBlock(BlockState state, BlockPos pos, BlockAndTintGetter world, PoseStack matrices, VertexConsumer vertexConsumer, boolean cull, RandomSource random, CallbackInfo ci) {
+    public void puzzle$renderBlock(BlockState state, BlockPos pos, BlockAndTintGetter world, PoseStack matrices, VertexConsumer vertexConsumer, boolean cull, RandomSource random, CallbackInfo ci) {
     *///?} else if fabric && >= 1.21.5 {
     @Inject(at = @At("HEAD"), method = "renderBatched", cancellable = true)
-    public void renderBlock(BlockState state, BlockPos pos, BlockAndTintGetter world, PoseStack matrices, VertexConsumer vertexConsumer, boolean cull, List<BlockModelPart> list, CallbackInfo ci) {
+    public void puzzle$renderBlock(BlockState state, BlockPos pos, BlockAndTintGetter world, PoseStack matrices, VertexConsumer vertexConsumer, boolean cull, List<BlockModelPart> list, CallbackInfo ci) {
     //?} else if neoforge && < 1.21.5 {
     /*@Inject(at = @At("HEAD"), method = "renderBatched(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/BlockAndTintGetter;Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;ZLnet/minecraft/util/RandomSource;Lnet/neoforged/neoforge/client/model/data/ModelData;Lnet/minecraft/client/renderer/RenderType;)V", cancellable = true)
-    public void renderBlock(BlockState state, BlockPos pos, BlockAndTintGetter world, PoseStack matrices, VertexConsumer vertexConsumer, boolean cull, RandomSource random, net.neoforged.neoforge.client.model.data.ModelData modelData, RenderType renderType, CallbackInfo ci) {
+    public void puzzle$renderBlock(BlockState state, BlockPos pos, BlockAndTintGetter world, PoseStack matrices, VertexConsumer vertexConsumer, boolean cull, RandomSource random, net.neoforged.neoforge.client.model.data.ModelData modelData, RenderType renderType, CallbackInfo ci) {
     *///?} else if neoforge && >= 1.21.5 {
     /*@Inject(at = @At("HEAD"), method = "renderBatched(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/BlockAndTintGetter;Lcom/mojang/blaze3d/vertex/PoseStack;Ljava/util/function/Function;ZLjava/util/List;)V", cancellable = true)
-    public void renderBlock(BlockState state, BlockPos pos, BlockAndTintGetter world, PoseStack matrices, Function</^? if < 1.21.8 {^/ RenderType /^?} else {^/ /^ChunkSectionLayer ^//^?}^/, VertexConsumer> bufferLookup, boolean cull, List<BlockModelPart> list, CallbackInfo ci) {
+    public void puzzle$renderBlock(BlockState state, BlockPos pos, BlockAndTintGetter world, PoseStack matrices, Function</^? if < 1.21.8 {^/ RenderType /^?} else {^/ /^ChunkSectionLayer ^//^?}^/, VertexConsumer> bufferLookup, boolean cull, List<BlockModelPart> list, CallbackInfo ci) {
     *///?}
         RenderShape blockRenderType = state.getRenderShape();
         if (blockRenderType == RenderShape.MODEL) {
@@ -87,13 +87,13 @@ public class BlockRenderManagerMixin implements BlockRenderManagerAccess {
 
     //? if fabric {
     @Inject(at = @At("HEAD"), method = "renderSingleBlock", cancellable = true)
-    public void renderBlockAsEntity(BlockState state, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay, CallbackInfo ci) {
+    public void puzzle$renderBlockAsEntity(BlockState state, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay, CallbackInfo ci) {
     //?} else if < 1.21.5 {
     /*@Inject(at = @At("HEAD"), method = "renderSingleBlock(Lnet/minecraft/world/level/block/state/BlockState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/neoforged/neoforge/client/model/data/ModelData;Lnet/minecraft/client/renderer/RenderType;)V", cancellable = true)
-    public void renderBlockAsEntity(BlockState state, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay, net.neoforged.neoforge.client.model.data.ModelData modelData, RenderType renderType, CallbackInfo ci) {
+    public void puzzle$renderBlockAsEntity(BlockState state, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay, net.neoforged.neoforge.client.model.data.ModelData modelData, RenderType renderType, CallbackInfo ci) {
     *///?} else {
     /*@Inject(at = @At("HEAD"), method = "renderSingleBlock(Lnet/minecraft/world/level/block/state/BlockState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/core/BlockPos;)V", cancellable = true)
-    public void renderBlockAsEntity(BlockState state, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay, BlockAndTintGetter level, BlockPos pos, CallbackInfo ci) {
+    public void puzzle$renderBlockAsEntity(BlockState state, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay, BlockAndTintGetter level, BlockPos pos, CallbackInfo ci) {
     *///?}
         if (state.getRenderShape() == RenderShape.MODEL) {
             //? if !(neoforge && >= 1.21.5) {
@@ -134,7 +134,7 @@ public class BlockRenderManagerMixin implements BlockRenderManagerAccess {
     }
 
     @Override
-    public void moreBlockPredicates$setContextPos(BlockPos pos) {
+    public void puzzle$setContextPos(BlockPos pos) {
         puzzle$contextPos = pos;
     }
 }

@@ -53,14 +53,14 @@ public class PistonBlockEntityRendererMixin {
             "Lnet/minecraft/client/renderer/block/BlockRenderDispatcher;getBlockModel(Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/client/renderer/block/model/BlockStateModel;"
             /^?}^/
     ), method = "renderBlock")
-    public BlockStateModel render(BlockRenderDispatcher instance, BlockState state, Operation<BlockStateModel> original, @Local(argsOnly = true) BlockPos blockPos, @Local(argsOnly = true) Level level) {
+    public BlockStateModel puzzle$render(BlockRenderDispatcher instance, BlockState state, Operation<BlockStateModel> original, @Local(argsOnly = true) BlockPos blockPos, @Local(argsOnly = true) Level level) {
         Optional<BlockStateModel> override = ConditionCheck.meetsPredicate(level, blockPos, state, ContextIDs.PISTON_PUSHING);
 
         return override.orElse(original.call(instance, state));
     }
     *///?} else {
     @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/SubmitNodeCollector;submitMovingBlock(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/block/MovingBlockRenderState;)V"), method = "submit(Lnet/minecraft/client/renderer/blockentity/state/PistonHeadRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/client/renderer/state/CameraRenderState;)V")
-    private void captureContext(SubmitNodeCollector instance, PoseStack poseStack, MovingBlockRenderState renderState, Operation<Void> original) {
+    private void puzzle$captureContext(SubmitNodeCollector instance, PoseStack poseStack, MovingBlockRenderState renderState, Operation<Void> original) {
         MovingBlockRenderStateContext.of(renderState).puzzle$setContextId(ContextIDs.PISTON_PUSHING);
         original.call(instance, poseStack, renderState);
     }

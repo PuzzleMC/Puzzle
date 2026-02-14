@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import net.fabricmc.fabric.impl.client.indigo.renderer.render.AbstractTerrainRenderContext;
 import net.fabricmc.fabric.impl.client.indigo.renderer.render.BlockRenderInfo;
 
+@SuppressWarnings({"UnstableApiUsage"})
 @Mixin(AbstractTerrainRenderContext.class)
 public interface AbstractTerrainRenderContextAccessor {
     @Accessor
@@ -17,6 +18,7 @@ public interface AbstractTerrainRenderContextAccessor {
 /*import net.fabricmc.fabric.impl.client.indigo.renderer.render.ChunkRenderInfo;
 import net.minecraft.world.level.BlockAndTintGetter;
 
+@SuppressWarnings({"UnstableApiUsage"})
 @Mixin(ChunkRenderInfo.class)
 public interface AbstractTerrainRenderContextAccessor {
     @Accessor

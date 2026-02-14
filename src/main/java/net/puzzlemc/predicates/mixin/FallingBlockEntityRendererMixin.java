@@ -41,7 +41,7 @@ public class FallingBlockEntityRendererMixin {
             "render(Lnet/minecraft/client/renderer/entity/state/FallingBlockRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V"
             /^?}^/
     )
-    public BlockStateModel render(BlockRenderDispatcher instance, BlockState state, Operation<BlockStateModel> original, /^? if < 1.21.4 {^/ /^@Local(argsOnly = true) FallingBlockEntity fallingBlock ^//^?} else {^/ @Local(argsOnly = true) FallingBlockRenderState fallingBlock  /^?}^/) {
+    public BlockStateModel puzzle$render(BlockRenderDispatcher instance, BlockState state, Operation<BlockStateModel> original, /^? if < 1.21.4 {^/ /^@Local(argsOnly = true) FallingBlockEntity fallingBlock ^//^?} else {^/ @Local(argsOnly = true) FallingBlockRenderState fallingBlock  /^?}^/) {
         Optional<BlockStateModel> override = ConditionCheck.meetsPredicate(
                 //? if < 1.21.4 {
                 /^fallingBlock.level(), fallingBlock.blockPosition()
@@ -56,7 +56,7 @@ public class FallingBlockEntityRendererMixin {
     @WrapOperation(at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/renderer/SubmitNodeCollector;submitMovingBlock(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/block/MovingBlockRenderState;)V"),
             method = "submit(Lnet/minecraft/client/renderer/entity/state/FallingBlockRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/client/renderer/state/CameraRenderState;)V")
-    private void captureContext(SubmitNodeCollector instance, PoseStack poseStack, MovingBlockRenderState renderState, Operation<Void> original) {
+    private void puzzle$captureContext(SubmitNodeCollector instance, PoseStack poseStack, MovingBlockRenderState renderState, Operation<Void> original) {
         MovingBlockRenderStateContext.of(renderState).puzzle$setContextId(ContextIDs.FALLING_BLOCK);
         original.call(instance, poseStack, renderState);
     }

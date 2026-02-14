@@ -41,13 +41,13 @@ public class BlockDisplayEntityRendererMixin {
 
     //? if < 1.21.4 {
     /*@Inject(method = "renderInner(Lnet/minecraft/world/entity/Display$BlockDisplay;Lnet/minecraft/world/entity/Display$BlockDisplay$BlockRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IF)V", at = @At("HEAD"))
-    public void getContext(Display.BlockDisplay blockDisplay, Display.BlockDisplay.BlockRenderState blockRenderState, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, float f, CallbackInfo ci) {
-        BlockRenderManagerAccess.of(blockRenderer).moreBlockPredicates$setContextPos(blockDisplay.getOnPos());
+    public void puzzle$getContext(Display.BlockDisplay blockDisplay, Display.BlockDisplay.BlockRenderState blockRenderState, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, float f, CallbackInfo ci) {
+        BlockRenderManagerAccess.of(blockRenderer).puzzle$setContextPos(blockDisplay.getOnPos());
     }
     *///?} else if < 1.21.10 {
     /*@Inject(method = "renderInner(Lnet/minecraft/client/renderer/entity/state/BlockDisplayEntityRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IF)V", at = @At("HEAD"))
-    public void getContext(BlockDisplayEntityRenderState rs, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, float f, CallbackInfo ci) {
-        BlockRenderManagerAccess.of(blockRenderer).moreBlockPredicates$setContextPos(BlockPos.containing(rs.x, rs.y, rs.z));
+    public void puzzle$getContext(BlockDisplayEntityRenderState rs, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, float f, CallbackInfo ci) {
+        BlockRenderManagerAccess.of(blockRenderer).puzzle$setContextPos(BlockPos.containing(rs.x, rs.y, rs.z));
     }
     *///?} else {
     @Inject(method = "submitInner(Lnet/minecraft/client/renderer/entity/state/BlockDisplayEntityRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;IF)V", at = @At("HEAD"), cancellable = true)

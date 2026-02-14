@@ -28,6 +28,7 @@ public abstract class ConditionCheck {
         if (PREDICATES.containsKey(state.getBlock())) {
             for (When when : PREDICATES.get(state.getBlock())) {
                 if (when.meetsCondition(world, pos, state, renderContext)) {
+                    @SuppressWarnings("deprecation")
                     long seed = Mth.getSeed(pos);
 
                     return Optional.of(when.getModel(seed).getOverrideModel());

@@ -22,6 +22,7 @@ import java.util.Optional;
 /**
  * Ensures our (moving) block model overrides will also be visible with Fabric's indigo renderer
  */
+@SuppressWarnings({"UnstableApiUsage"})
 @Mixin(IndigoRenderer.class)
 public class MixinIndigoRenderer {
     @WrapMethod(method = "render(Lnet/minecraft/client/renderer/block/ModelBlockRenderer;Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/client/renderer/block/model/BlockStateModel;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/fabricmc/fabric/api/renderer/v1/render/BlockVertexConsumerProvider;ZJI)V")

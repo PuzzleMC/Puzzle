@@ -10,8 +10,10 @@ public class PuzzlePredicates {
     public static final Logger LOGGER = LoggerFactory.getLogger("mbp");
 
     public static void init() {
-        //? fabric
+        //? fabric {
+        //noinspection UnstableApiUsage
         ModelLoadingPluginManager.registerPlugin(new MBPModelLoadingPlugin.ModelIdLoader(), new MBPModelLoadingPlugin());
+        //?}
     }
 
 }

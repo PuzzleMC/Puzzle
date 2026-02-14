@@ -25,6 +25,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 /**
  * Ensures our block model overrides will also be visible with Fabric's indigo renderer
  */
+@SuppressWarnings({"UnstableApiUsage"})
 @Mixin(TerrainRenderContext.class)
 public class MixinTerrainRenderContext {
     //? if > 1.21.4 {
