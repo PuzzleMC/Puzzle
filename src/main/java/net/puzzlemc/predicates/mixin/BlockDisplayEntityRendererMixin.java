@@ -1,13 +1,16 @@
 package net.puzzlemc.predicates.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.entity.DisplayRenderer;
-import net.puzzlemc.predicates.accessor.BlockRenderManagerAccess;
-import org.spongepowered.asm.mixin.Final;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.world.level.block.state.BlockState;
+import net.puzzlemc.predicates.common.ContextIDs;
+import net.puzzlemc.predicates.util.ConditionCheck;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -20,6 +23,10 @@ import net.minecraft.core.BlockPos;
 
 //? if >= 1.21.10 {
 import net.minecraft.client.renderer.SubmitNodeCollector;
+
+import java.util.Optional;
+//?} else {
+//import org.spongepowered.asm.mixin.Shadow;
 //?}
 
 @Mixin(DisplayRenderer.BlockDisplayRenderer.class)
@@ -38,9 +45,19 @@ public class BlockDisplayEntityRendererMixin {
         BlockRenderManagerAccess.of(blockRenderer).moreBlockPredicates$setContextPos(BlockPos.containing(rs.x, rs.y, rs.z));
     }
     *///?} else {
-    @Inject(method = "submitInner(Lnet/minecraft/client/renderer/entity/state/BlockDisplayEntityRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;IF)V", at = @At("HEAD"))
-    public void getContext(BlockDisplayEntityRenderState rs, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int i, float f, CallbackInfo ci) {
-        // TODO drawing of block displays is now handled asynchronously, making it a terrible idea to cache the position here
+    @Inject(method = "submitInner(Lnet/minecraft/client/renderer/entity/state/BlockDisplayEntityRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;IF)V", at = @At("HEAD"), cancellable = true)
+    public void puzzle$checkOverride(BlockDisplayEntityRenderState rs, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int light, float f, CallbackInfo ci) {
+        if (rs.blockRenderState == null) return;
+
+        Optional<BlockStateModel> model = ConditionCheck.meetsPredicate(Minecraft.getInstance().level, BlockPos.containing(rs.x, rs.y, rs.z), rs.blockRenderState.blockState(), ContextIDs.ENTITY);
+        if (model.isPresent()) {
+            BlockState state = rs.blockRenderState.blockState();
+            float r = 1.f; //TODO: Get correct biome colors for this block
+            float g = 1.f;
+            float b = 1.f;
+            submitNodeCollector.submitBlockModel(poseStack, ItemBlockRenderTypes.getRenderType(state), model.get(), r, g, b, light, OverlayTexture.NO_OVERLAY, rs.outlineColor);
+            ci.cancel();
+        }
     }
     //?}
 }
