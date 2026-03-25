@@ -1,3 +1,8 @@
+## Puzzle v2.3.1
+- Port to MC 26.1
+- Remove unified GUI, as it's obsolete now that Sodium provides a way to register custom mod options
+  - This will be also come to older versions, along with many exciting new resourcepack capabilities. Stay tuned!
+
 # Puzzle v2.3.0
 - Backported Minecraft 1.21.11's new multi-axis-rotation system for models to MC 1.20.1 - 1.21.10
 

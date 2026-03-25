@@ -22,9 +22,10 @@ public class PuzzleClient implements ClientModInitializer {
     public void onInitializeClient() {
         PuzzleCore.initModules();
 
-        //ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener
-        //? if >= 1.21.9 {
-        ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloader(Identifier.fromNamespaceAndPath(MOD_ID, "splash_screen"), PuzzleSplashScreen.ReloadListener.INSTANCE);
+        //? if >= 26.1 {
+        ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloadListener(Identifier.fromNamespaceAndPath(MOD_ID, "splash_screen"), PuzzleSplashScreen.ReloadListener.INSTANCE);
+        //?} else if >= 1.21.9 {
+        //ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloader(Identifier.fromNamespaceAndPath(MOD_ID, "splash_screen"), PuzzleSplashScreen.ReloadListener.INSTANCE);
         //?} else {
         /*ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
             @Override
@@ -44,11 +45,8 @@ public class PuzzleClient implements ClientModInitializer {
 //? neoforge {
 /*import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
-import net.puzzlemc.gui.screen.PuzzleOptionsScreen;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 //? if >= 1.21.5 {
 import net.neoforged.neoforge.client.event.AddClientReloadListenersEvent;
 //?} else {
@@ -59,7 +57,6 @@ import net.neoforged.neoforge.client.event.AddClientReloadListenersEvent;
 public class PuzzleClient {
     public PuzzleClient() {
         PuzzleCore.initModules();
-        ModList.get().getModContainerById(MOD_ID).orElseThrow().registerExtensionPoint(IConfigScreenFactory.class, (client, parent) -> new PuzzleOptionsScreen(parent));
     }
 
     @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT /^? if <= 1.21.5 {^/ /^, bus = EventBusSubscriber.Bus.MOD ^//^?}^/)

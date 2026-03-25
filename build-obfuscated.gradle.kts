@@ -1,8 +1,6 @@
 plugins {
-    id("dev.architectury.loom")
-    id("architectury-plugin")
+    id("dev.architectury.loom") version "1.13-SNAPSHOT"
     id("me.modmuss50.mod-publish-plugin")
-    id("com.github.johnrengelman.shadow")
     `maven-publish`
 }
 
@@ -24,18 +22,6 @@ repositories {
 
     // MidnightLib
     maven("https://maven.midnightdust.eu/releases/")
-
-    // Jigsaw modules
-    maven("https://api.modrinth.com/maven")
-    maven("https://maven.terraformersmc.com/releases")
-    maven("https://aperlambda.github.io/maven")
-    mavenCentral()
-    maven("https://maven.gegy.dev")
-
-    maven("https://www.cursemaven.com")
-    maven("https://jitpack.io")
-    maven("https://maven.shedaniel.me/")
-    maven("https://maven.quiltmc.org/repository/release/")
 }
 
 val mappingsAttribute = Attribute.of("net.minecraft.mappings", String::class.java)
@@ -45,31 +31,6 @@ dependencies {
         attribute(mappingsAttribute)
     }
     minecraft("com.mojang:minecraft:$minecraft")
-
-    // Jigsaw modules (GUI compat mods)
-    modCompileOnlyApi ("maven.modrinth:cull-leaves:${mod.jigsaw("cull_leaves_version")}")
-    modCompileOnlyApi ("maven.modrinth:iris:${mod.jigsaw("iris_version")}")
-    modCompileOnly ("maven.modrinth:cit-resewn:${mod.jigsaw("cit_resewn_version")}")
-    modCompileOnlyApi ("maven.modrinth:continuity:${mod.jigsaw("continuity_version")}")
-    modCompileOnlyApi ("maven.modrinth:animatica:${mod.jigsaw("animatica_version")}")
-    modCompileOnlyApi ("maven.modrinth:colormatic:${mod.jigsaw("colormatic_version")}")
-    modCompileOnlyApi ("maven.modrinth:borderless-mining:${mod.jigsaw("borderless_mining_version")}")
-    modCompileOnlyApi ("maven.modrinth:dynamic-fps:${mod.jigsaw("dynamic_fps_version")}")
-    modCompileOnlyApi ("com.moandjiezana.toml:toml4j:${mod.jigsaw("toml4j_version")}")
-    modCompileOnlyApi ("maven.modrinth:entitytexturefeatures:${mod.jigsaw("etf_version")}")
-    modCompileOnlyApi ("maven.modrinth:entity-model-features:${mod.jigsaw("emf_version")}")
-    modCompileOnlyApi ("maven.modrinth:completeconfig:${mod.jigsaw("complete_config_version")}")
-    //modImplementation ("maven.modrinth:exordium:${project.exordium_version}")
-
-    modCompileOnlyApi ("maven.modrinth:lambdabettergrass:${mod.jigsaw("lbg_version")}")
-    modCompileOnlyApi ("dev.lambdaurora:spruceui:${mod.jigsaw("spruceui_version")}")
-
-    // Required for Lambda's mods (DO NOT DEPEND ON OTHERWISE)
-    modCompileOnly ("dev.yumi.mc.core:yumi-mc-foundation:1.0.0-alpha.15+1.21.1")
-    modCompileOnlyApi ("org.aperlambda:lambdajcommon:1.8.1") {
-        exclude(group = "com.google.code.gson")
-        exclude(group = "com.google.guava")
-    }
 
     // MidnightLib
     val midnightlib = if (mod.dep("midnightlib_version").contains("+")) "eu.midnightdust:midnightlib:${mod.dep("midnightlib_version")}"
@@ -86,23 +47,9 @@ dependencies {
 
         // Fabric API is required to load modded resources
         modImplementation("net.fabricmc.fabric-api:fabric-api:${mod.dep("fabric_version")}")
-
-        modCompileOnly ("dev.lambdaurora.lambdynamiclights:lambdynamiclights-api:${mod.jigsaw("ldl_version")}")
-        modCompileOnly ("dev.lambdaurora.lambdynamiclights:lambdynamiclights-runtime:${mod.jigsaw("ldl_version")}")
     }
     if (loader == "neoforge") {
         "neoForge"("net.neoforged:neoforge:${mod.dep("neoforge_loader")}")
-
-        modCompileOnly ("dev.lambdaurora.lambdynamiclights:lambdynamiclights-api:${mod.jigsaw("ldl_version")}") {
-            attributes {
-                attribute(mappingsAttribute, "mojmap")
-            }
-        }
-        modCompileOnly ("dev.lambdaurora.lambdynamiclights:lambdynamiclights-runtime:${mod.jigsaw("ldl_version")}") {
-            attributes {
-                attribute(mappingsAttribute, "mojmap")
-            }
-        }
     }
     mappings (loom.officialMojangMappings())
 }
@@ -110,11 +57,6 @@ dependencies {
 loom {
     accessWidenerPath = rootProject.file("src/main/resources/puzzle-models.accesswidener")
 
-    decompilers {
-        get("vineflower").apply { // Adds names to lambdas - useful for mixins
-            options.put("mark-corresponding-synthetics", "1")
-        }
-    }
     if (loader == "forge") {
         forge.mixinConfigs("puzzle.mixins.json")
     }
@@ -198,21 +140,11 @@ java {
     sourceCompatibility = java
 }
 
-val shadowBundle: Configuration by configurations.creating {
-    isCanBeConsumed = false
-    isCanBeResolved = true
-}
-
-tasks.shadowJar {
-    configurations = listOf(shadowBundle)
-    archiveClassifier = "dev-shadow"
-}
-
 tasks.remapJar {
     injectAccessWidener = true
-    input = tasks.shadowJar.get().archiveFile
+    input = tasks.jar.get().archiveFile
     archiveClassifier = null
-    dependsOn(tasks.shadowJar)
+    dependsOn(tasks.jar)
 }
 
 tasks.jar {
@@ -271,34 +203,5 @@ tasks.build {
 stonecutter {
     constants {
         arrayOf("fabric", "neoforge").forEach { it -> put(it, loader == it) }
-    }
-
-    replacements.string {
-        direction = eval(current.version, ">=1.21.8")
-        replace("context.renderComponentTooltip(", "context.setComponentTooltipForNextFrame(")
-    }
-    replacements.string {
-        direction = eval(current.version, ">=1.21.4")
-        replace("getTextureImage", "loadContents")
-    }
-    replacements.string {
-        direction = eval(current.version, ">=1.21.4")
-        replace("TextureImage", "TextureContents")
-    }
-    replacements.string {
-        direction = eval(current.version, ">=1.21.4")
-        replace("SimpleTexture", "ReloadableTexture")
-    }
-    replacements.string {
-        direction = eval(current.version, ">=1.21.11")
-        replace("ResourceLocation", "Identifier")
-    }
-    replacements.string {
-        direction = eval(current.version, ">=1.21")
-        replace("new ResourceLocation", "ResourceLocation.fromNamespaceAndPath")
-    }
-    replacements.string {
-        direction = eval(current.version, ">=1.21.11")
-        replace("net.minecraft.Util", "net.minecraft.util.Util")
     }
 }

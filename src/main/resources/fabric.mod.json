@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Puzzle",
-  "description": "Unites optifine replacement mods in a clean & vanilla-style gui",
+  "description": "Unlocks advanced capabilities for resourcepack authors, such as customizing the splashscreen and allowing for bigger block models.",
   "authors": [
     "PuzzleMC",
     "Motschen"
@@ -23,20 +23,16 @@
   "entrypoints": {
     "client": [
       "net.puzzlemc.core.PuzzleClient"
-    ],
-    "modmenu": [
-      "net.puzzlemc.core.PuzzleModMenu"
     ]
   },
 
   "mixins": [
-    "puzzle-gui.mixins.json",
     "puzzle-models.mixins.json",
     "puzzle-splashscreen.mixins.json"
   ],
 
   "depends": {
-    "fabric": "*",
+    "fabric-api": "*",
     "minecraft": "${minecraft}"
   },
   "breaks": {

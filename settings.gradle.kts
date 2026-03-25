@@ -11,19 +11,24 @@ pluginManagement {
 }
 
 plugins {
-    id("dev.kikugie.stonecutter") version "0.7"
+    id("dev.kikugie.stonecutter") version "0.9"
 }
 
 stonecutter {
-    centralScript = "build.gradle.kts"
     kotlinController = true
     shared {
         fun mc(loader: String, vararg versions: String) {
-            for (version in versions) vers("$version-$loader", version)
+            for (version in versions) {
+                val buildscript = when {
+                    sc.eval(version, ">= 26.1-pre-1") && loader == "fabric" -> "build-unobfuscated-fabric.gradle.kts"
+                    sc.eval(version, ">= 26.1-pre-1") && loader == "neoforge" -> "build-unobfuscated-neoforge.gradle.kts"
+                    else -> "build-obfuscated.gradle.kts"
+                }
+                version("$version-$loader", version).buildscript(buildscript)
+            }
         }
-        mc("fabric","1.20.1", "1.21.1", "1.21.4", "1.21.5", "1.21.8", "1.21.10", "1.21.11")
-        //WARNING: neoforge uses mods.toml instead of neoforge.mods.toml for versions 1.20.4 (?) and earlier
-        mc("neoforge", "1.21.1", "1.21.4", "1.21.5", "1.21.8", "1.21.10", "1.21.11")
+        mc("fabric","1.20.1", "1.21.1", "1.21.4", "1.21.5", "1.21.8", "1.21.10", "1.21.11", "26.1")
+        mc("neoforge", "1.21.1", "1.21.4", "1.21.5", "1.21.8", "1.21.10", "1.21.11", "26.1")
     }
     create(rootProject)
 }
