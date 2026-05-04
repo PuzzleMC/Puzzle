@@ -1,0 +1,16 @@
+{
+  "modmenu.summaryTranslation.puzzle": "Ресурс җыелмалар өчен мөмкинлекләрне киңәйтә.",
+  "modmenu.descriptionTranslation.puzzle": "Ресурс җыелмалары авторлары өчен шундый киңәйтелгән мөмкинлекләрне ача: йөкләү экранын көйләнү һәм зуррак модельләрне рөхсәт итү.",
+  "puzzle.action.open_config_screen": "Көйләүләр экранын ачу",
+	"puzzle.option.resourcepack_splash_screen": "Көйләнгән йөкләү экранын куллану",
+	"puzzle.option.resourcepack_splash_screen.tooltip": "OptiFine форматын кулланып,\nресурс җыелмалары ярдәмендә\nMinecraft'ның йөкләү экраны күренешен\nүзгәртергә рөхсәт итә",
+	"puzzle.option.unlimited_model_rotations": "Чиксез модель борылышлары",
+	"puzzle.option.unlimited_model_rotations.tooltip": "Тулы 360° борылышны көйләнелгән блок/предмет модельләрендә ача.",
+	"puzzle.option.bigger_custom_models": "Зуррак көйләнелгән модельләр",
+	"puzzle.option.bigger_custom_models.tooltip": "Көйләнелгән блок/предмет модельләре\nчик зурлыкларын 3×3×3 күләмнән\n5×5×5 күләмгә кадәр зурайта",
+	"puzzle.midnightconfig.title": "Puzzle көйләүләре",
+	"puzzle.midnightconfig.category.gui": "GUI",
+	"puzzle.midnightconfig.category.features": "Функцияләр",
+	"puzzle.midnightconfig.category.internal": "Эчке",
+	"puzzle.midnightconfig.tooltip": "Белүче кулланучылар өчен генә көйләүләр"
+}
