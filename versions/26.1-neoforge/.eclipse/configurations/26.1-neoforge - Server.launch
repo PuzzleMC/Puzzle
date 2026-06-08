@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+    <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="26.1-neoforge"></stringAttribute>
+    <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="net.neoforged.devlaunch.Main"></stringAttribute>
+    <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value=" @/home/martin/Dokumente/GitHub/Puzzle/versions/26.1-neoforge/build/moddev/serverRunProgramArgs.txt"></stringAttribute>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value=" @/home/martin/Dokumente/GitHub/Puzzle/versions/26.1-neoforge/build/moddev/serverRunVmArgs.txt -Dfml.modFolders="></stringAttribute>
+    <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="/home/martin/Dokumente/GitHub/Puzzle/run"></stringAttribute>
+    <booleanAttribute key="org.eclipse.jdt.launching.STOP_IN_MAIN" value="false"></booleanAttribute>
+    <booleanAttribute key="org.eclipse.jdt.launching.ATTR_ATTR_USE_ARGFILE" value="false"></booleanAttribute>
+</launchConfiguration>

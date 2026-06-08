@@ -10,11 +10,9 @@ displayName = "Puzzle"
 logoFile = "puzzle.png"
 authors = "PuzzleMC, Motschen"
 description = '''
-Unites optifine replacement mods in a clean & vanilla-style gui
+Unlocks advanced capabilities for resourcepack authors, such as customizing the splashscreen and allowing for bigger block models.
 '''
 
-[[mixins]]
-config = "puzzle-gui.mixins.json"
 [[mixins]]
 config = "puzzle-models.mixins.json"
 [[mixins]]

@@ -30,11 +30,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 //? if >= 1.21.5 {
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.pipeline.BlendFunction;
-import com.mojang.blaze3d.platform.DepthTestFunction;
 import com.mojang.blaze3d.platform.DestFactor;
 import com.mojang.blaze3d.platform.SourceFactor;
 import net.minecraft.client.renderer.texture.TextureContents;
 import net.puzzlemc.splashscreen.mixin.RenderPipelinesAccessor;
+//?}
+//? if >= 26.1 {
+import com.mojang.blaze3d.pipeline.ColorTargetState;
+//?} else {
+//import com.mojang.blaze3d.platform.DepthTestFunction;
 //?}
 
 //? if = 1.21.4 || = 1.21.5 {
@@ -105,10 +109,15 @@ public class PuzzleSplashScreen {
 
             var CUSTOM_LOGO_PIPELINE_BUILDER = RenderPipeline.builder(RenderPipelinesAccessor.getGUI_TEXTURED_SNIPPET())
                 .withLocation("pipeline/mojang_logo_puzzle")
+            //? if >= 26.1 {
+                .withDepthStencilState(Optional.empty());
+            CUSTOM_LOGO_PIPELINE_BUILDER = blendFunction != null ? CUSTOM_LOGO_PIPELINE_BUILDER.withColorTargetState(new ColorTargetState(blendFunction)) : CUSTOM_LOGO_PIPELINE_BUILDER;
+            //?} else {
+            /*
                 .withDepthTestFunction(DepthTestFunction.NO_DEPTH_TEST)
                 .withDepthWrite(false);
             CUSTOM_LOGO_PIPELINE_BUILDER = blendFunction != null ? CUSTOM_LOGO_PIPELINE_BUILDER.withBlend(blendFunction) : CUSTOM_LOGO_PIPELINE_BUILDER.withoutBlend();
-
+            *///?}
             CUSTOM_LOGO_PIPELINE = CUSTOM_LOGO_PIPELINE_BUILDER.build();
             //?}
 

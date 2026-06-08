@@ -2,7 +2,6 @@ package net.puzzlemc.models.mixin;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import net.minecraft.client.renderer.block.model.BlockElement;
 import net.puzzlemc.core.config.PuzzleConfig;
 import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,7 +17,15 @@ import net.minecraft.core.Direction;
 import net.puzzlemc.models.MultiAxisRotation;
 *///?}
 
+//? if >= 26.1 {
+import net.minecraft.client.resources.model.cuboid.CuboidModelElement;
+
+@Mixin(CuboidModelElement.Deserializer.class)
+//?} else {
+/*import net.minecraft.client.renderer.block.model.BlockElement;
+
 @Mixin(BlockElement.Deserializer.class)
+*///?}
 public abstract class MixinModelElementDeserializer {
     //? if < 1.21.11 {
     /*@Shadow protected abstract Vector3f getVector3f(JsonObject jsonObject, String string);

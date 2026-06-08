@@ -1,9 +1,9 @@
 package net.puzzlemc.splashscreen.mixin;
 
 import com.mojang.blaze3d.platform.NativeImage;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.util.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.LoadingOverlay;
 import net.minecraft.client.gui.screens.Overlay;
 import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -81,28 +81,28 @@ public abstract class MixinSplashScreen extends Overlay {
         }
     }
 
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Ljava/util/function/IntSupplier;getAsInt()I"))
+    @Redirect(method = "extractRenderState", at = @At(value = "INVOKE", target = "Ljava/util/function/IntSupplier;getAsInt()I"))
     private int puzzle$modifyBackground(IntSupplier instance) { // Set the Progress Bar Frame Color to our configured value //
         return (!PuzzleConfig.resourcepackSplashScreen || PuzzleConfig.progressBarBackgroundColor == 15675965) ? instance.getAsInt() : PuzzleConfig.backgroundColor | 255 << 24;
     }
 
     //? if >= 1.21.8 {
-    @WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIFFIIIIIII)V"))
-    private void puzzle$modifyRenderLayer(GuiGraphics context, RenderPipeline pipeline, Identifier sprite, int x, int y, float u, float v, int width, int height, int regionWidth, int regionHeight, int textureWidth, int textureHeight, int color, Operation<Void> original) {
+    @WrapOperation(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blit(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIFFIIIIIII)V"))
+    private void puzzle$modifyRenderLayer(GuiGraphicsExtractor context, RenderPipeline pipeline, Identifier sprite, int x, int y, float u, float v, int width, int height, int regionWidth, int regionHeight, int textureWidth, int textureHeight, int color, Operation<Void> original) {
         if (PuzzleConfig.resourcepackSplashScreen)
             context.blit(PuzzleSplashScreen.CUSTOM_LOGO_PIPELINE, sprite, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, color);
         else context.blit(pipeline, sprite, x, y, u, v, width, height, textureWidth, textureHeight, color);
     }
     //?} else if >= 1.21.4 {
-    /*@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Ljava/util/function/Function;Lnet/minecraft/resources/Identifier;IIFFIIIIIII)V"))
-    private void puzzle$modifyRenderLayer(GuiGraphics context, Function<Identifier, RenderType> renderType, Identifier sprite, int x, int y, float u, float v, int width, int height, int regionWidth, int regionHeight, int textureWidth, int textureHeight, int color, Operation<Void> original) {
+    /*@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blit(Ljava/util/function/Function;Lnet/minecraft/resources/Identifier;IIFFIIIIIII)V"))
+    private void puzzle$modifyRenderLayer(GuiGraphicsExtractor context, Function<Identifier, RenderType> renderType, Identifier sprite, int x, int y, float u, float v, int width, int height, int regionWidth, int regionHeight, int textureWidth, int textureHeight, int color, Operation<Void> original) {
         if (PuzzleConfig.resourcepackSplashScreen)
             context.blit(id -> PuzzleSplashScreen.CUSTOM_LOGO_LAYER, sprite, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, color);
         else context.blit(renderType, sprite, x, y, u, v, width, height, textureWidth, textureHeight, color);
     }
     *///?} else {
     /*@Inject(method = "render", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;blendFunc(II)V", shift = At.Shift.AFTER), remap = false)
-    private void puzzle$betterBlend(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    private void puzzle$betterBlend(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (PuzzleConfig.resourcepackSplashScreen) {
             if (PuzzleConfig.disableBlend) RenderSystem.disableBlend();
             else if (PuzzleConfig.customBlendFunction.size() == 4) {
@@ -120,8 +120,8 @@ public abstract class MixinSplashScreen extends Overlay {
     }
     *///?}
 
-    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;guiWidth()I", ordinal = 2))
-    private void puzzle$renderSplashBackground(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    @Inject(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;guiWidth()I", ordinal = 2))
+    private void puzzle$renderSplashBackground(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (Files.exists(PuzzleSplashScreen.BACKGROUND_TEXTURE) && PuzzleConfig.resourcepackSplashScreen) {
             int width = minecraft.getWindow().getGuiScaledWidth();
             int height = minecraft.getWindow().getGuiScaledHeight();
@@ -148,8 +148,8 @@ public abstract class MixinSplashScreen extends Overlay {
         }
     }
 
-    @Inject(method = "drawProgressBar", at = @At("HEAD"))
-    private void puzzle$addProgressBarBackground(GuiGraphics context, int minX, int minY, int maxX, int maxY, float opacity, CallbackInfo ci) {
+    @Inject(method = "extractProgressBar", at = @At("HEAD"))
+    private void puzzle$addProgressBarBackground(GuiGraphicsExtractor context, int minX, int minY, int maxX, int maxY, float opacity, CallbackInfo ci) {
         if (!PuzzleConfig.resourcepackSplashScreen || PuzzleConfig.progressBarBackgroundColor == 15675965) return;
         long l = Util.getMillis();
         float f = this.fadeOutStart > -1L ? (float)(l - this.fadeOutStart) / 1000.0F : -1.0F;
@@ -157,11 +157,11 @@ public abstract class MixinSplashScreen extends Overlay {
         context.fill(minX, minY, maxX, maxY, replaceAlpha(PuzzleConfig.progressBarBackgroundColor, m));
     }
 
-    @ModifyArg(method = "drawProgressBar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;fill(IIIII)V"), index = 4)
+    @ModifyArg(method = "extractProgressBar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;fill(IIIII)V"), index = 4)
     private int puzzle$modifyProgressFrame(int color) { // Set the Progress Bar Frame Color to our configured value //
         return (!PuzzleConfig.resourcepackSplashScreen || PuzzleConfig.progressFrameColor == 16777215) ? color : PuzzleConfig.progressFrameColor | 255 << 24;
     }
-    @ModifyArg(method = "drawProgressBar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;fill(IIIII)V", ordinal = 0), index = 4)
+    @ModifyArg(method = "extractProgressBar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;fill(IIIII)V", ordinal = 0), index = 4)
     private int puzzle$modifyProgressColor(int color) { // Set the Progress Bar Color to our configured value //
         return (!PuzzleConfig.resourcepackSplashScreen || PuzzleConfig.progressBarColor == 16777215) ? color : PuzzleConfig.progressBarColor | 255 << 24;
     }
