@@ -27,19 +27,24 @@ import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+//? if >= 26.2 {
+import com.mojang.blaze3d.platform.BlendFactor;
+//?} else if >= 1.21.5 {
+/*import com.mojang.blaze3d.platform.DestFactor;
+import com.mojang.blaze3d.platform.SourceFactor;
+*///?}
+
 //? if >= 1.21.5 {
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.pipeline.BlendFunction;
-import com.mojang.blaze3d.platform.DestFactor;
-import com.mojang.blaze3d.platform.SourceFactor;
 import net.minecraft.client.renderer.texture.TextureContents;
 import net.puzzlemc.splashscreen.mixin.RenderPipelinesAccessor;
 //?}
 //? if >= 26.1 {
 import com.mojang.blaze3d.pipeline.ColorTargetState;
-//?} else {
-//import com.mojang.blaze3d.platform.DepthTestFunction;
-//?}
+//?} else if >= 1.21.4 {
+/*import com.mojang.blaze3d.platform.DepthTestFunction;
+*///?}
 
 //? if = 1.21.4 || = 1.21.5 {
 /*import net.minecraft.client.gui.screens.LoadingOverlay;
@@ -93,15 +98,23 @@ public class PuzzleSplashScreen {
     public static void buildRenderLayer() {
         if (PuzzleConfig.resourcepackSplashScreen) {
             //? if >= 1.21.5 {
-            BlendFunction blendFunction = new BlendFunction(SourceFactor.SRC_ALPHA, DestFactor.ONE);
+            BlendFunction blendFunction = new BlendFunction(
+                    //~ if >= 26.2 'SourceFactor' -> 'BlendFactor'
+                    BlendFactor.SRC_ALPHA,
+                    //~ if >= 26.2 'DestFactor' -> 'BlendFactor-'
+                    BlendFactor.ONE);
             if (PuzzleConfig.disableBlend) blendFunction = null;
             else if (PuzzleConfig.customBlendFunction.size() == 4) {
                 try {
                     blendFunction = new BlendFunction(
-                            SourceFactor.valueOf(PuzzleConfig.customBlendFunction.get(0)),
-                            DestFactor.valueOf(PuzzleConfig.customBlendFunction.get(1)),
-                            SourceFactor.valueOf(PuzzleConfig.customBlendFunction.get(2)),
-                            DestFactor.valueOf(PuzzleConfig.customBlendFunction.get(3)));
+                            //~ if >= 26.2 'SourceFactor' -> 'BlendFactor'
+                            BlendFactor.valueOf(PuzzleConfig.customBlendFunction.get(0)),
+                            //~ if >= 26.2 'DestFactor' -> 'BlendFactor'
+                            BlendFactor.valueOf(PuzzleConfig.customBlendFunction.get(1)),
+                            //~ if >= 26.2 'SourceFactor' -> 'BlendFactor'
+                            BlendFactor.valueOf(PuzzleConfig.customBlendFunction.get(2)),
+                            //~ if >= 26.2 'DestFactor' -> 'BlendFactor'
+                            BlendFactor.valueOf(PuzzleConfig.customBlendFunction.get(3)));
                 } catch (Exception e) {
                     LOGGER.error("Incorrect blend function defined in color.properties: {}{}", PuzzleConfig.customBlendFunction, e.getMessage());
                 }
@@ -113,8 +126,8 @@ public class PuzzleSplashScreen {
                 .withDepthStencilState(Optional.empty());
             CUSTOM_LOGO_PIPELINE_BUILDER = blendFunction != null ? CUSTOM_LOGO_PIPELINE_BUILDER.withColorTargetState(new ColorTargetState(blendFunction)) : CUSTOM_LOGO_PIPELINE_BUILDER;
             //?} else {
-            /*
-                .withDepthTestFunction(DepthTestFunction.NO_DEPTH_TEST)
+            
+                /*.withDepthTestFunction(DepthTestFunction.NO_DEPTH_TEST)
                 .withDepthWrite(false);
             CUSTOM_LOGO_PIPELINE_BUILDER = blendFunction != null ? CUSTOM_LOGO_PIPELINE_BUILDER.withBlend(blendFunction) : CUSTOM_LOGO_PIPELINE_BUILDER.withoutBlend();
             *///?}

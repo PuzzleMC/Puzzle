@@ -1,6 +1,6 @@
 package net.puzzlemc.splashscreen.mixin;
 
-//? neoforge {
+//? neoforge && < 26.2 {
 /*import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.LoadingOverlay;
