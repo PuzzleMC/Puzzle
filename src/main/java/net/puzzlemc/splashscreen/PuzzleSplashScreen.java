@@ -110,7 +110,7 @@ public class PuzzleSplashScreen {
             BlendFunction blendFunction = new BlendFunction(
                     //~ if >= 26.2 'SourceFactor' -> 'BlendFactor'
                     BlendFactor.SRC_ALPHA,
-                    //~ if >= 26.2 'DestFactor' -> 'BlendFactor-'
+                    //~ if >= 26.2 'DestFactor' -> 'BlendFactor'
                     BlendFactor.ONE);
             if (PuzzleConfig.disableBlend) blendFunction = null;
             else if (PuzzleConfig.customBlendFunction.size() == 4) {

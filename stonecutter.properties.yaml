@@ -42,7 +42,7 @@ deps:
     - "1.21.9"
     - "1.21.10"
   mod.fabric_mc_range: ">=1.21.9 <=1.21.10"
-  mod.forge_mc_range: "[1.21.9,1.21.10]"
+  mod.neoforge_mc_range: "[1.21.9,1.21.10]"
 "1.21.11":
   mod.mc_releases:
     - "1.21.11"
