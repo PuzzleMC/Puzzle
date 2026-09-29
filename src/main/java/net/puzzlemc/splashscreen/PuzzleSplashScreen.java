@@ -27,21 +27,30 @@ import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-//? if >= 26.2 {
-import com.mojang.blaze3d.platform.BlendFactor;
+//? if >= 26.3 {
+import com.mojang.renderpearl.api.pipeline.BlendFunction;
+import com.mojang.renderpearl.api.pipeline.BlendFactor;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
+//?} else if >= 26.2 {
+//import com.mojang.blaze3d.platform.BlendFactor;
+//import com.mojang.blaze3d.pipeline.RenderPipeline;
+//import com.mojang.blaze3d.pipeline.BlendFunction;
 //?} else if >= 1.21.5 {
 /*import com.mojang.blaze3d.platform.DestFactor;
 import com.mojang.blaze3d.platform.SourceFactor;
+import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.pipeline.BlendFunction;
 *///?}
 
 //? if >= 1.21.5 {
-import com.mojang.blaze3d.pipeline.RenderPipeline;
-import com.mojang.blaze3d.pipeline.BlendFunction;
+
 import net.minecraft.client.renderer.texture.TextureContents;
 import net.puzzlemc.splashscreen.mixin.RenderPipelinesAccessor;
 //?}
-//? if >= 26.1 {
-import com.mojang.blaze3d.pipeline.ColorTargetState;
+//? if >= 26.3 {
+import com.mojang.renderpearl.api.pipeline.ColorTargetState;
+//?} else if >= 26.1 {
+//import com.mojang.blaze3d.pipeline.ColorTargetState;
 //?} else if >= 1.21.4 {
 /*import com.mojang.blaze3d.platform.DepthTestFunction;
 *///?}
@@ -269,7 +278,8 @@ public class PuzzleSplashScreen {
         public @NotNull TextureContents loadContents(ResourceManager resourceManager) {
             Minecraft client = Minecraft.getInstance();
             VanillaPackResources defaultResourcePack = client.getVanillaPackResources();
-            try (InputStream input = Objects.requireNonNull(defaultResourcePack.getResource(PackType.CLIENT_RESOURCES, LOGO)).get()) {
+            //~ if >= 26.3 'defaultResourcePack' -> 'defaultResourcePack.fullResources()'
+            try (InputStream input = Objects.requireNonNull(defaultResourcePack.fullResources().getResource(PackType.CLIENT_RESOURCES, LOGO)).get()) {
                 return  /*? if >= 1.21.4 {*/ new TextureContents(NativeImage.read(input), new TextureMetadataSection(true, true /*? if >= 1.21.11 {*/, MipmapStrategy.AUTO, 0 /*?}*/)) /*?} else {*/ /*new TextureContents(new TextureMetadataSection(true, true), NativeImage.read(input))  *//*?}*/;
             } catch (IOException ex) {
                 return /*? if >= 1.21.4 {*/ TextureContents.createMissing() /*?} else {*/ /*new TextureContents(ex) *//*?}*/;

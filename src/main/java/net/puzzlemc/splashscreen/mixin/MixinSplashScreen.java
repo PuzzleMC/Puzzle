@@ -24,11 +24,17 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.function.IntSupplier;
 
+//? if >= 26.3 {
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
+//?} else {
+//import com.mojang.blaze3d.pipeline.RenderPipeline;
+//?}
+
 //? if >= 1.21.8 {
 import net.minecraft.util.ARGB;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
+
 import net.minecraft.client.renderer.RenderPipelines;
 //?} else if >= 1.21.4 {
 /*import net.minecraft.util.ARGB;
@@ -89,7 +95,8 @@ public abstract class MixinSplashScreen extends Overlay {
 
     //? if >= 1.21.8 {
     //~ if >= 26.1 '"render"' -> '"extractRenderState"'
-    @WrapOperation(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blit(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIFFIIIIIII)V"))
+    //~ if >= 26.3 'Lcom/mojang/blaze3d/pipeline/RenderPipeline' -> 'Lcom/mojang/renderpearl/api/pipeline/RenderPipeline'
+    @WrapOperation(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blit(Lcom/mojang/renderpearl/api/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIFFIIIIIII)V"))
     private void puzzle$modifyRenderLayer(GuiGraphicsExtractor context, RenderPipeline pipeline, Identifier sprite, int x, int y, float u, float v, int width, int height, int regionWidth, int regionHeight, int textureWidth, int textureHeight, int color, Operation<Void> original) {
         if (PuzzleConfig.resourcepackSplashScreen)
             context.blit(PuzzleSplashScreen.CUSTOM_LOGO_PIPELINE, sprite, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, color);

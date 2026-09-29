@@ -8,6 +8,7 @@ modId = "${id}"
 version = "${version}"
 displayName = "Puzzle"
 logoFile = "puzzle.png"
+iconFile = "puzzle.png"
 authors = "PuzzleMC, Motschen"
 description = '''
 Unlocks advanced capabilities for resourcepack authors, such as customizing the splashscreen and allowing for bigger block models.
@@ -17,8 +18,6 @@ Unlocks advanced capabilities for resourcepack authors, such as customizing the 
 config = "puzzle-models.mixins.json"
 [[mixins]]
 config = "puzzle-splashscreen.mixins.json"
-[[mixins]]
-config = "puzzle-splashscreen_neoforge.mixins.json"
 
 [[dependencies.puzzle]]
 modId = "neoforge"
