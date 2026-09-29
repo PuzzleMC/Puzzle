@@ -153,7 +153,7 @@ publishMods {
         compatibleVersions.forEach(minecraftVersions::add)
         requires("fabric-api")
 
-        environment = CLIENT_OR_SERVER
+        environment = CLIENT_ONLY
     }
 
     curseforge {
@@ -163,7 +163,7 @@ publishMods {
         requires("fabric-api")
 
         client.set(true)
-        server.set(true)
+        server.set(false)
     }
 }
 

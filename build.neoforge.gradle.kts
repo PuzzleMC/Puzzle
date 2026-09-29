@@ -131,17 +131,19 @@ publishMods {
         projectId = property("publish.modrinth").toString()
         accessToken = modrinthToken
         compatibleVersions.forEach(minecraftVersions::add)
+        requires("midnightlib")
 
-        environment = CLIENT_OR_SERVER
+        environment = CLIENT_ONLY
     }
 
     curseforge {
         projectId = property("publish.curseforge").toString()
         accessToken = curseforgeToken
         compatibleVersions.forEach(minecraftVersions::add)
+        requires("midnightlib")
 
         client.set(true)
-        server.set(true)
+        server.set(false)
     }
 }
 
